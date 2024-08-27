@@ -1,5 +1,5 @@
 cachelib==0.13.0
-click==0.4.6
+click==8.1.7
 colorama==0.4.6
 cs50==9.3.4
 Flask==2.2.2
