@@ -1,0 +1,53 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    EDIT USER
+{% endblock %}
+
+{% block body %}
+<div class="mb-3"><h3>EDIT USER</h3></div>
+<div class="mb-3"><h4>{{ user[0]["username"] }}</h4></div>
+<div class="mb-3">
+{% for message in get_flashed_messages() %}
+  <p><b>{{message}}</b></p>
+{% endfor %}
+</div>
+
+      <div class="mb-3">
+        {% if user[0]["active"] == 0 %}
+        <form action="/deactivateuser" method="post">
+          <button type="submit" class="btn btn-sm btn-outline-secondary" >Deactivate User</button>
+        </form>
+        {% else %}
+        <form action="/activateuser" method="post">
+          <button type="submit" class="btn btn-sm btn-outline-secondary" >Activate User</button>
+        </form>
+        {% endif %}
+        </div>
+      <form action="/changeuser" method="post">
+
+        <div class="mb-3"><p>Actual Permission: {{ user[0]["permission"] }}</p></div>
+        <div class="mb-3">
+        <label for="persmission">New Permission</label>
+        <select id="permission" name="permission">
+          <option disabled value="" selected>Permission</option>
+          {% if session.get("permission") != 0 %}
+          <option value="2">2: Power User</option>
+          <option value="3">3: User</option>
+          {% else %}
+          <option value="1">1: Admin User</option>
+          <option value="2">2: Power User</option>
+          <option value="3">3: User</option>
+          {% endif %}
+        </select>
+      </div>
+      <div class="mb-3">
+        <button type="submit" class="btn btn-outline-success">Change</button>
+      </div>
+      </form>
+      <form action="/resetstatus" method="post">
+        <button type="submit" class="btn btn-sm btn-outline-secondary" >RESET PASSWORD</button>
+      </form>
+
+
+{% endblock %}

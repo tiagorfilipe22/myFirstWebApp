@@ -1,0 +1,42 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    CHECK USERS
+{% endblock %}
+
+{% block body %}
+<div class="mb-3"><h3>CHECK USERS</h3></div>
+<div class="mb-3">
+{% for message in get_flashed_messages() %}
+  <p><b>{{message}}</b></p>
+{% endfor %}
+</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>USERNAME</th>
+                <th></th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for user in users %}
+            <tr>
+                <td> {{ user["username"] }}</td>
+                <td>
+                  <form action="/checkuser" method="post">
+                    <input name="id" type="hidden" value="{{ user["id"] }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary">ACEPT</button>
+                  </form>
+
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

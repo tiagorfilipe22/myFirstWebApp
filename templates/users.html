@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    USERS
+{% endblock %}
+
+{% block body %}
+<div class="mb-3"><h3>USERS</h3></div>
+<div class="mb-3">
+{% for message in get_flashed_messages() %}
+  <p><b>{{message}}</b></p>
+{% endfor %}
+</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>USERNAME</th>
+                <th>PERMISSION</th>
+                <th>ACTIVE</th>
+                <th></th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for user in users %}
+            <tr>
+                <td> {{ user["username"] }}</td>
+                <td> {{ user["permission"] }}</td>
+                <td> {{ user["active"] }}</td>
+                <td>
+                  <form action="/edituser" method="post">
+                    <input name="id" type="hidden" value="{{ user["id"] }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary" >EDIT</button>
+                  </form>
+
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+
+{% endblock %}

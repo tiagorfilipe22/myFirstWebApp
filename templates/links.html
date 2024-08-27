@@ -1,0 +1,45 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    LINKS
+{% endblock %}
+
+{% block body %}
+<div class="mb-3"><h3>Welcome to Site List {{ username }}!</h3></div>
+<div class="mb-3">
+{% for message in get_flashed_messages() %}
+  <p><b>{{message}}</b></p>
+{% endfor %}
+</div>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>TIPE</th>
+                <th>NAME</th>
+                <th></th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for link in links %}
+            <tr>
+                <td> {{ link["type"] }}</td>
+                <td><a class="nav-link" href="https:\\{{ link["link"] }}">{{ link["name"] }}</a></td>
+                <td>
+                  <form action="/edit" method="post">
+                    <input name="id" type="hidden" value="{{ link["id"] }}">
+                    <button type="submit" class="btn btn-sm btn-outline-secondary" >EDIT</button>
+                  </form>
+
+
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    <a class="btn btn-outline-success" href="/add">ADD MORE</a>
+
+{% endblock %}

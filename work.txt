@@ -1,0 +1,12 @@
+
+- add permissions users
+  - 0 admin ( fixed permission )
+  - 1 admin user
+  - 2 power user
+  - 3 user
+  - 4 first time user ( at registration )
+
+##### TO-DO #####
+When reset password button Active
+change permission to 5
+obligate when login to change password

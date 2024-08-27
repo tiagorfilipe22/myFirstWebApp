@@ -1,0 +1,57 @@
+CREATE TABLE users (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+username TEXT NOT NULL,
+hash TEXT NOT NULL
+permission INTEGER DEFAULT 4 NOT NULL,
+active BLOB DEFAULT 0 NOT NULL
+);
+
+CREATE UNIQUE INDEX username
+ON users (username);
+
+
+
+CREATE TABLE links (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+type TEXT NOT NULL,
+name TEXT NOT NULL,
+link TEXT NOT NULL
+active BLOB DEFAULT 0 NOT NULL
+);
+
+CREATE TABLE logs (
+id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+user_id INTEGER NOT NULL,
+link_id INTEGER NOT NULL,
+type TEXT NOT NULL,
+comment TEXT,
+time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+FOREIGN KEY(user_id) REFERENCES users(id),
+FOREIGN KEY(link_id) REFERENCES links(id)
+);
+
+
+RUNS:
+ALTER TABLE users ADD
+permission INTEGER DEFAULT 4 NOT NULL;
+
+ALTER TABLE users ADD
+activate BLOB DEFAULT 0 NOT NULL;
+
+ALTER TABLE links DROP COLUMN user_id;
+
+ALTER TABLE links ALTER COLUMN user_id TEXT;
+
+ALTER TABLE logs RENAME COLUMN link_ID to link_id;
+
+UPDATE table SET column = value WHERE column = value;
+
+SELECT id FROM links ORDER BY id DESC LIMIT 1;
+
+
+SELECT users.username, links.name, logs.type, logs.comment, logs.time FROM logs
+JOIN users ON logs.user_id = users.id
+JOIN links ON logs.link_id = links.id;
+
+
+UPDATE users SET active = 0 WHERE id = 3;
