@@ -1,5 +1,4 @@
-
-- add permissions users
+## permission
   - 0 admin ( fixed permission )
   - 1 admin user
   - 2 power user
