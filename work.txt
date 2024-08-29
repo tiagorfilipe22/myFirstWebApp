@@ -10,3 +10,15 @@
 When reset password button Active
 change permission to 5
 obligate when login to change password
+
+
+
+new to DO
+- tirar reset password do admin
+- adicionar categorias aos links
+- adicionar opção de ao adicionar um link escolher categoria ou adicionar uma categoria nova
+- adicionar tab documentos
+- adicionar opção de escolher o que quer adicionar se um link ou documentos
+- documentos tem que ter extenção .pdf
+- remover history
+- adicionar remover user
