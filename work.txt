@@ -1,9 +1,13 @@
 ## permission
   - 0 admin ( fixed permission )
   - 1 admin user
+    can se users and edit users
   - 2 power user
+    can add and edit links and documents
   - 3 user
-  - 4 first time user ( at registration )
+    can see links and documents
+  - 4 first time user
+    at registration, need to wait for a admin or user admin to aprove
 
 ##### TO-DO #####
 When reset password button Active
@@ -13,11 +17,16 @@ obligate when login to change password
 
 
 new to DO
-- tirar reset password do admin
+-
 - adicionar categorias aos links
 - adicionar opção de ao adicionar um link escolher categoria ou adicionar uma categoria nova
 - adicionar tab documentos
 - adicionar opção de escolher o que quer adicionar se um link ou documentos
 - documentos tem que ter extenção .pdf
-- remover history
-- adicionar remover user
+- remove table logs
+- ad delete user
+
+
+done:
+- tirar reset password do admin
+- remove history page
