@@ -55,3 +55,6 @@ JOIN links ON logs.link_id = links.id;
 
 
 UPDATE users SET active = 0 WHERE id = 3;
+
+# eliminar tabela
+DROP TABLE logs;
