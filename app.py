@@ -135,6 +135,10 @@ def login():
         "SELECT * FROM users WHERE username = ?", username
         )
 
+        if not rows:
+            flash("Wrong Username")
+            return render_template("index.html")
+
         if rows[0]["active"] == 1:
             flash("User not Active, call admin")
             return render_template("index.html")
