@@ -185,10 +185,10 @@ def add():
         linkID = db.execute("SELECT id FROM links ORDER BY id DESC LIMIT 1")
 
         # add to links database
-        db.execute(
-            "INSERT INTO logs (user_id, link_id, type) VALUES(?, ?, ?)",
-            userID, linkID[0]["id"], "add"
-        )
+        # db.execute(
+        #    "INSERT INTO logs (user_id, link_id, type) VALUES(?, ?, ?)",
+        #    userID, linkID[0]["id"], "add"
+        #)
 
 
         # redirect to links
@@ -297,10 +297,10 @@ def delete():
 
 
             # add to links database
-            db.execute(
-                "INSERT INTO logs (user_id, link_id, type) VALUES(?, ?, ?)",
-                userID, linkID, "delete"
-            )
+            # db.execute(
+            #    "INSERT INTO logs (user_id, link_id, type) VALUES(?, ?, ?)",
+            #    userID, linkID, "delete"
+            # )
             return redirect("/")
         else:
             return redirect("/")
@@ -313,16 +313,16 @@ def change():
 
 
 # hisotry function
-@app.route("/history")
-def history():
+# @app.route("/history")
+# def history():
 
     # get serssion id
-    userID = session["user_id"]
+    # userID = session["user_id"]
 
     # get info from database and render in links
-    logs = db.execute("SELECT users.username, links.name, logs.type, logs.comment, logs.time FROM logs JOIN users ON logs.user_id = users.id JOIN links ON logs.link_id = links.id")
-    print(logs)
-    return render_template("history.html", logs = logs)
+    # logs = db.execute("SELECT users.username, links.name, logs.type, logs.comment, logs.time FROM logs JOIN users ON logs.user_id = users.id JOIN links ON logs.link_id = links.id")
+    # print(logs)
+    # return render_template("history.html", logs = logs)
 
 # users function
 @app.route("/users")
