@@ -27,3 +27,9 @@ $$$$$ DONE $$$$$
 - remove table logs
 - alterar como o eliminar link funcionar, está a dar erro por se ter eliminado a tabela logs
   provavelmente tem que se retirar a coluna de desativo ou ativo no sql e eliminar por completo a entrada
+
+
+
+  %%%%% COISAS ENGRAÇADAS %%%%%
+  - Enviar Emails
+  - importar ficheiros ( https://www.youtube.com/watch?v=GeiUTkSAJPs )
