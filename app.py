@@ -136,7 +136,7 @@ def login():
         )
 
         if not rows:
-            flash("Wrong Username")
+            flash("Invalid username and/or password")
             return render_template("index.html")
 
         if rows[0]["active"] == 1:
