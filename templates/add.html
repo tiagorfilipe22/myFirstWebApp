@@ -13,7 +13,14 @@
 </div>
     <form action="/add" method="post">
       <div class="mb-3">
-        <input autocomple="off" autofocus name="category" placeholder="Category" type="text">
+        
+        
+        <select id="category" name="category">
+          <option disabled value="" selected>Category</option>
+          {% for category in categories %}
+          <option value="{{ category["category"] }}">{{ category["category"] }}</option>
+          {% endfor %}
+        </select>
       </div>
       <div class="mb-3">
         <input autocomple="off" name="name" placeholder="Name" type="text">

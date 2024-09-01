@@ -11,13 +11,16 @@
 
 
 ##### TO-DO #####
+
+- no drop down não considerar valores repetidos
 - adicionar opção de ao adicionar um link escolher categoria ou adicionar uma categoria nova
-  renomear type para categorias
+  renomear type para categorias (falta opção para adicionar nova)
 - sort by categoria e depois alfabeto
 - adicionar tab documentos
 - adicionar opção de escolher o que quer adicionar se um link ou documentos
 - documentos tem que ter extenção .pdf
 - alterar processamento para alterar/editar um link (ainda não implementado)
+- button to change password change to edit user like name and password
 
 
 $$$$$ DONE $$$$$
@@ -28,6 +31,8 @@ $$$$$ DONE $$$$$
   provavelmente tem que se retirar a coluna de desativo ou ativo no sql e eliminar por completo a entrada
 - ad delete user
 - adicionar categorias aos links (change table collumn)
+- alterar o eliminar do links em vez de desativar eliminar por completo
+  DROP column active on links
 
 
   %%%%% COISAS ENGRAÇADAS %%%%%

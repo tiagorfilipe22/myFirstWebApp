@@ -198,7 +198,9 @@ def add():
         return redirect("/links")
 
     # if get method
-    return render_template("add.html")
+    categories = db.execute("SELECT category FROM links ORDER BY category DESC")
+    print(categories)
+    return render_template("add.html", categories = categories)
 
 # links function
 @app.route("/links")
@@ -216,7 +218,7 @@ def links():
     username = rows[0]["username"]
 
     # get info from database and render in links
-    links = db.execute("SELECT category, name, link, id FROM links WHERE active = 0")
+    links = db.execute("SELECT category, name, link, id FROM links")
     return render_template("links.html", links = links, username = username)
 
 # logout function
@@ -296,8 +298,7 @@ def delete():
         linkID = request.form.get("id")
 
         if linkID:
-            db.execute("UPDATE links SET active = 1 WHERE id = ?", linkID)
-
+            db.execute("DELETE FROM links WHERE id= ?", linkID)
 
             # add to links database
             # db.execute(
