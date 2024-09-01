@@ -56,7 +56,6 @@ def checkuser():
     # check for new registered USERS
     # get info from database and render in links
     users = db.execute("SELECT * FROM users WHERE permission = 4 AND id > 1")
-    print(users)
     if users:
         return render_template("checkuser.html", users = users)
     else:
@@ -325,7 +324,6 @@ def change():
 
     # get info from database and render in links
     # logs = db.execute("SELECT users.username, links.name, logs.type, logs.comment, logs.time FROM logs JOIN users ON logs.user_id = users.id JOIN links ON logs.link_id = links.id")
-    # print(logs)
     # return render_template("history.html", logs = logs)
 
 # users function
@@ -339,6 +337,7 @@ def users():
     users = db.execute("SELECT * FROM users WHERE id > 1")
     return render_template("users.html", users = users)
 
+# EDIT USER
 @app.route("/edituser", methods=["GET", "POST"])
 def edituser():
 
@@ -355,6 +354,7 @@ def edituser():
     user = db.execute("SELECT username, permission, active, id FROM users WHERE id = ?", userID)
     return render_template("edituser.html", user = user)
 
+# DEACTIVATE USER
 @app.route("/deactivateuser", methods=["GET", "POST"])
 def deactivateuser():
 
@@ -371,6 +371,7 @@ def deactivateuser():
             flash("Error ocurred!")
             return redirect("/users")
 
+# ACTIVATE USER
 @app.route("/activateuser", methods=["GET", "POST"])
 def activateuser():
 
@@ -387,6 +388,7 @@ def activateuser():
             flash("Error ocurred!")
             return redirect("/users")
 
+# CHANGE VALUES USER
 @app.route("/changeuser", methods=["GET", "POST"])
 def changeuser():
 
@@ -406,18 +408,35 @@ def changeuser():
             flash("Error ocurred!")
             return redirect("/users")
 
-@app.route("/resetstatus", methods=["GET", "POST"])
-def resetpassword():
+# RESET PASSWORD
+# @app.route("/resetstatus", methods=["GET", "POST"])
+# def resetpassword():
+
+    # if request.method == "POST":
+
+        # userID = session["edit_user"]
+
+
+        # if userID:
+            # db.execute("UPDATE users SET permission = 5 WHERE id = ?", userID)
+            # flash("Password now Reset")
+            # return redirect("/edituser")
+        # else:
+            # flash("Error ocurred!")
+            # return redirect("/users")
+
+# DELETE USER
+@app.route("/deleteuser", methods=["GET", "POST"])
+def deleteuser():
 
     if request.method == "POST":
 
         userID = session["edit_user"]
 
-
         if userID:
-            db.execute("UPDATE users SET permission = 5 WHERE id = ?", userID)
-            flash("Password now Reset")
-            return redirect("/edituser")
+            db.execute("DELETE FROM users WHERE id = ?", userID)
+            flash("USER is DELETED")
+            return redirect("/users")
         else:
             flash("Error ocurred!")
-            return redirect("/users")
+            return redirect("/edituser")

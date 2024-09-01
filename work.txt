@@ -9,6 +9,7 @@
   - 4 first time user
     at registration, need to wait for a admin or user admin to aprove
 
+
 ##### TO-DO #####
 - adicionar categorias aos links
 - adicionar opção de ao adicionar um link escolher categoria ou adicionar uma categoria nova
@@ -18,8 +19,8 @@
 - adicionar opção de escolher o que quer adicionar se um link ou documentos
 - documentos tem que ter extenção .pdf
 - ad delete user
-
 - alterar processamento para alterar/editar um link (ainda não implementado)
+
 
 $$$$$ DONE $$$$$
 - tirar reset password user
