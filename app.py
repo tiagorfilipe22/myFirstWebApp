@@ -166,12 +166,12 @@ def add():
     if request.method == "POST":
 
         # get variables
-        type = request.form.get("type")
+        category = request.form.get("category")
         name = request.form.get("name")
         link = request.form.get("link")
 
         # check variables
-        if not name or not type or not link:
+        if not name or not category or not link:
             flash("information required!")
             return render_template("add.html")
 
@@ -180,8 +180,8 @@ def add():
 
         # add to links database
         db.execute(
-            "INSERT INTO links (type, name, link) VALUES(?, ?, ?)",
-            type, name, link
+            "INSERT INTO links (category, name, link) VALUES(?, ?, ?)",
+            category, name, link
         )
 
         # get last ID
@@ -189,7 +189,7 @@ def add():
 
         # add to links database
         # db.execute(
-        #    "INSERT INTO logs (user_id, link_id, type) VALUES(?, ?, ?)",
+        #    "INSERT INTO logs (user_id, link_id, category) VALUES(?, ?, ?)",
         #    userID, linkID[0]["id"], "add"
         #)
 
@@ -216,7 +216,7 @@ def links():
     username = rows[0]["username"]
 
     # get info from database and render in links
-    links = db.execute("SELECT type, name, link, id FROM links WHERE active = 0")
+    links = db.execute("SELECT category, name, link, id FROM links WHERE active = 0")
     return render_template("links.html", links = links, username = username)
 
 # logout function
@@ -282,7 +282,7 @@ def edit():
         linkID = request.form.get("id")
 
         # get info from database and render in links
-        links = db.execute("SELECT type, name, link, id FROM links WHERE id = ?", linkID)
+        links = db.execute("SELECT category, name, link, id FROM links WHERE id = ?", linkID)
         return render_template("edit.html", links = links)
 
 @app.route("/delete", methods=["GET", "POST"])
@@ -301,7 +301,7 @@ def delete():
 
             # add to links database
             # db.execute(
-            #    "INSERT INTO logs (user_id, link_id, type) VALUES(?, ?, ?)",
+            #    "INSERT INTO logs (user_id, link_id, category) VALUES(?, ?, ?)",
             #    userID, linkID, "delete"
             # )
             return redirect("/")
@@ -323,7 +323,7 @@ def change():
     # userID = session["user_id"]
 
     # get info from database and render in links
-    # logs = db.execute("SELECT users.username, links.name, logs.type, logs.comment, logs.time FROM logs JOIN users ON logs.user_id = users.id JOIN links ON logs.link_id = links.id")
+    # logs = db.execute("SELECT users.username, links.name, logs.category, logs.comment, logs.time FROM logs JOIN users ON logs.user_id = users.id JOIN links ON logs.link_id = links.id")
     # return render_template("history.html", logs = logs)
 
 # users function

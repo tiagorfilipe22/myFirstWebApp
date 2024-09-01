@@ -14,7 +14,7 @@
     <table class="table">
         <thead>
             <tr>
-                <th>TIPE</th>
+                <th>CATEGORY</th>
                 <th>NAME</th>
                 <th></th>
             </tr>
@@ -25,7 +25,7 @@
 
             {% for link in links %}
             <tr>
-                <td> {{ link["type"] }}</td>
+                <td> {{ link["category"] }}</td>
                 <td><a class="nav-link" href="https:\\{{ link["link"] }}">{{ link["name"] }}</a></td>
                 <td>
                   <form action="/edit" method="post">
