@@ -12,10 +12,9 @@
 
 ##### TO-DO #####
 
-- no drop down não considerar valores repetidos
-- adicionar opção de ao adicionar um link escolher categoria ou adicionar uma categoria nova
-  renomear type para categorias (falta opção para adicionar nova)
-- sort by categoria e depois alfabeto
+
+
+
 - adicionar tab documentos
 - adicionar opção de escolher o que quer adicionar se um link ou documentos
 - documentos tem que ter extenção .pdf
@@ -33,6 +32,10 @@ $$$$$ DONE $$$$$
 - adicionar categorias aos links (change table collumn)
 - alterar o eliminar do links em vez de desativar eliminar por completo
   DROP column active on links
+- no drop down não considerar valores repetidos
+- adicionar opção de ao adicionar um link escolher categoria ou adicionar uma categoria nova
+  renomear type para categorias (falta opção para adicionar nova)
+- sort by categoria e depois alfabeto
 
 
   %%%%% COISAS ENGRAÇADAS %%%%%

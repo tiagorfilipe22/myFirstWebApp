@@ -202,7 +202,7 @@ def add():
         return redirect("/links")
 
     # if get method
-    categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category DESC")
+    categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
     print(categories)
     return render_template("add.html", categories = categories)
 
@@ -222,7 +222,7 @@ def links():
     username = rows[0]["username"]
 
     # get info from database and render in links
-    links = db.execute("SELECT category, name, link, id FROM links")
+    links = db.execute("SELECT category, name, link, id FROM links ORDER BY category, name")
     return render_template("links.html", links = links, username = username)
 
 # logout function
@@ -309,9 +309,9 @@ def delete():
             #    "INSERT INTO logs (user_id, link_id, category) VALUES(?, ?, ?)",
             #    userID, linkID, "delete"
             # )
-            return redirect("/")
+            return redirect("/links")
         else:
-            return redirect("/")
+            return redirect("/links")
 
 @app.route("/change", methods=["GET", "POST"])
 def change():
