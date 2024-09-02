@@ -15,12 +15,17 @@
       <div class="mb-3">
         
         
-        <select id="category" name="category">
+        <select onchange="changeActiveStatus()" id="category" name="category">
           <option disabled value="" selected>Category</option>
           {% for category in categories %}
           <option value="{{ category["category"] }}">{{ category["category"] }}</option>
           {% endfor %}
+          <option value="newcategory" >New Category</option>
         </select>
+        
+      </div>
+      <div class="mb-3">
+        <input id="newcategory" autocomple="off" name="addcategory" placeholder="New Category" type="text" disabled>
       </div>
       <div class="mb-3">
         <input autocomple="off" name="name" placeholder="Name" type="text">

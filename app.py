@@ -166,14 +166,18 @@ def add():
     if request.method == "POST":
 
         # get variables
-        category = request.form.get("category")
+        if request.form.get("category") == "newcategory":
+            category = request.form.get("addcategory")
+        else:
+            category = request.form.get("category")
+        
         name = request.form.get("name")
         link = request.form.get("link")
 
         # check variables
         if not name or not category or not link:
             flash("information required!")
-            return render_template("add.html")
+            return redirect("/add")
 
         # get user id
         userID = session["user_id"]
@@ -198,7 +202,7 @@ def add():
         return redirect("/links")
 
     # if get method
-    categories = db.execute("SELECT category FROM links ORDER BY category DESC")
+    categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category DESC")
     print(categories)
     return render_template("add.html", categories = categories)
 
