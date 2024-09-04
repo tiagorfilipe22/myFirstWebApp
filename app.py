@@ -15,6 +15,8 @@ Session(app)
 db = SQL("sqlite:///data.db")
 
 # set variable to csv to log add links and delete links
+role = ["Admin", "Admin User", "Power User", "User", "New User"]
+status = ["Active", "Inactive"]
 
 # index route
 @app.route("/", methods=["GET", "POST"])
@@ -203,7 +205,6 @@ def add():
 
     # if get method
     categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
-    print(categories)
     return render_template("add.html", categories = categories)
 
 # links function
@@ -234,8 +235,10 @@ def logout():
     return redirect("/")
 
 # change function
-@app.route("/password", methods=["GET", "POST"])
+@app.route("/profile", methods=["GET", "POST"])
 def password():
+    userID = session.get("user_id")
+    user = db.execute("SELECT * FROM users WHERE id = ?", userID)
     # if post method
     if request.method == "POST":
 
@@ -243,37 +246,47 @@ def password():
         pOld = request.form.get("pOld")
         password = request.form.get("password")
         pConfirmation = request.form.get("pConfirmation")
+        name = request.form.get("name")
 
         # variable validation
-        if not pOld:
-            flash("Have to insert old Password")
-            return render_template("change.html")
-        elif not password:
-            flash("No New Password!")
-            return render_template("change.html")
-        elif not pConfirmation:
-            flash("You have to confirm the password!")
-            return render_template("change.html")
-        elif password != pConfirmation:
-            flash("Passwords don't match!")
-            return render_template("change.html")
+        if not name and not pOld and not password and not pConfirmation:
+            flash("No information changed")
+            return redirect("/profile")
+        
+        if name:
+            flash("Name Changed!")
+            db.execute("UPDATE users SET username = ? WHERE id = ?", name, userID)
 
-        # get user ID and data from db
-        userID = session.get("user_id")
-        dbPass = db.execute("SELECT hash FROM users WHERE id = ?", userID)[0]["hash"]
+        if pOld and password and pConfirmation:
+             # get user ID and data from db
+        
+            dbPass = db.execute("SELECT hash FROM users WHERE id = ?", userID)[0]["hash"]
 
-        # check if old password in corret
-        if check_password_hash(dbPass, pOld):
-            new = generate_password_hash(password)
-            db.execute("UPDATE users SET hash = ? WHERE id = ?", new, userID)
-            flash("You have changed Password!")
-            return render_template("change.html")
+            # check if old password in corret
+            if password == pConfirmation:
+                if  check_password_hash(dbPass, pOld):
+                    new = generate_password_hash(password)
+                    db.execute("UPDATE users SET hash = ? WHERE id = ?", new, userID)
+                    flash("You have changed Password!")
+                    return redirect("/profile")
+                else:
+                    flash("Provided Old Password not match!")
+                    return redirect("/profile")
+            else:
+                flash("Confirmed password dont match")
+                return redirect("/profile")    
+            
+        elif pOld or password or pConfirmation:
+            flash("You have to confirm the passwords fields!")
+            return redirect("/profile")
         else:
-            flash("Provided Old Password not match!")
-            return render_template("change.html")
+            return redirect("/profile")
 
-    # if get method
-    return render_template("change.html")
+       
+
+
+    
+    return render_template("change.html", user = user)
 
 
 
@@ -286,10 +299,18 @@ def edit():
     if request.method == "POST":
         # get link id
         linkID = request.form.get("id")
+        # save in session
+        session["edit_link"] = linkID
 
         # get info from database and render in links
         links = db.execute("SELECT category, name, link, id FROM links WHERE id = ?", linkID)
-        return render_template("edit.html", links = links)
+        categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
+        return render_template("edit.html", links = links, categories = categories)
+    else:
+        linkID = session["edit_link"]
+        links = db.execute("SELECT category, name, link, id FROM links WHERE id = ?", linkID)
+        categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
+        return render_template("edit.html", links = links, categories = categories)
 
 @app.route("/delete", methods=["GET", "POST"])
 def delete():
@@ -315,21 +336,47 @@ def delete():
 
 @app.route("/change", methods=["GET", "POST"])
 def change():
+    
+    linkID = session["edit_link"]
+    print(linkID)
 
+    # if post method
     if request.method == "POST":
-        return redirect("/")
 
+        # get variables
+        if request.form.get("category") == "newcategory":
+            category = request.form.get("addcategory")
+        else:
+            category = request.form.get("category")
+        
+        name = request.form.get("name")
+        link = request.form.get("link")
 
-# hisotry function
-# @app.route("/history")
-# def history():
+        # check variables
 
-    # get serssion id
-    # userID = session["user_id"]
+        if not name and not category and not link:
+            flash("atleat one fiel is required!")
+            return redirect("/edit")   
 
-    # get info from database and render in links
-    # logs = db.execute("SELECT users.username, links.name, logs.category, logs.comment, logs.time FROM logs JOIN users ON logs.user_id = users.id JOIN links ON logs.link_id = links.id")
-    # return render_template("history.html", logs = logs)
+        if not category:
+            pass
+        else:
+            db.execute("UPDATE links SET category = ? WHERE id = ?",category, linkID)
+
+        if not name:
+            pass
+        else:
+            db.execute("UPDATE links SET name = ? WHERE id = ?",name, linkID)
+
+        if not link:
+            pass
+        else:
+            db.execute("UPDATE links SET link = ? WHERE id = ?",link, linkID)
+
+        
+        # redirect to links
+        flash("Link changed!")
+        return redirect("/links")
 
 # users function
 @app.route("/users")
@@ -340,7 +387,11 @@ def users():
 
     # get info from database and render in links
     users = db.execute("SELECT * FROM users WHERE id > 1")
-    return render_template("users.html", users = users)
+
+    
+    
+
+    return render_template("users.html", users = users, role = role, status = status)
 
 # EDIT USER
 @app.route("/edituser", methods=["GET", "POST"])
@@ -353,11 +404,11 @@ def edituser():
         session["edit_user"] = userID
         # get info from database and render in links
         user = db.execute("SELECT username, permission, active, id FROM users WHERE id = ?", userID)
-        return render_template("edituser.html", user = user)
+        return render_template("edituser.html", user = user, role = role)
 
     userID = session["edit_user"]
     user = db.execute("SELECT username, permission, active, id FROM users WHERE id = ?", userID)
-    return render_template("edituser.html", user = user)
+    return render_template("edituser.html", user = user, role = role)
 
 # DEACTIVATE USER
 @app.route("/deactivateuser", methods=["GET", "POST"])

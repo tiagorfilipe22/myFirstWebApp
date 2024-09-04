@@ -26,7 +26,7 @@
         </div>
       <form action="/changeuser" method="post">
 
-        <div class="mb-3"><p>Actual Permission: {{ user[0]["permission"] }}</p></div>
+        <div class="mb-3"><p>Actual Permission: {{ role[user[0]["permission"]] }}</p></div>
         <div class="mb-3">
         <label for="persmission">New Permission</label>
         <select id="permission" name="permission">

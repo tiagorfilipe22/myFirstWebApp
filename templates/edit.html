@@ -13,15 +13,25 @@
 </div>
     <form action="/change" method="post">
       <div class="mb-3">
-        <input autocomple="off" autofocus name="category" placeholder="New Category" type="password">
+        <select onchange="changeActiveStatus()" id="category" name="category">
+          <option disabled value="" selected>Choose Category</option>
+          {% for category in categories %}
+          <option value="{{ category["category"] }}">{{ category["category"] }}</option>
+          {% endfor %}
+          <option value="newcategory" >New Category</option>
+        </select>
+        
+      </div>
+      <div class="mb-3">
+        <input id="newcategory" autocomple="off" name="addcategory" placeholder="New Category" type="text" disabled>
         {{ links[0]["category"] }}
       </div>
       <div class="mb-3">
-        <input autocomple="off" name="name" placeholder="New Name" type="password">
+        <input autocomple="off" name="name" placeholder="New Name" type="text">
         {{ links[0]["name"] }}
       </div>
       <div class="mb-3">
-        <input autocomple="off" name="link" placeholder="New Link" type="password">
+        <input autocomple="off" name="link" placeholder="New Link" type="text">
         {{ links[0]["link"] }}
       </div>
       <div class="mb-3">
