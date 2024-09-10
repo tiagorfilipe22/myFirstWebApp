@@ -16,70 +16,44 @@
 
         <title>TR22: {% block title %}{% endblock %}</title>
     </head>
-    <body class="">
+    <body>
       <header>
+        <a href="/"><img class="logo" src=".\static\images\d.png" alt="logo"></a>
+        {% if session.get("user_id") %}
+        
+        <nav>
+          <ul class="nav_links">
+            <li><a href="/links">Links</a></li>
 
-      </header>
-      <div class="container py-5">
-
-        <nav class="navbar navbar-expand-lg bg-body-tertiary">
-      <div class="container-fluid" id="navbar">
-        <a class="navbar-brand mb-0 h1" href="/">HOME</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          {% if session.get("user_id") %}
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-
-            <li class="nav-item">
-              <a class="nav-link active" href="/links">Links</a>
             {% if session.get("permission") > 2 %}
-            </li>
-            <li class="nav-item">
-              <a class="nav-link disabled" href="/history">History</a>
-            </li>
+            <li><a href="/history">History</a></li>
             {% else %}
-            </li>
-            <!-- History
-            <li class="nav-item">
-              <a class="nav-link" href="/history">History</a>
-            </li>
-            -->
+            <li><a href="/documents">Documents</a></li>
             {% endif %}
             {% if session.get("permission") > 1 %}
-            <li class="nav-item">
-              <a class="nav-link disabled" aria-disabled="true">Users</a>
-            </li>
+            <li><a>Users</a></li>
             {% else %}
-            <li class="nav-item">
-              <a class="nav-link" href="/users">Users</a>
-            </li>
+            <li><a href="/users">Users</a></li>
             {% endif %}
           </ul>
-          <form class="d-flex" action="/profile">
-            <button class="btn btn-sm btn-outline-secondary me-2" type="submit">Profile</button>
-          </form>
-
-          <form class="d-flex" action="/logout">
-            <button class="btn btn-outline-success" type="submit">Logout</button>
-          </form>
-          {% else %}
-          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          </ul>
-          <form class="d-flex" action="/register">
-            <button class="btn btn-sm btn-outline-secondary me-2" type="submit">Register</button>
-          </form>
-          <form class="d-flex" action="/">
-            <button class="btn btn-outline-success" type="submit">Login</button>
-          </form>
-          {% endif %}
+        </nav>
+        <!--<form action="/profile">
+        <button type="submit">Profile</button>
+        </form>-->
+        <div>
+          <a href="/profile"><button>Profile</button></a>
+          <a href="/logout"><button>Logout</button></a>
+          
         </div>
-      </div>
-    </nav>
-    <br><br>
-        {% block body %}{% endblock %}
+        {% else %}
+        <div>
+          <a href="/register"><button>Register</button></a>
+          <a href="/"><button>Login</button></a>
+        </div>
+          {% endif %}
+      </header>
+      <div class="body">
+      {% block body %}{% endblock %}
       </div>
     </body>
 </html>
