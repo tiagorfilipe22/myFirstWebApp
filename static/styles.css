@@ -1,16 +1,22 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,500;1,500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap');
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Montserrat", sans-serif;
+  font-family: "Roboto", sans-serif;
   font-weight: 500;
 }
 
+
+.body a {
+  text-decoration: none;
+  color: inherit;
+}
+
 header {
-  background-color: black;
-  color: white;
+  background-color: #17252a;
+  color: #feffff;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -19,16 +25,39 @@ header {
 
 .body {
   padding: 10px 10%;
+  display: grid;
+  text-align: center;  /* Optional: centers inline text */
 }
 
 header a {
-  color: white;
+  color: #feffff;
   text-decoration: none;
 }
 
 body {
-    background-color: white;
-    color: black;
+  transition: background-color 0.5s, color 0.3s;
+}
+
+.light {
+  background-color: #defef1;
+  color: #2c2e3a;
+}
+
+.light button {
+  background-color: #3aafa9;
+}
+
+.logo:hover {
+  background-color: #2b7a78;
+}
+
+.dark button {
+  background-color: #defef1;
+}
+
+.dark {
+  background-color: #17252a;
+  color: #feffff;
 }
 
 a:hover {
@@ -49,30 +78,96 @@ a:hover {
 }
 
 .nav_links li a:hover {
-    color: yellow;
+    color: #2b7a78;
 }
 
-header button {
-  padding: 9px 25px;
-    background-color: rgba(255, 255, 255, 0.9);;
+button {
+    padding: 9px 25px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.5s ease 0s;
 }
 
-header button:hover {
-  background-color: yellow;
+button:hover {
+  background-color: #2b7a78;
 }
 
 .logo {
+  margin: 0px 100px;
   width: 70px; /* you can use % */
   height: auto;
-  background-color: rgba(255, 255, 255, 0.9);
-  border-radius: 5px;
+  background-color: #defef1;
+  border-radius: 10px;
   transition: all 1s ease 0s;
 }
 
-.logo:hover {
-  background-color: rgba(255, 77, 77, 0.9);
+h1 {
+  padding: 50px 0;
+}
+
+h2 {
+  padding: 0px 0 30px 0;
+}
+
+
+.body button {
+  margin: 10px 10px;
+}
+
+table {
+  margin: 0 auto;
+  text-align: center;
+}
+
+table td {
+  padding-left: 40px;  /* Left padding for each cell */
+  padding-right: 40px; /* Right padding for each cell */
+}
+
+
+input, select{
+  width: 25%;
+  min-width: 200px;
+  padding: 10px;
+  margin: 10px 0;
+  box-sizing: border-box;
+  border: 2px solid #3aafa9;
+  border-radius: 5px;
+  font-size: 16px;
+}
+
+/* Focus state */
+input:focus {
+  border-color: #2b7a78; /* Change border color on focus */
+  outline: none; /* Remove default outline */
+  box-shadow: 0 0 50px #2b7a78; /* Add shadow on focus */
+}
+
+
+/* Hover state */
+input:hover {
+  border-color: #17252a; /* Change border color on hover */
+}
+
+/* Disabled input styling */
+input:disabled {
+  background-color: #defef1; /* Light gray background */
+  cursor: not-allowed; /* Show not-allowed cursor */
+}
+
+/* Placeholder text styling */
+input::placeholder {
+  color: #888; /* Gray color for placeholder */
+  font-style: italic; /* Italic text */
+}
+
+th {
+  background-color: #2b7a78;
+  padding: 9px 25px;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  transition: all 0.5s ease 0s;
+  color: #feffff;
 }

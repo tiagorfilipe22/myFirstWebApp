@@ -15,12 +15,21 @@
 
 
         <title>TR22: {% block title %}{% endblock %}</title>
+        <script>
+          (function() {
+            const savedTheme = localStorage.getItem('theme') || 'light'; // Default to 'light'
+            document.documentElement.classList.add(savedTheme); // Apply the theme early
+          })();
+        </script>
     </head>
     <body>
       <header>
+        <div>
         <a href="/"><img class="logo" src=".\static\images\d.png" alt="logo"></a>
+        </div>
         {% if session.get("user_id") %}
         
+        <div>
         <nav>
           <ul class="nav_links">
             <li><a href="/links">Links</a></li>
@@ -37,20 +46,24 @@
             {% endif %}
           </ul>
         </nav>
+        </div>
         <!--<form action="/profile">
         <button type="submit">Profile</button>
         </form>-->
         <div>
           <a href="/profile"><button>Profile</button></a>
           <a href="/logout"><button>Logout</button></a>
-          
+          <button onclick="toggleMode()">Light/Dark</button>
         </div>
         {% else %}
         <div>
           <a href="/register"><button>Register</button></a>
           <a href="/"><button>Login</button></a>
-        </div>
+          <button onclick="toggleMode()">Light/Dark</button>
           {% endif %}
+          
+        </div>
+          
       </header>
       <div class="body">
       {% block body %}{% endblock %}

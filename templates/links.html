@@ -5,18 +5,17 @@
 {% endblock %}
 
 {% block body %}
-<div class="mb-3"><h3>Welcome to Site List {{ username }}!</h3></div>
-<div class="mb-3">
+<div><h1>Welcome to Site List {{ username }}!</h1></div>
+<div>
 {% for message in get_flashed_messages() %}
   <p><b>{{message}}</b></p>
 {% endfor %}
 </div>
-    <table class="table">
+    <table>
         <thead>
             <tr>
                 <th>CATEGORY</th>
                 <th>NAME</th>
-                <th></th>
             </tr>
 
         </thead>
@@ -26,20 +25,20 @@
             {% for link in links %}
             <tr>
                 <td> {{ link["category"] }}</td>
-                <td><a class="nav-link" href="https:\\{{ link["link"] }}">{{ link["name"] }}</a></td>
+                <td>
+                    <a href="https:\\{{ link["link"] }}">{{ link["name"] }}</a>
+                </td>
                 <td>
                   <form action="/edit" method="post">
                     <input name="id" type="hidden" value="{{ link["id"] }}">
-                    <button type="submit" class="btn btn-sm btn-outline-secondary" >EDIT</button>
+                    <button type="submit">EDIT</button>
                   </form>
-
-
                 </td>
             </tr>
             {% endfor %}
 
         </tbody>
     </table>
-    <a class="btn btn-outline-success" href="/add">ADD MORE</a>
+    <a href="/add"><button>ADD MORE</button></a>
 
 {% endblock %}
