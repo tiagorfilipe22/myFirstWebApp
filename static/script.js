@@ -1,3 +1,4 @@
+//----------------------------------------------------------------
 function changeActiveStatus() {
     var x = document.getElementById("category").value;
     if (x == "newcategory") {
@@ -32,3 +33,50 @@ function toggleMode() {
     const savedTheme = localStorage.getItem('theme') || 'light'; // Default to 'light'
     document.documentElement.classList.add(savedTheme); // Apply the theme early
   })();
+
+
+
+/*------------------------------------------*/
+
+document.addEventListener('DOMContentLoaded', function() {
+  // Get the active link ID from localStorage
+  var activeLinkId = localStorage.getItem('activeLink');
+
+  // Set default link if no active link is stored
+  if (!activeLinkId) {
+      activeLinkId = 'linkID'; // Set default link ID here
+  }
+
+  // Add 'active' class to the stored link ID and show all links
+  document.querySelectorAll('a').forEach(function(link) {
+      if (link.id === activeLinkId) {
+          link.classList.add('active');
+      }
+      /* link.classList.remove('hidden'); */
+  });
+});
+
+function changeActiveLink(event) {
+  var linkId = event.target.id;
+
+  // Remove 'active' class from all links
+  /*var links = document.querySelectorAll('a');
+  links.forEach(function(link) {
+      link.classList.remove('active');
+  });*/
+
+  // Add 'active' class to the clicked link
+  document.getElementById(linkId).classList.add('active');
+
+  // Store the linkId in localStorage
+  localStorage.setItem('activeLink', linkId);
+}
+
+
+
+/*----------------------------------*/
+
+function logout() {
+  // Clear localStorage
+  localStorage.removeItem('activeLink');
+}
