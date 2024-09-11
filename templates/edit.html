@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block body %}
-<div class="mb-3"><h3>CHANGE LINK</h3></div>
-<div class="mb-3">
+<div ><h1>CHANGE LINK</h1></div>
+<div >
 {% for message in get_flashed_messages() %}
   <p><b>{{message}}</b></p>
 {% endfor %}
 </div>
     <form action="/change" method="post">
-      <div class="mb-3">
+      <div >
         <select onchange="changeActiveStatus()" id="category" name="category">
           <option disabled value="" selected>Choose Category</option>
           {% for category in categories %}
@@ -22,26 +22,26 @@
         </select>
         
       </div>
-      <div class="mb-3">
+      <div >
         <input id="newcategory" autocomple="off" name="addcategory" placeholder="New Category" type="text" disabled>
         {{ links[0]["category"] }}
       </div>
-      <div class="mb-3">
+      <div >
         <input autocomple="off" name="name" placeholder="New Name" type="text">
         {{ links[0]["name"] }}
       </div>
-      <div class="mb-3">
+      <div >
         <input autocomple="off" name="link" placeholder="New Link" type="text">
         {{ links[0]["link"] }}
       </div>
-      <div class="mb-3">
+      <div >
         <input name="id" type="hidden" value="{{ links[0]["id"] }}">
-        <button type="submit" class="btn btn-outline-success">Change</button>
+        <button type="submit" >Change</button>
       </div>
     </form>
     <form action="/delete" method="post">
       <input name="id" type="hidden" value="{{ links[0]["id"] }}">
-      <button type="submit" class="btn btn-sm btn-outline-secondary" >Delete</button>
+      <button type="submit" >Delete</button>
     </form>
 
 {% endblock %}

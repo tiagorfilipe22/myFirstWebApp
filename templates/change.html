@@ -5,16 +5,16 @@
 {% endblock %}
 
 {% block body %}
-<div class="mb-3"><h3>CHANGE PROFILE SETTINGS</h3></div>
-<div class="mb-3">
+<div><h1>CHANGE PROFILE SETTINGS</h1></div>
+<div>
 {% for message in get_flashed_messages() %}
   <p><b>{{message}}</b></p>
 {% endfor %}
 </div>
 
     <form action="/profile" method="post">
-      <div class="mb-3"><h5>CHANGE NAME</h5></div>
-      <div class="mb-3">
+      <div><h5>CHANGE NAME</h5></div>
+      <div>
         {% if session.get("permission") == 0 %}
         <input autocomple="off" name="name" placeholder="admin" type="text" disabled>
         {% else %}
@@ -22,20 +22,20 @@
         {% endif %}
         {{ user[0]["username"] }}
       </div>
-    <div class="mb-3"><h5>CHANGE PASSWORD</h5></div>
-      <div class="mb-3">
+    <div><h5>CHANGE PASSWORD</h5></div>
+      <div>
         <input autocomple="off" autofocus name="pOld" placeholder="Old Password" type="password">
       </div>
-      <div class="mb-3">
+      <div>
         <p>Password must have 10 chars or more</p>
         <input autocomple="off" name="password" placeholder="New Password" type="password">
       </div>
-      <div class="mb-3">
+      <div>
         <input autocomple="off" name="pConfirmation" placeholder="Confirmation" type="password">
       </div>
-      <div class="mb-3">
+      <div>
 
-        <button type="submit" class="btn btn-primary">Change</button>
+        <button type="submit">Change</button>
       </div>
     </form>
 

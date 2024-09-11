@@ -5,14 +5,14 @@
 {% endblock %}
 
 {% block body %}
-<div class="mb-3"><h3>ADD MORE</h3></div>
-<div class="mb-3">
+<div><h1>ADD MORE</h1></div>
+<div>
 {% for message in get_flashed_messages() %}
   <p><b>{{message}}</b></p>
 {% endfor %}
 </div>
     <form action="/add" method="post">
-      <div class="mb-3">
+      <div>
         
         
         <select onchange="changeActiveStatus()" id="category" name="category">
@@ -24,17 +24,17 @@
         </select>
         
       </div>
-      <div class="mb-3">
+      <div>
         <input id="newcategory" autocomple="off" name="addcategory" placeholder="New Category" type="text" disabled>
       </div>
-      <div class="mb-3">
+      <div>
         <input autocomple="off" name="name" placeholder="Name" type="text">
       </div>
-      <div class="mb-3">
+      <div>
         <input autocomple="off" name="link" placeholder="Link or IP" type="text">
       </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-primary">ADD</button>
+      <div>
+        <button type="submit">ADD</button>
       </div>
     </form>
 

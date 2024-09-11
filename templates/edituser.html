@@ -5,29 +5,29 @@
 {% endblock %}
 
 {% block body %}
-<div class="mb-3"><h3>EDIT USER</h3></div>
-<div class="mb-3"><h4>{{ user[0]["username"] }}</h4></div>
-<div class="mb-3">
+<div ><h1>EDIT USER</h1></div>
+<div ><h2>{{ user[0]["username"] }}</h2></div>
+<div >
 {% for message in get_flashed_messages() %}
   <p><b>{{message}}</b></p>
 {% endfor %}
 </div>
 
-      <div class="mb-3">
+      <div >
         {% if user[0]["active"] == 0 %}
         <form action="/deactivateuser" method="post">
-          <button type="submit" class="btn btn-sm btn-outline-secondary" >Deactivate User</button>
+          <button type="submit" >Deactivate User</button>
         </form>
         {% else %}
         <form action="/activateuser" method="post">
-          <button type="submit" class="btn btn-sm btn-outline-secondary" >Activate User</button>
+          <button type="submit" >Activate User</button>
         </form>
         {% endif %}
         </div>
       <form action="/changeuser" method="post">
 
-        <div class="mb-3"><p>Actual Permission: {{ role[user[0]["permission"]] }}</p></div>
-        <div class="mb-3">
+        <div ><p>Actual Permission: {{ role[user[0]["permission"]] }}</p></div>
+        <div >
         <label for="persmission">New Permission</label>
         <select id="permission" name="permission">
           <option disabled value="" selected>Permission</option>
@@ -41,8 +41,8 @@
           {% endif %}
         </select>
       </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-outline-success">Change</button>
+      <div >
+        <button type="submit" >Change</button>
       </div>
       </form>
       <!-- RESET BUTTON
@@ -52,7 +52,7 @@
       -->
       <!-- RESET BUTTON -->
       <form action="/deleteuser" method="post">
-        <button type="submit" class="btn btn-sm btn-outline-secondary" >DELETE USER</button>
+        <button type="submit" >DELETE USER</button>
       </form>
 
 {% endblock %}

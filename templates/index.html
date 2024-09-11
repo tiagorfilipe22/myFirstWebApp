@@ -5,21 +5,21 @@
 {% endblock %}
 
 {% block body %}
-<div class="mb-3"><h3>INDEX/LOGIN</h3></div>
-<div class="mb-3">
+<div><h1>INDEX/LOGIN</h1></div>
+<div>
 {% for message in get_flashed_messages() %}
   <p><b>{{message}}</b></p>
 {% endfor %}
 </div>
     <form action="/login" method="post">
-      <div class="mb-3">
+      <div>
         <input autocomple="off" autofocus name="username" placeholder="Username" type="text">
       </div>
-      <div class="mb-3">
+      <div>
         <input autocomple="off" name="password" placeholder="Password" type="password">
       </div>
-      <div class="mb-3">
-        <button type="submit" class="btn btn-outline-success">Login</button>
+      <div>
+        <button type="submit">Login</button>
       </div>
     </form>
 

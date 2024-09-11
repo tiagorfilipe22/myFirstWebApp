@@ -5,8 +5,8 @@
 {% endblock %}
 
 {% block body %}
-<div class="mb-3"><h3>USERS</h3></div>
-<div class="mb-3">
+<div><h1>USERS</h1></div>
+<div>
 {% for message in get_flashed_messages() %}
   <p><b>{{message}}</b></p>
 {% endfor %}
@@ -17,7 +17,6 @@
                 <th>USERNAME</th>
                 <th>PERMISSION</th>
                 <th>ACTIVE</th>
-                <th></th>
             </tr>
 
         </thead>
