@@ -8,14 +8,13 @@
 <div><h1>CHECK USERS</h1></div>
 <div >
 {% for message in get_flashed_messages() %}
-  <p><b>{{message}}</b></p>
+<p class="flash-text"><b>{{message}}</b></p>
 {% endfor %}
 </div>
     <table class="table">
         <thead>
             <tr>
                 <th>USERNAME</th>
-                <th></th>
             </tr>
 
         </thead>

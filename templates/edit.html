@@ -8,7 +8,7 @@
 <div ><h1>CHANGE LINK</h1></div>
 <div >
 {% for message in get_flashed_messages() %}
-  <p><b>{{message}}</b></p>
+<p class="flash-text"><b>{{message}}</b></p>
 {% endfor %}
 </div>
     <form action="/change" method="post">
@@ -16,7 +16,10 @@
         <select onchange="changeActiveStatus()" id="category" name="category">
           <option disabled value="" selected>Choose Category</option>
           {% for category in categories %}
-          <option value="{{ category["category"] }}">{{ category["category"] }}</option>
+          <option value="{{ category['category'] }}"
+              {% if category['category'] == links[0]['category'] %}selected{% endif %}>
+              {{ category['category'] }}
+          </option>
           {% endfor %}
           <option value="newcategory" >New Category</option>
         </select>
@@ -24,15 +27,15 @@
       </div>
       <div >
         <input id="newcategory" autocomple="off" name="addcategory" placeholder="New Category" type="text" disabled>
-        {{ links[0]["category"] }}
+        
       </div>
       <div >
-        <input autocomple="off" name="name" placeholder="New Name" type="text">
-        {{ links[0]["name"] }}
+        <input autocomple="off" name="name" placeholder="{{ links[0]["name"] }}" type="text">
+        
       </div>
       <div >
-        <input autocomple="off" name="link" placeholder="New Link" type="text">
-        {{ links[0]["link"] }}
+        <input autocomple="off" name="link" placeholder="{{ links[0]["link"] }}" type="text">
+        
       </div>
       <div >
         <input name="id" type="hidden" value="{{ links[0]["id"] }}">

@@ -81,6 +81,7 @@ a:hover {
     color: #2b7a78;
 }
 
+
 button {
     padding: 9px 25px;
     border: none;
@@ -167,7 +168,20 @@ th {
   padding: 9px 25px;
   border: none;
   border-radius: 50px;
-  cursor: pointer;
   transition: all 0.5s ease 0s;
   color: #feffff;
+  cursor: pointer;
+}
+
+.flash-text {
+  font-size: 30px;
+  font-weight: bold;
+  color: #3aafa9;
+  animation: flash 1s 3;
+  padding: 0px 0 30px 0;
+}
+
+@keyframes flash {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
 }

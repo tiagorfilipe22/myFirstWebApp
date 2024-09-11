@@ -8,14 +8,14 @@
 <div><h1>Welcome to Site List {{ username }}!</h1></div>
 <div>
 {% for message in get_flashed_messages() %}
-  <p><b>{{message}}</b></p>
+    <p class="flash-text"><b>{{message}}</b></p>
 {% endfor %}
 </div>
     <table>
         <thead>
             <tr>
-                <th>CATEGORY</th>
-                <th>NAME</th>
+                <th><a href="/links">CATEGORY</a></th>
+                <th><a href="/links">NAME</a></th>
             </tr>
 
         </thead>

@@ -8,7 +8,7 @@
 <div><h1>CHANGE PROFILE SETTINGS</h1></div>
 <div>
 {% for message in get_flashed_messages() %}
-  <p><b>{{message}}</b></p>
+  <p class="flash-text"><b>{{message}}</b></p>
 {% endfor %}
 </div>
 
@@ -16,11 +16,11 @@
       <div><h5>CHANGE NAME</h5></div>
       <div>
         {% if session.get("permission") == 0 %}
-        <input autocomple="off" name="name" placeholder="admin" type="text" disabled>
+        <input autocomple="off" name="name" placeholder="{{ user[0]["username"] }}" type="text" disabled>
         {% else %}
-        <input autocomple="off" name="name" placeholder="New Name" type="text">
+        <input autocomple="off" name="name" placeholder="{{ user[0]["username"] }}" type="text">
         {% endif %}
-        {{ user[0]["username"] }}
+        
       </div>
     <div><h5>CHANGE PASSWORD</h5></div>
       <div>
