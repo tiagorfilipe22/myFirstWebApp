@@ -83,11 +83,25 @@ a:hover {
 
 
 button {
-    padding: 9px 25px;
+    padding: 10px 25px;
     border: none;
     border-radius: 50px;
     cursor: pointer;
     transition: all 0.5s ease 0s;
+}
+
+.enter {
+  margin-top: 30px;
+  margin-bottom: 10px;
+}
+
+td {
+  padding: 10px;
+  border-bottom: 2px dashed #2b7a78; /* Adds a 2px black line at the bottom of each <td> */
+}
+
+.noEdit td {
+  padding: 20px 25px;
 }
 
 button:hover {
@@ -104,7 +118,7 @@ button:hover {
 }
 
 h1 {
-  padding: 50px 0;
+  margin: 50px 0;
 }
 
 h2 {
@@ -112,9 +126,6 @@ h2 {
 }
 
 
-.body button {
-  margin: 10px 10px;
-}
 
 table {
   margin: 0 auto;
@@ -172,6 +183,7 @@ th {
   color: #feffff;
   cursor: pointer;
 }
+
 
 .flash-text {
   font-size: 30px;

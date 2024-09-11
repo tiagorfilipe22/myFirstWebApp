@@ -23,9 +23,12 @@ function toggleMode() {
   }
   
   // Apply the theme based on stored preference when the page loads (redundant due to early script)
-  window.onload = function() {
-    const savedTheme = localStorage.getItem('theme') || 'light';
-    document.documentElement.classList.add(savedTheme);
-  };
+  //window.onload = function() {
+  //  const savedTheme = localStorage.getItem('theme') || 'light';
+  //  document.documentElement.classList.add(savedTheme);
+  //};
   
-
+  (function() {
+    const savedTheme = localStorage.getItem('theme') || 'light'; // Default to 'light'
+    document.documentElement.classList.add(savedTheme); // Apply the theme early
+  })();

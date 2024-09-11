@@ -16,11 +16,11 @@
       <div >
         {% if user[0]["active"] == 0 %}
         <form action="/deactivateuser" method="post">
-          <button type="submit" >Deactivate User</button>
+          <button type="submit" class="enter">Deactivate User</button>
         </form>
         {% else %}
         <form action="/activateuser" method="post">
-          <button type="submit" >Activate User</button>
+          <button type="submit" class="enter">Activate User</button>
         </form>
         {% endif %}
         </div>
@@ -42,7 +42,7 @@
         </select>
       </div>
       <div >
-        <button type="submit" >Change</button>
+        <button type="submit" class="enter">Change</button>
       </div>
       </form>
       <!-- RESET BUTTON
@@ -52,7 +52,7 @@
       -->
       <!-- RESET BUTTON -->
       <form action="/deleteuser" method="post">
-        <button type="submit" >DELETE USER</button>
+        <button type="submit" class="enter">DELETE USER</button>
       </form>
 
 {% endblock %}

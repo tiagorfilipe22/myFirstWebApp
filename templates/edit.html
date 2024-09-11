@@ -39,12 +39,12 @@
       </div>
       <div >
         <input name="id" type="hidden" value="{{ links[0]["id"] }}">
-        <button type="submit" >Change</button>
+        <button type="submit" class="enter">Change</button>
       </div>
     </form>
     <form action="/delete" method="post">
       <input name="id" type="hidden" value="{{ links[0]["id"] }}">
-      <button type="submit" >Delete</button>
+      <button type="submit" class="enter">Delete</button>
     </form>
 
 {% endblock %}

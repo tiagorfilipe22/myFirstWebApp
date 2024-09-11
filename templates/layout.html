@@ -15,12 +15,6 @@
 
 
         <title>TR22: {% block title %}{% endblock %}</title>
-        <script>
-          (function() {
-            const savedTheme = localStorage.getItem('theme') || 'light'; // Default to 'light'
-            document.documentElement.classList.add(savedTheme); // Apply the theme early
-          })();
-        </script>
     </head>
     <body>
       <header>
@@ -33,17 +27,12 @@
         <nav>
           <ul class="nav_links">
             <li><a href="/links">Links</a></li>
-          
-            {% if session.get("permission") > 2 %}
-            <li><a href="/history">History</a></li>
-            {% else %}
             <li><a href="/documents">Documents</a></li>
-            {% endif %}
-          
-            {% if session.get("permission") > 1 %}
-            <li><a href="#">Users</a></li>
-            {% else %}
+
+            {% if session.get("permission") < 3 %}
             <li><a href="/users">Users</a></li>
+            {% else %}
+            
             {% endif %}
           </ul>
         </nav>

@@ -23,22 +23,38 @@
         <tbody>
 
             {% for link in links %}
+            {% if session.get("permission") < 3 %}
             <tr>
                 <td> {{ link["category"] }}</td>
                 <td>
                     <a href="https:\\{{ link["link"] }}">{{ link["name"] }}</a>
                 </td>
+                
                 <td>
-                  <form action="/edit" method="post">
-                    <input name="id" type="hidden" value="{{ link["id"] }}">
-                    <button type="submit">EDIT</button>
-                  </form>
+                    <form action="/edit" method="post">
+                        <input name="id" type="hidden" value="{{ link["id"] }}">
+                        <button type="submit">EDIT</button>
+                    </form>
                 </td>
+                
             </tr>
+            {% else %}
+            <tr class="noEdit">
+                <td> {{ link["category"] }}</td>
+                <td>
+                    <a href="https:\\{{ link["link"] }}">{{ link["name"] }}</a>
+                </td>
+                
+            </tr>
+            {% endif %}
             {% endfor %}
 
         </tbody>
     </table>
-    <a href="/add"><button>ADD MORE</button></a>
+    {% if session.get("permission") < 3 %}
+    <form action="/add">
+    <button type="submit" class="enter">ADD MORE</button>
+    </form>
+    {% else %}{% endif %}
 
 {% endblock %}
