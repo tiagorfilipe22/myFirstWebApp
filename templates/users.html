@@ -14,9 +14,11 @@
     <table class="table">
         <thead>
             <tr>
-                <th><a href="/users">USERNAME</a></th>
+                <th><a href="/users">NAME</a></th>
+                <th><a href="/users">EMAIL</a></th>
                 <th><a href="/users">PERMISSION</a></th>
                 <th><a href="/users">ACTIVE</a></th>
+                <th></th>
             </tr>
 
         </thead>
@@ -25,7 +27,8 @@
 
             {% for user in users %}
             <tr>
-                <td> {{ user["username"] }}</td>
+                <td> {{ user["name"] }}</td>
+                <td> {{ user["email"] }}</td>
                 <td> {{ role[user["permission"]] }}</td>
                 <td> {{ status[user["active"]] }}</td>
                 <td>

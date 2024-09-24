@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    TICKETS
+{% endblock %}
+
+{% block body %}
+<div><h1>Welcome to Site List {{ name }}!</h1></div>
+<div>
+{% for message in get_flashed_messages() %}
+    <p class="flash-text"><b>{{message}}</b></p>
+{% endfor %}
+</div>
+    {% if session.get("permission") < 4 %}
+    <form action="/newticket">
+    <button type="submit" class="enter">NEW TICKET</button>
+    </form>
+    {% else %}{% endif %}
+    <table>
+        <thead>
+            <tr>
+                <th>Priority</th>
+                <th>Subject</th>
+                <th>Created By</th>
+                
+                <th>Status</th>
+                <th></th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+            {% for ticket in tickets %}
+            <tr>
+                <td class="{{ priority[ticket['priority']] }}"> {{ priority[ticket["priority"]] }}</td>
+                <td> {{ ticket["subject"] }}</td>
+                <td> {{ ticket["creator"] }}</td>
+                
+                <td> {{ status[ticket["status"]] }}</td>
+                
+                <td>
+                    <form action="/showticket" method="post">
+                        <input name="id" type="hidden" value="{{ ticket["id"] }}">
+                        <button type="submit">SHOW</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+    
+
+{% endblock %}

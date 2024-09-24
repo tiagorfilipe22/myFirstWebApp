@@ -16,9 +16,9 @@
       <div><h5>CHANGE NAME</h5></div>
       <div>
         {% if session.get("permission") == 0 %}
-        <input autocomple="off" name="name" placeholder="{{ user[0]["username"] }}" type="text" disabled>
+        <input autocomple="off" name="name" placeholder="{{ user[0]["name"] }}" type="text" disabled>
         {% else %}
-        <input autocomple="off" name="name" placeholder="{{ user[0]["username"] }}" type="text">
+        <input autocomple="off" name="name" placeholder="{{ user[0]["name"] }}" type="text">
         {% endif %}
         
       </div>

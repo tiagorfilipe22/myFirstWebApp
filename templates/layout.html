@@ -28,6 +28,8 @@
           <ul class="nav_links">
             <li><a href="/links" onclick="changeActiveLink(event)" id="linkID">Links</a></li>
             <li><a href="/documents" onclick="changeActiveLink(event)" id="docID">Documents</a></li>
+            
+            <li><a href="/tickets" onclick="changeActiveLink(event)" id="ticketID">Tickets</a></li>
 
             {% if session.get("permission") < 3 %}
             <li><a href="/users" onclick="changeActiveLink(event)" id="userID">Users</a></li>
@@ -41,15 +43,19 @@
         <button type="submit">Profile</button>
         </form>-->
         <div>
-          <a href="/profile"><button>Profile</button></a>
-          <a href="/logout"><button onclick="logout()">Logout</button></a>
+          
           <button onclick="toggleMode()">Light/Dark</button>
+          <a href="/profile"><button>Profile</button></a>
+          
+          <a href="/logout"><button onclick="logout()">Logout</button></a>
         </div>
         {% else %}
         <div>
-          <a href="/register"><button>Register</button></a>
-          <a href="/"><button>Login</button></a>
+          
           <button onclick="toggleMode()">Light/Dark</button>
+          <a href="/register"><button>Register</button></a>
+          
+          <a href="/"><button>Login</button></a>
           {% endif %}
           
         </div>

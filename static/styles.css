@@ -25,7 +25,6 @@ header {
 
 .body {
   padding: 10px 10%;
-  display: grid;
   text-align: center;  /* Optional: centers inline text */
 }
 
@@ -36,6 +35,7 @@ header a {
 
 body {
   transition: background-color 0.5s, color 0.3s;
+  
 }
 
 .light {
@@ -52,7 +52,8 @@ body {
 }
 
 .dark button {
-  background-color: #defef1;
+  background-color: #3aafa9;
+  color: #feffff;
 }
 
 .dark {
@@ -90,15 +91,18 @@ button {
     transition: all 0.5s ease 0s;
 }
 
+button.large {
+  
+}
+
 .enter {
   margin-top: 30px;
   margin-bottom: 10px;
+  padding: 20px 5%;
+  font-size: 20px;
 }
 
-td {
-  padding: 10px;
-  border-bottom: 2px dashed #2b7a78; /* Adds a 2px black line at the bottom of each <td> */
-}
+
 
 .noEdit td {
   padding: 20px 25px;
@@ -106,6 +110,7 @@ td {
 
 button:hover {
   background-color: #2b7a78;
+  color: #defef1;
 }
 
 .logo {
@@ -128,17 +133,55 @@ h2 {
 
 
 table {
-  margin: 0 auto;
-  text-align: center;
-}
-
-table td {
-  padding-left: 40px;  /* Left padding for each cell */
-  padding-right: 40px; /* Right padding for each cell */
+  margin:20px 1px;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 
-input, select{
+
+.column {
+  float: left;
+  width: 33%;
+}
+
+td {
+  padding: 10px 0 10px;
+  border-bottom: 2px dashed #2b7a78; /* Adds a 2px black line at the bottom of each <td> */
+  margin: 10px 10px;
+  
+}
+
+th {
+  background-color: #2b7a78;
+  padding: 9px;
+  transition: all 0.5s ease 0s;
+  color: #feffff;
+}
+
+
+
+.tableName {
+  width: 100%;
+}
+
+.dark tr:hover {
+  transition: all 0.5s ease 0s;
+  background-color: #defef1;
+  border: none;
+  border-radius: 50px;
+  color: #17252a;
+}
+
+.light tr:hover {
+  transition: all 0.5s ease 0s;
+  background-color: #17252a;
+  border: none;
+  border-radius: 50px;
+  color: #feffff;
+}
+
+input, select, textarea{
   width: 25%;
   min-width: 200px;
   padding: 10px;
@@ -174,15 +217,8 @@ input::placeholder {
   font-style: italic; /* Italic text */
 }
 
-th {
-  background-color: #2b7a78;
-  padding: 9px 25px;
-  border: none;
-  border-radius: 50px;
-  transition: all 0.5s ease 0s;
-  color: #feffff;
-  cursor: pointer;
-}
+
+
 
 
 .flash-text {
@@ -206,4 +242,16 @@ th {
   background-color: #defef1; /* Blue color */
   color: #17252a;
   transition: all 0.5s ease 0s;
+}
+
+.Medium {
+  color: orange
+}
+
+.High {
+  color: red;
+}
+
+.Low {
+  color: green;
 }

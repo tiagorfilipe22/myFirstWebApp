@@ -5,28 +5,32 @@
 {% endblock %}
 
 {% block body %}
-<div><h1>Welcome to Site List {{ username }}!</h1></div>
+<div><h1>Welcome to Site List {{ name }}!</h1></div>
 <div>
 {% for message in get_flashed_messages() %}
     <p class="flash-text"><b>{{message}}</b></p>
 {% endfor %}
-</div>
-    <table>
+{% if session.get("permission") < 3 %}
+    <form action="/add">
+    <button type="submit" class="enter large">ADD MORE</button>
+    </form>
+    {% else %}{% endif %}
+</div class="tableInLine">
+    {% for categorie in categories %}
+    <table class="column">
         <thead>
             <tr>
-                <th><a href="/links">CATEGORY</a></th>
-                <th><a href="/links">NAME</a></th>
+                <th colspan="2">{{ categorie["category"] }}</th>
             </tr>
 
         </thead>
 
         <tbody>
-
             {% for link in links %}
+            {% if link["category"] == categorie["category"] %}
             {% if session.get("permission") < 3 %}
             <tr>
-                <td> {{ link["category"] }}</td>
-                <td>
+                <td class="tableName">
                     <a href="https:\\{{ link["link"] }}">{{ link["name"] }}</a>
                 </td>
                 
@@ -40,21 +44,18 @@
             </tr>
             {% else %}
             <tr class="noEdit">
-                <td> {{ link["category"] }}</td>
                 <td>
                     <a href="https:\\{{ link["link"] }}">{{ link["name"] }}</a>
                 </td>
                 
             </tr>
             {% endif %}
+            
+            {% endif %}
             {% endfor %}
-
         </tbody>
     </table>
-    {% if session.get("permission") < 3 %}
-    <form action="/add">
-    <button type="submit" class="enter">ADD MORE</button>
-    </form>
-    {% else %}{% endif %}
+    {% endfor %}
+    
 
 {% endblock %}

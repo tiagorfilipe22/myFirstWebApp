@@ -6,7 +6,7 @@
 
 {% block body %}
 <div ><h1>EDIT USER</h1></div>
-<div ><h2>{{ user[0]["username"] }}</h2></div>
+<div ><h2>{{ user[0]["name"] }}</h2></div>
 <div >
 {% for message in get_flashed_messages() %}
 <p class="flash-text"><b>{{message}}</b></p>

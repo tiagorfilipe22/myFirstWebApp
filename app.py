@@ -17,6 +17,8 @@ db = SQL("sqlite:///data.db")
 # set variable to csv to log add links and delete links
 role = ["Admin", "Admin User", "Power User", "User", "New User"]
 status = ["Active", "Inactive"]
+priority = ["Low", "Medium", "High"]
+ticketStatus = ["No Status", "In Progress", "In Pause", "Terminated", "Archived"]
 
 # index route
 @app.route("/", methods=["GET", "POST"])
@@ -73,13 +75,17 @@ def register():
     if request.method == "POST":
 
         # get variables
-        username = request.form.get("username")
+        email = request.form.get("email")
+        name = request.form.get("name")
         password = request.form.get("password")
         pConfirmation = request.form.get("pConfirmation")
 
         # variable validation
-        if not username:
-            flash("No Username!")
+        if not email:
+            flash("No email!")
+            return render_template("register.html")
+        if not name:
+            flash("No Name!")
             return render_template("register.html")
         elif not password:
             flash("No Password!")
@@ -94,11 +100,12 @@ def register():
         # generate hash from password
         pHash = generate_password_hash(password)
 
-        # try to add to database if cant add becouse username already exists
+        # try to add to database if cant add becouse email already exists
         try:
+            print(email)
             db.execute(
-                "INSERT INTO users (username, hash) VALUES(?, ?)", username, pHash
-            )
+                "INSERT INTO users (email, hash, name) VALUES(?, ?, ?)", email, pHash, name
+                )
 
             # remember user login and redirect to links
             return redirect("/")
@@ -106,7 +113,7 @@ def register():
         except:
 
             # return to register and show message
-            flash("Username already taken")
+            flash("Email already taken")
             return render_template("register.html")
 
     # if get method
@@ -120,35 +127,34 @@ def login():
     if request.method == "POST":
 
         # get variables
-        username = request.form.get("username")
+        email = request.form.get("email")
         password = request.form.get("password")
 
         # variables validation
-        if not username:
-            flash("No Username!")
+        if not email:
+            flash("No Email!")
             return render_template("index.html")
         elif not password:
             flash("No Password!")
             return render_template("index.html")
 
-        # get database line where username
+        # get database line where email
         rows = db.execute(
-        "SELECT * FROM users WHERE username = ?", username
-        )
+        "SELECT * FROM users WHERE email = ?", email)
 
         if not rows:
-            flash("Invalid username and/or password")
+            flash("Invalid Email and/or Password")
             return render_template("index.html")
 
         if rows[0]["active"] == 1:
             flash("User not Active, call admin")
             return render_template("index.html")
 
-        # if password not check or username
+        # if password not check or email
         if len(rows) != 1 or not check_password_hash(rows[0]["hash"], password):
 
             # return to login and show message
-            flash("Invalid username and/or password")
+            flash("Invalid Email and/or password")
             return render_template("index.html")
 
         # remember user login and redirect to links
@@ -219,12 +225,13 @@ def links():
     "SELECT * FROM users WHERE id = ?", userID
     )
 
-    # get username
-    username = rows[0]["username"]
+    # get name
+    name = rows[0]["name"]
 
     # get info from database and render in links
     links = db.execute("SELECT category, name, link, id FROM links ORDER BY category, name")
-    return render_template("links.html", links = links, username = username)
+    categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
+    return render_template("links.html", links = links, name = name, categories = categories)
 
 # logout function
 @app.route("/logout")
@@ -255,7 +262,7 @@ def password():
         
         if name:
             flash("Name Changed!")
-            db.execute("UPDATE users SET username = ? WHERE id = ?", name, userID)
+            db.execute("UPDATE users SET name = ? WHERE id = ?", name, userID)
 
         if pOld and password and pConfirmation:
              # get user ID and data from db
@@ -403,11 +410,11 @@ def edituser():
 
         session["edit_user"] = userID
         # get info from database and render in links
-        user = db.execute("SELECT username, permission, active, id FROM users WHERE id = ?", userID)
+        user = db.execute("SELECT * FROM users WHERE id = ?", userID)
         return render_template("edituser.html", user = user, role = role)
 
     userID = session["edit_user"]
-    user = db.execute("SELECT username, permission, active, id FROM users WHERE id = ?", userID)
+    user = db.execute("SELECT * FROM users WHERE id = ?", userID)
     return render_template("edituser.html", user = user, role = role)
 
 # DEACTIVATE USER
@@ -496,3 +503,56 @@ def deleteuser():
         else:
             flash("Error ocurred!")
             return redirect("/edituser")
+        
+
+# tickets
+@app.route("/tickets", methods=["GET", "POST"])
+def tickets():
+
+
+    tickets = db.execute("SELECT * FROM tickets WHERE status < 4 ORDER BY priority DESC, time ASC")
+    return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
+
+
+# add tickets
+@app.route("/newticket", methods=["GET", "POST"])
+def newticket():
+
+    
+
+    if request.method == "POST":
+        userID = session.get("user_id")
+        user = db.execute(
+            "SELECT name FROM users WHERE id = ?", userID
+        )
+
+        # get variables
+        subject = request.form.get("subject")
+        problem = request.form.get("problem")
+        priority = request.form.get("priority")
+
+        # variable validation
+        if not subject:
+            flash("No subject!")
+            return render_template("newticket.html")
+        if not problem:
+            flash("No problem!")
+            return render_template("newticket.html")
+        elif not priority:
+            flash("No priority!")
+            return render_template("newticket.html")
+        
+
+        # add to links database
+        db.execute(
+            "INSERT INTO tickets (subject, problem, priority, creator) VALUES(?, ?, ?, ?)",
+            subject, problem, priority, user[0]["name"]
+        )
+
+        return redirect("/tickets")
+
+    return render_template("newticket.html")
+
+@app.route("/showticket", methods=["GET", "POST"])
+def showticket():
+    return redirect("/newticket")
