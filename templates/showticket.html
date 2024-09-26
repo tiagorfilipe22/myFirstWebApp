@@ -1,38 +1,116 @@
 {% extends "layout.html" %}
 
 {% block title %}
-    NEW TICKET
+    SHOW TICKET
 {% endblock %}
 
 {% block body %}
-<div><h1>NEW TICKET</h1></div>
+
+
+
+<div><h2>Subject: </h2><h1>{{ ticket[0]["subject"] }}</h1></div>
+
 <div>
-{% for message in get_flashed_messages() %}
-  <p class="flash-text"><b>{{message}}</b></p>
-{% endfor %}
-</div>
-    <form action="/newticket" method="post">
+  {% for message in get_flashed_messages() %}
+    <p class="flash-text"><b>{{message}}</b></p>
+  {% endfor %}
+  
+  </div>
+
+
+<table style="width:50%; margin-left:auto;  margin-right:auto ;">
+  <tr>
+  <td>
+  <h3>Priority:</h3>
+  <h3 class="{{ priority[ticket[0]['priority']] }}">{{ priority[ticket[0]["priority"]] }}</h3>
+  </td>
+  <td>
+    <form action="/saveticket" method="post">
+      {% if session.get("permission") > 2 %}
+      <select disabled id="status" name="status">
+          <option value=""selected>
+              {{ status[ticket[0]["status"]] }}
+          </option>
+      </select>
+      {% else %}
+      <select id="status" name="status" onchange="clickButton()">
+          {% for item in status %}
+          {% if item == status[4] %}
+          <option hidden></option>
+          {% else %}
+          <option value="{{ status.index(item) }}"
+              {% if item == status[ticket[0]["status"]] %}selected{% endif %}>
+              {{ item }}
+          </option>
+          {% endif %}
+          
+          {% endfor %}
+      </select>
+      {% endif %}
+  
       
-      <div>
-        <input autocomple="off" name="subject" placeholder="Subject" type="text">
-      </div>
-      <div>
-        <textarea autocomple="off" name="problem" rows="4" cols="50" placeholder="Describe the Problem"></textarea>
-      </div>
-      <div>
-        
-        
-        <select id="priority" name="priority">
-          <option disabled value="" selected>Choose Priority</option>
-          <option value="1" >Low</option>
-          <option value="2" >Medium</option>
-          <option value="3" >High</option>
-        </select>
-        
-      </div>
-      <div>
-        <button type="submit" class="enter large">NEW</button>
-      </div>
+  
+      <button hidden type="submit" id="clickbutton">click</button>
+  </form>
+  {% if status[ticket[0]["status"]] == status[3] %}
+      <form action="/archiveticket" method="post"><button name="status" value="4">Archive</button></form> 
+      {% endif %}
+
+
+    
+  </td>
+</tr>
+<tr>
+  <td>
+    <h3>Creator:</h3>
+    <h4>{{ ticket[0]["creator_name"] }}</h4>
+  </td>
+  <td>
+    <h3>Time:</h3>
+    <h4>{{ ticket[0]["time"] }}</h4>
+  </td>
+</tr>
+</table>
+
+<h2>Problem:</h2>
+<h3>{{ ticket[0]["description"] }}
+
+  <!--SOLUTIONS-->
+
+  {% if session.get("permission") < 4 %}
+    <form action="/newticket">
+    <button type="submit" class="enter">NEW SOLUTION</button>
     </form>
+  {% endif %}
+  <table>
+    <thead>
+        <tr>
+            <th>Category</th>
+            <th>Subject</th>
+            <th>Created By</th>
+            <th></th>
+        </tr>
+
+    </thead>
+
+    <tbody>
+
+
+        <tr>
+            <td> {{ ticket[0]["subject"] }}</td>
+            <td> {{ status[ticket["status"]] }}</td>
+            <td>OLA</td>
+            
+            <td>
+                <form action="/showticket" method="post">
+                    <input name="id" type="hidden" value="{{ ticket["id"] }}">
+                    <button type="submit">SHOW</button>
+                </form>
+            </td>
+        </tr>
+
+    </tbody>
+</table>
+
 
 {% endblock %}

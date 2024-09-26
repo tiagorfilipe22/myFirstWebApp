@@ -44,7 +44,7 @@ def index():
 
 
     # if login up go to links
-    return redirect("/links")
+    return redirect("/tickets")
 
 @app.route("/checkuser", methods=["GET", "POST"])
 def checkuser():
@@ -63,7 +63,7 @@ def checkuser():
     if users:
         return render_template("checkuser.html", users = users)
     else:
-        return redirect("/links")
+        return redirect("/tickets")
 
 
 
@@ -509,8 +509,24 @@ def deleteuser():
 @app.route("/tickets", methods=["GET", "POST"])
 def tickets():
 
+    
 
-    tickets = db.execute("SELECT * FROM tickets WHERE status < 4 ORDER BY priority DESC, time ASC")
+    if request.method == "POST":
+        status = request.form.get("status")
+        if status == "reset":
+            return redirect("/tickets")
+
+        # tickets = db.execute("SELECT * FROM tickets WHERE status = ? ORDER BY priority DESC, time ASC", status)
+
+
+        tickets = db.execute("SELECT tickets.id, tickets.subject, tickets.status, tickets.priority, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.status = ? ORDER BY priority DESC, time ASC", status)
+
+
+
+        return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
+
+
+    tickets = db.execute("SELECT tickets.id, tickets.subject, tickets.status, tickets.priority, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.status < 4 ORDER BY priority DESC, time ASC")
     return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
 
 
@@ -522,9 +538,6 @@ def newticket():
 
     if request.method == "POST":
         userID = session.get("user_id")
-        user = db.execute(
-            "SELECT name FROM users WHERE id = ?", userID
-        )
 
         # get variables
         subject = request.form.get("subject")
@@ -545,8 +558,8 @@ def newticket():
 
         # add to links database
         db.execute(
-            "INSERT INTO tickets (subject, problem, priority, creator) VALUES(?, ?, ?, ?)",
-            subject, problem, priority, user[0]["name"]
+            "INSERT INTO tickets (subject, description, priority, creator) VALUES(?, ?, ?, ?)",
+            subject, problem, priority, userID
         )
 
         return redirect("/tickets")
@@ -555,4 +568,86 @@ def newticket():
 
 @app.route("/showticket", methods=["GET", "POST"])
 def showticket():
-    return redirect("/newticket")
+
+    if request.method == "POST":
+        # get link id
+        ticketID = request.form.get("id")
+
+        session["show_ticket"] = ticketID
+        # get info from database and render in links
+        #ticket = db.execute("SELECT * FROM tickets WHERE id = ?", ticketID)
+
+        ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
+
+        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus)
+
+    # get link id
+    ticketID = session["show_ticket"]
+
+    session["show_ticket"] = ticketID
+    # get info from database and render in links
+    # ticket = db.execute("SELECT * FROM tickets WHERE id = ?", ticketID)
+    ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
+
+    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus)
+
+@app.route("/saveticket", methods=["GET", "POST"])
+def saveticket():
+
+    if request.method == "POST":
+        status = request.form.get("status")
+        ticketID = session["show_ticket"]
+
+        db.execute("UPDATE tickets SET status = ? WHERE id = ?", status, ticketID)
+        return redirect("/showticket")
+    
+@app.route("/archiveticket", methods=["GET", "POST"])
+def archiveticket():
+
+    if request.method == "POST":
+        status = request.form.get("status")
+        ticketID = session["show_ticket"]
+
+        db.execute("UPDATE tickets SET status = ? WHERE id = ?", status, ticketID)
+        return redirect("/tickets")
+    
+
+@app.route("/solutions", methods=["GET", "POST"])
+def solutions():
+
+    solutions = db.execute("SELECT * FROM solutions")
+    return render_template("solutions.html", solutions = solutions)
+
+@app.route("/newsolution", methods=["GET", "POST"])
+def newsolution():
+
+    # if post method
+    if request.method == "POST":
+
+        # get variables
+        if request.form.get("category") == "newcategory":
+            category = request.form.get("addcategory")
+        else:
+            category = request.form.get("category")
+        
+        subject = request.form.get("subject")
+        description = request.form.get("description")
+
+        # check variables
+        if not subject or not category or not description:
+            flash("information required!")
+            return redirect("/newsolution")
+
+        # get user id
+        userID = session["user_id"]
+
+        # add to links database
+        db.execute(
+            "INSERT INTO solutions (category, subject, description, creator) VALUES(?, ?, ?, ?)",
+            category, subject, description, userID
+        )
+
+        return redirect("/solutions")
+
+    categories = db.execute("SELECT DISTINCT category FROM solutions ORDER BY category")
+    return render_template("newsolution.html", categories = categories)

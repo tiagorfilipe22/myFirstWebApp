@@ -1,0 +1,38 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    SOLUTIONS
+{% endblock %}
+
+{% block body %}
+<div><h1>Welcome to Site List!</h1></div>
+<div>
+{% for message in get_flashed_messages() %}
+    <p class="flash-text"><b>{{message}}</b></p>
+{% endfor %}
+</div>
+    {% if session.get("permission") < 4 %}
+    <form action="/newsolution">
+    <button type="submit" class="enter">NEW SOLUTION</button>
+    </form>
+
+    <form action="/tickets" method="post">
+    <select id="status" name="status" onchange="clickButton()">
+        <option hidden disabled value="" selected>Filter</option>
+        
+        <option value="reset">All Open</option>
+        {% for item in status %}
+        <option value="{{ status.index(item) }}">{{ item }}</option>
+        
+        
+        {% endfor %}
+    </select>
+
+    <button hidden type="submit" id="clickbutton">click</button>
+    </form>
+
+
+    {% else %}{% endif %}
+    
+
+{% endblock %}

@@ -80,3 +80,12 @@ function logout() {
   // Clear localStorage
   localStorage.removeItem('activeLink');
 }
+
+
+
+/*----------------------*/
+
+
+function clickButton() {
+  document.getElementById('clickbutton').click();
+}

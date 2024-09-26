@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block body %}
-<div><h1>Welcome to Site List {{ name }}!</h1></div>
+<div><h1>Welcome to Site List!</h1></div>
 <div>
 {% for message in get_flashed_messages() %}
     <p class="flash-text"><b>{{message}}</b></p>
@@ -15,6 +15,23 @@
     <form action="/newticket">
     <button type="submit" class="enter">NEW TICKET</button>
     </form>
+
+    <form action="/tickets" method="post">
+    <select id="status" name="status" onchange="clickButton()">
+        <option hidden disabled value="" selected>Filter</option>
+        
+        <option value="reset">All Open</option>
+        {% for item in status %}
+        <option value="{{ status.index(item) }}">{{ item }}</option>
+        
+        
+        {% endfor %}
+    </select>
+
+    <button hidden type="submit" id="clickbutton">click</button>
+    </form>
+
+
     {% else %}{% endif %}
     <table>
         <thead>
@@ -32,11 +49,16 @@
         <tbody>
 
             {% for ticket in tickets %}
+
+
             <tr>
                 <td class="{{ priority[ticket['priority']] }}"> {{ priority[ticket["priority"]] }}</td>
                 <td> {{ ticket["subject"] }}</td>
-                <td> {{ ticket["creator"] }}</td>
-                
+                {% if ticket["creator_name"] %}
+                <td> {{ ticket["creator_name"] }}</td>
+                {% else %}
+                <td></td>
+                {% endif %}
                 <td> {{ status[ticket["status"]] }}</td>
                 
                 <td>

@@ -26,10 +26,11 @@
         <div>
         <nav>
           <ul class="nav_links">
-            <li><a href="/links" onclick="changeActiveLink(event)" id="linkID">Links</a></li>
-            <li><a href="/documents" onclick="changeActiveLink(event)" id="docID">Documents</a></li>
-            
             <li><a href="/tickets" onclick="changeActiveLink(event)" id="ticketID">Tickets</a></li>
+            
+            <li><a href="/solutions" onclick="changeActiveLink(event)" id="docID">Solutions</a></li>
+            
+            
 
             {% if session.get("permission") < 3 %}
             <li><a href="/users" onclick="changeActiveLink(event)" id="userID">Users</a></li>
