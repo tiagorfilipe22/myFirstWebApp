@@ -16,13 +16,13 @@
     <button type="submit" class="enter">NEW SOLUTION</button>
     </form>
 
-    <form action="/tickets" method="post">
-    <select id="status" name="status" onchange="clickButton()">
+    <form action="/solutions" method="post">
+    <select id="status" name="category" onchange="clickButton()">
         <option hidden disabled value="" selected>Filter</option>
         
-        <option value="reset">All Open</option>
-        {% for item in status %}
-        <option value="{{ status.index(item) }}">{{ item }}</option>
+        <option value="reset">All</option>
+        {% for item in list %}
+        <option value="{{ item["category"] }}">{{ item["category"] }}</option>
         
         
         {% endfor %}
@@ -33,6 +33,48 @@
 
 
     {% else %}{% endif %}
-    
+
+    {% for categorie in categories %}
+    <table class="column">
+        <thead>
+            <tr>
+                <th colspan="4" style="font-size: 30px;">{{ categorie["category"] }}</th>
+            </tr>
+
+        </thead>
+            <tr>
+                <th>Subject</th>
+                <th>Creator</th>
+                <th>Creation Time</th>
+                <th></th>
+            </tr>
+        <tbody>
+            {% for solution in solutions %}
+            {% if solution["category"] == categorie["category"] %}
+            {% if session.get("permission") < 3 %}
+            <tr>
+                <td>{{ solution["subject"] }}</td>
+                <td>{{ solution["creator_name"] }}</td>
+                <td>{{ solution["time"] }}</td>
+                <td>
+                    <form action="/showsolution" method="post">
+                        <input name="id" type="hidden" value="{{ solution["id"] }}">
+                        <button type="submit">SHOW</button>
+                    </form>
+                </td>
+                
+            </tr>
+            {% else %}
+            <tr class="noEdit">
+                <td>{{ link["subject"] }}</td>
+                
+            </tr>
+            {% endif %}
+            
+            {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+    {% endfor %}
 
 {% endblock %}

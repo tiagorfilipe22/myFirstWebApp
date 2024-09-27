@@ -77,17 +77,15 @@
 
   <!--SOLUTIONS-->
 
-  {% if session.get("permission") < 4 %}
-    <form action="/newticket">
-    <button type="submit" class="enter">NEW SOLUTION</button>
-    </form>
-  {% endif %}
+  <h1>SOLUTIONS:</h1>
+  
   <table>
     <thead>
         <tr>
             <th>Category</th>
             <th>Subject</th>
             <th>Created By</th>
+            <th>Creation Date</th>
             <th></th>
         </tr>
 
@@ -95,22 +93,27 @@
 
     <tbody>
 
-
+      {% for solution in solutions %}
         <tr>
-            <td> {{ ticket[0]["subject"] }}</td>
-            <td> {{ status[ticket["status"]] }}</td>
-            <td>OLA</td>
-            
+            <td> {{ solution["category"] }}</td>
+            <td> {{ solution["subject"] }}</td>
+            <td>{{ solution["creator_name"] }}</td>
+            <td>{{ solution["time"] }}</td>
             <td>
-                <form action="/showticket" method="post">
-                    <input name="id" type="hidden" value="{{ ticket["id"] }}">
+                <form action="/showsolution" method="post">
+                    <input name="id" type="hidden" value="{{ solution["id"] }}">
                     <button type="submit">SHOW</button>
                 </form>
             </td>
         </tr>
-
+        {% endfor %}
     </tbody>
 </table>
+{% if session.get("permission") < 4 %}
+    <form action="/newticket">
+    <button type="submit">ADD SOLUTION</button>
+    </form>
+  {% endif %}
 
 
 {% endblock %}

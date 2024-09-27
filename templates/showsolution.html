@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    SHOW SOLUTION
+{% endblock %}
+
+{% block body %}
+
+
+
+<div><h2>Subject: </h2><h1>{{ solution[0]["subject"] }}</h1></div>
+
+<div>
+  {% for message in get_flashed_messages() %}
+    <p class="flash-text"><b>{{message}}</b></p>
+  {% endfor %}
+  
+  </div>
+
+
+<table style="width:50%; margin-left:auto;  margin-right:auto ;">
+<tr>
+    <td colspan="4">
+        <h3>Category:</h3>
+        <h4>{{ solution[0]["category"] }}</h4>
+    </td>
+</tr>
+<tr>
+  <td>
+    <h3>Creator:</h3>
+    <h4>{{ solution[0]["creator_name"] }}</h4>
+  </td>
+  <td>
+    <h3>Time:</h3>
+    <h4>{{ solution[0]["time"] }}</h4>
+  </td>
+</tr>
+</table>
+
+<h2>Description:</h2>
+<h3>{{ solution[0]["description"] }}</h3>
+
+
+
+
+{% endblock %}

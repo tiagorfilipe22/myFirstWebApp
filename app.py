@@ -568,28 +568,25 @@ def newticket():
 
 @app.route("/showticket", methods=["GET", "POST"])
 def showticket():
+    
 
     if request.method == "POST":
         # get link id
         ticketID = request.form.get("id")
 
         session["show_ticket"] = ticketID
-        # get info from database and render in links
-        #ticket = db.execute("SELECT * FROM tickets WHERE id = ?", ticketID)
 
         ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
-
-        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus)
+        solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
+        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions)
 
     # get link id
     ticketID = session["show_ticket"]
 
     session["show_ticket"] = ticketID
-    # get info from database and render in links
-    # ticket = db.execute("SELECT * FROM tickets WHERE id = ?", ticketID)
     ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
-
-    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus)
+    solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
+    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions)
 
 @app.route("/saveticket", methods=["GET", "POST"])
 def saveticket():
@@ -615,8 +612,25 @@ def archiveticket():
 @app.route("/solutions", methods=["GET", "POST"])
 def solutions():
 
-    solutions = db.execute("SELECT * FROM solutions")
-    return render_template("solutions.html", solutions = solutions)
+    listcategories = db.execute("SELECT DISTINCT category FROM solutions ORDER BY category")
+
+    if request.method == "POST":
+        category = request.form.get("category")
+        if category == "reset":
+            return redirect("/solutions")
+
+        solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id WHERE category = ? ORDER BY subject", category)
+        categories = db.execute("SELECT DISTINCT category FROM solutions WHERE category = ?", category)
+
+
+        return render_template("solutions.html", solutions = solutions, categories = categories, list = listcategories)
+
+
+
+
+    solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY subject;")
+    categories = listcategories
+    return render_template("solutions.html", solutions = solutions, categories = categories, list = listcategories)
 
 @app.route("/newsolution", methods=["GET", "POST"])
 def newsolution():
@@ -651,3 +665,28 @@ def newsolution():
 
     categories = db.execute("SELECT DISTINCT category FROM solutions ORDER BY category")
     return render_template("newsolution.html", categories = categories)
+
+@app.route("/showsolution", methods=["GET", "POST"])
+def showsolution():
+
+    if request.method == "POST":
+        # get link id
+        solutionID = request.form.get("id")
+
+        session["show_solution"] = solutionID
+
+        #ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
+        solution = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.description, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id WHERE solutions.id = ?", solutionID)
+        print(solution)
+        return render_template("showsolution.html", solution = solution)
+
+    # get link id
+    solutionID = session["show_solution"]
+
+    session["show_solution"] = solutionID
+
+    #ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
+    solution = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.description, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id WHERE solutions.id = ?", solutionID)
+    print(solution)
+
+    return render_template("showsolution.html", solution = solution)
