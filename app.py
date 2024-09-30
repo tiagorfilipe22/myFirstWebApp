@@ -568,6 +568,7 @@ def newticket():
 
 @app.route("/showticket", methods=["GET", "POST"])
 def showticket():
+
     
 
     if request.method == "POST":
@@ -577,7 +578,9 @@ def showticket():
         session["show_ticket"] = ticketID
 
         ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
-        solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
+        #solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
+        solutions = db.execute("SELECT s.* FROM solutions s JOIN interchange i ON s.id = i.solution_id JOIN tickets t ON t.id = i.ticket_id WHERE t.id = ?", ticketID)
+        print(solutions)
         return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions)
 
     # get link id
@@ -585,7 +588,9 @@ def showticket():
 
     session["show_ticket"] = ticketID
     ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
-    solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
+    #solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
+    solutions = db.execute("SELECT s.* FROM solutions s JOIN interchange i ON s.id = i.solution_id JOIN tickets t ON t.id = i.ticket_id WHERE t.id = ?", ticketID)
+    print(solutions)
     return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions)
 
 @app.route("/saveticket", methods=["GET", "POST"])
@@ -690,3 +695,61 @@ def showsolution():
     print(solution)
 
     return render_template("showsolution.html", solution = solution)
+
+@app.route("/newsolutiontoticket", methods=["GET", "POST"])
+def newsolutiontoticket():
+
+    # if post method
+    if request.method == "POST":
+
+        # get variables
+        if request.form.get("category") == "newcategory":
+            category = request.form.get("addcategory")
+        else:
+            category = request.form.get("category")
+        
+        subject = request.form.get("subject")
+        description = request.form.get("description")
+        ticketID = session["show_ticket"]
+
+        # check variables
+        if not subject or not category or not description:
+            flash("information required!")
+            return redirect("/newsolution")
+
+        # get user id
+        userID = session["user_id"]
+
+
+
+
+
+
+
+
+
+
+
+        print("NEW SOLUTUTION TO TICKET")
+
+        # add to links database
+        db.execute(
+            "INSERT INTO solutions (category, subject, description, creator) VALUES(?, ?, ?, ?)",
+            category, subject, description, userID
+        )
+
+        solutionID = db.execute("SELECT id FROM solutions ORDER BY id DESC LIMIT 1")
+        print(solutionID)
+
+        db.execute(
+            "INSERT INTO interchange (solution_id, ticket_id) VALUES(?, ?)", solutionID[0]["id"], ticketID
+
+        )
+
+        return redirect("/showticket")
+
+    #inserir ticket id then in page solutions if ticket id fazer newsolutionstoticket
+    ticketID = session["show_ticket"]
+    print(ticketID)
+    categories = db.execute("SELECT DISTINCT category FROM solutions ORDER BY category")
+    return render_template("newsolutiontoticket.html", categories = categories, ticketID = ticketID)

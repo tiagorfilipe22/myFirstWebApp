@@ -110,7 +110,8 @@
     </tbody>
 </table>
 {% if session.get("permission") < 4 %}
-    <form action="/newticket">
+    <form action="/newsolutiontoticket"> 
+      <input name="ticketID" type="hidden" value="{{ ticket[0]["id"] }}">
     <button type="submit">ADD SOLUTION</button>
     </form>
   {% endif %}

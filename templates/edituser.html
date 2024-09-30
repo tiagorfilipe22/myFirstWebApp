@@ -13,36 +13,25 @@
 {% endfor %}
 </div>
 
-      <div >
-        {% if user[0]["active"] == 0 %}
-        <form action="/deactivateuser" method="post">
-          <button type="submit" class="enter">Deactivate User</button>
-        </form>
-        {% else %}
-        <form action="/activateuser" method="post">
-          <button type="submit" class="enter">Activate User</button>
-        </form>
-        {% endif %}
-        </div>
       <form action="/changeuser" method="post">
 
         <div ><p>Change Permission</p></div>
         <div >
-        <select id="permission" name="permission">
+        <select id="permission" name="permission" onchange="clickButton()">
           <option disabled value="" selected>Permission</option>
           {% if session.get("permission") != 0 %}
             <!-- Dynamically set the selected option based on user[0]['permission'] -->
-            <option value="2" {% if user[0]["permission"] == 2 %} selected {% endif %}>2: Power User</option>
-            <option value="3" {% if user[0]["permission"] == 3 %} selected {% endif %}>3: User</option>
+            <option value="2" {% if user[0]["permission"] == 2 %} selected {% endif %}>Power User</option>
+            <option value="3" {% if user[0]["permission"] == 3 %} selected {% endif %}>User</option>
           {% else %}
-            <option value="1" {% if user[0]["permission"] == 1 %} selected {% endif %}>1: Admin User</option>
-            <option value="2" {% if user[0]["permission"] == 2 %} selected {% endif %}>2: Power User</option>
-            <option value="3" {% if user[0]["permission"] == 3 %} selected {% endif %}>3: User</option>
+            <option value="1" {% if user[0]["permission"] == 1 %} selected {% endif %}>Admin User</option>
+            <option value="2" {% if user[0]["permission"] == 2 %} selected {% endif %}>Power User</option>
+            <option value="3" {% if user[0]["permission"] == 3 %} selected {% endif %}>User</option>
           {% endif %}
         </select>
       </div>
       <div >
-        <button type="submit" class="enter">Change</button>
+        <button hidden type="submit" class="enter" id="clickbutton">Save</button>
       </div>
       </form>
       <!-- RESET BUTTON
@@ -51,8 +40,25 @@
       </form>
       -->
       <!-- RESET BUTTON -->
-      <form action="/deleteuser" method="post">
-        <button type="submit" class="enter">DELETE USER</button>
-      </form>
+      <table style="width:50%; margin-left:auto;  margin-right:auto ;">
+        <tr>
+          <td>
+            {% if user[0]["active"] == 0 %}
+        <form action="/deactivateuser" method="post">
+          <button type="submit" class="">DEACTIVATE</button>
+        </form>
+        {% else %}
+        <form action="/activateuser" method="post">
+          <button type="submit" class="">ACTIVATE</button>
+        </form>
+        {% endif %}
+          </td>
+          <td>
+            <form action="/deleteuser" method="post">
+              <button type="submit" class="">DELETE USER</button>
+            </form>
+          </td>
+        </tr>
+      </table>
 
 {% endblock %}

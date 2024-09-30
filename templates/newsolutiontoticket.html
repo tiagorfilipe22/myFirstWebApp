@@ -11,12 +11,7 @@
   <p class="flash-text"><b>{{message}}</b></p>
 {% endfor %}
 </div>
-  {% if ticketID %}
-    <form action="/newsolution" method="post">
-  {% else %}
     <form action="/newsolutiontoticket" method="post">
-  {% endif %}
-  {{ticketID}}
         <div>
         
         

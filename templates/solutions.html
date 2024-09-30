@@ -51,7 +51,6 @@
         <tbody>
             {% for solution in solutions %}
             {% if solution["category"] == categorie["category"] %}
-            {% if session.get("permission") < 3 %}
             <tr>
                 <td>{{ solution["subject"] }}</td>
                 <td>{{ solution["creator_name"] }}</td>
@@ -64,12 +63,6 @@
                 </td>
                 
             </tr>
-            {% else %}
-            <tr class="noEdit">
-                <td>{{ link["subject"] }}</td>
-                
-            </tr>
-            {% endif %}
             
             {% endif %}
             {% endfor %}
