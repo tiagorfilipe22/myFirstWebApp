@@ -75,12 +75,57 @@
 <h2>Problem:</h2>
 <h3>{{ ticket[0]["description"] }}
 
-  <!--SOLUTIONS-->
+<div></div>
+ <!--answers-->
+ {% if ticket[0]["status"] >= 3 %}
 
-  <h1>SOLUTIONS:</h1>
-  
-  <table>
+{% else %}
+<form action="/newanswer" method="post">
+  <textarea autocomple="off" name="answer" rows="4" cols="2000" placeholder="Describe the Answer"></textarea>
+  <input name="ticketID" type="hidden" value="{{ ticket[0]["id"] }}">
+  <div></div>
+    <button type="submit">ADD ANSWER</button>
+</form>
+{% endif %}
+<table>
+  <thead>
+    <tr>
+      <th colspan="5" style="font-size: 30px;">ANSWERS</th>
+    </tr>
+    <tr>
+      <th>Answer</th>
+      <th>Creator</th>
+      <th>Answer Date</th>
+      
+  </tr>
+  </thead>
+  <tbody>
+    {% for answer in answers %}
+    <tr>
+      <td >{{ answer["answer"] }}</td>
+      <td> {{ answer["creator_name"] }}</td>
+      <td> {{ answer["time"] }}</td>
+      
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+
+
+
+  <!--SOLUTIONS-->
+  {% if session.get("permission") < 4 %}
+  <form action="/newsolutiontoticket"> 
+    <input name="ticketID" type="hidden" value="{{ ticket[0]["id"] }}">
+  <button type="submit">ADD SOLUTION</button>
+  </form>
+{% endif %}
+  <table> 
     <thead>
+      <tr>
+        <th colspan="5" style="font-size: 30px;">SOLUTIONS</th>
+      </tr>
         <tr>
             <th>Category</th>
             <th>Subject</th>
@@ -107,14 +152,14 @@
             </td>
         </tr>
         {% endfor %}
+        <tr>
+          <td colspan="5">
+            
+            </td>
+        </tr>
     </tbody>
 </table>
-{% if session.get("permission") < 4 %}
-    <form action="/newsolutiontoticket"> 
-      <input name="ticketID" type="hidden" value="{{ ticket[0]["id"] }}">
-    <button type="submit">ADD SOLUTION</button>
-    </form>
-  {% endif %}
+
 
 
 {% endblock %}

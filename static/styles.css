@@ -1,10 +1,87 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
+
+
+
+.light{
+  --color1: black;
+  --color2: white;
+  --color3: gray;
+  --font-color: var(--color1);
+  --background-color: var(--color2);
+  --button-color: var(--font-color);
+  --buttonfont-color: var(--background-color);
+  --hover-color: var(--color3);
+  --hoverfont-color: var(--font-color);
+  --nav-color: var(--background-color);
+  --navfont-color: var(--font-color);
+  --linkhover-color: var(--hover-color); 
+  --logo-color: var(--nav-color);
+  --tab-color: var(--font-color);
+  --tabfont-color: var(--background-color);
+  --disabled-color: var(--color3);
+  --disabledfont-color: var(--font-color);
+  --placeholder-color: var(--color3);
+  --aler-color: var(--color1);
+  --active-color: var(--color1);
+  --activefont-color: var(--color2);
+}
+
+.dark{
+  --color1: white;
+  --color2: black;
+  --color3: gray;
+  --font-color: var(--color1);
+  --background-color: var(--color2);
+  --button-color: var(--font-color);
+  --buttonfont-color: var(--background-color);
+  --hover-color: var(--color3);
+  --hoverfont-color: var(--font-color);
+  --nav-color: var(--background-color);
+  --navfont-color: var(--font-color);
+  --linkhover-color: var(--hover-color); 
+  --logo-color: var(--color1);
+  --tab-color: var(--font-color);
+  --tabfont-color: var(--background-color);
+  --disabled-color: var(--color3);
+  --disabledfont-color: var(--font-color);
+  --placeholder-color: var(--color3);
+  --aler-color: var(--color1);
+  --active-color: var(--color1);
+  --activefont-color: var(--color2);
+}
+
+.medium{
+  --color1: #E2E2B6;
+  --color2: #021526;
+  --color3: #03346E;
+  --color4: #6EACDA;
+  --font-color: var(--color1);
+  --background-color: var(--color2);
+  --button-color: var(--font-color);
+  --buttonfont-color: var(--background-color);
+  --hover-color: var(--color3);
+  --hoverfont-color: var(--font-color);
+  --nav-color: var(--background-color);
+  --navfont-color: var(--font-color);
+  --linkhover-color: var(--hover-color); 
+  --logo-color: var(--color1);
+  --tab-color: var(--font-color);
+  --tabfont-color: var(--background-color);
+  --disabled-color: var(--color3);
+  --disabledfont-color: var(--font-color);
+  --placeholder-color: var(--color3);
+  --aler-color: var(--color1);
+  --active-color: var(--color1);
+  --activefont-color: var(--color2);
+}
+
+
 
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "Roboto", sans-serif;
+  font-family: "M PLUS 1 Code", sans-serif;
   font-weight: 500;
 }
 
@@ -14,9 +91,14 @@
   color: inherit;
 }
 
+html {
+  background-color: var(--background-color);
+  color: var(--font-color);
+}
+
 header {
-  background-color: #17252a;
-  color: #feffff;
+  background-color: var(--nav-color);
+  color: var(--navfont-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -29,7 +111,7 @@ header {
 }
 
 header a {
-  color: #feffff;
+  color: var(--navfont-color);
   text-decoration: none;
 }
 
@@ -38,28 +120,18 @@ body {
   
 }
 
-.light {
-  background-color: #defef1;
-  color: #2c2e3a;
-}
 
-.light button {
-  background-color: #3aafa9;
+
+button {
+  background-color: var(--button-color);
+  color: var(--buttonfont-color);
 }
 
 .logo:hover {
-  background-color: #2b7a78;
+  background-color: var(--hover-color);
 }
 
-.dark button {
-  background-color: #3aafa9;
-  color: #feffff;
-}
 
-.dark {
-  background-color: #17252a;
-  color: #feffff;
-}
 
 a:hover {
   font-weight: bold;
@@ -79,7 +151,7 @@ a:hover {
 }
 
 .nav_links li a:hover {
-    color: #2b7a78;
+    color: var(--linkhover-color);
 }
 
 
@@ -91,9 +163,6 @@ button {
     transition: all 0.5s ease 0s;
 }
 
-button.large {
-  
-}
 
 .enter {
   margin-top: 30px;
@@ -109,25 +178,17 @@ button.large {
 }
 
 button:hover {
-  background-color: #2b7a78;
-  color: #defef1;
+  background-color: var(--hover-color);
 }
 
 .logo {
   margin: 0px 100px;
   width: 70px; /* you can use % */
   height: auto;
-  background-color: #defef1;
+  background-color: var(--logo-color);
   border-radius: 10px;
   transition: all 1s ease 0s;
 }
-
-h1 {
-}
-
-h2 {
-}
-
 
 
 table {
@@ -145,16 +206,16 @@ table {
 
 td {
   padding: 10px 0 10px;
-  border-bottom: 2px dashed #2b7a78; /* Adds a 2px black line at the bottom of each <td> */
+  border-bottom: 2px dashed var(--tab-color); /* Adds a 2px black line at the bottom of each <td> */
   margin: 10px 10px;
   
 }
 
 th {
-  background-color: #2b7a78;
+  background-color: var(--tab-color);
   padding: 9px;
   transition: all 0.5s ease 0s;
-  color: #feffff;
+  color: var(--tabfont-color);
 }
 
 
@@ -163,20 +224,13 @@ th {
   width: 100%;
 }
 
-.dark tr:hover {
-  transition: all 0.5s ease 0s;
-  background-color: #defef1;
-  border: none;
-  border-radius: 50px;
-  color: #17252a;
-}
 
-.light tr:hover {
+tr:hover {
   transition: all 0.5s ease 0s;
-  background-color: #17252a;
+  background-color: var(--hover-color);
   border: none;
   border-radius: 50px;
-  color: #feffff;
+  color: var(--hoverfont-color);
 }
 
 input, select, textarea{
@@ -185,44 +239,47 @@ input, select, textarea{
   padding: 10px;
   margin: 10px 0;
   box-sizing: border-box;
-  border: 2px solid #3aafa9;
+  border: 2px solid var(--font-color);
   border-radius: 5px;
   font-size: 16px;
 }
 
 /* Focus state */
-input:focus {
-  border-color: #2b7a78; /* Change border color on focus */
+input:focus, textarea:focus {
+  border-color: var(--font-color); /* Change border color on focus */
   outline: none; /* Remove default outline */
-  box-shadow: 0 0 50px #2b7a78; /* Add shadow on focus */
+  box-shadow: 0 0 30px var(--font-color); /* Add shadow on focus */
 }
 
 
 /* Hover state */
 input:hover {
-  border-color: #17252a; /* Change border color on hover */
+  border-color: var(--dark-color); /* Change border color on hover */
 }
 
 /* Disabled input styling */
 input:disabled {
-  background-color: #defef1; /* Light gray background */
+  background-color: var(--disabled-color); /* Light gray background */
+  color: var(--disabledfont-color);
   cursor: not-allowed; /* Show not-allowed cursor */
 }
 
 /* Placeholder text styling */
-input::placeholder {
-  color: #888; /* Gray color for placeholder */
+input::placeholder, textarea::placeholder {
+  color: var(--placeholder-color);/* Gray color for placeholder */
   font-style: italic; /* Italic text */
 }
 
 
-
+input:disabled::placeholder {
+  color: var(--disabledfont-color);
+}
 
 
 .flash-text {
   font-size: 30px;
   font-weight: bold;
-  color: #3aafa9;
+  color: var(--alert-color);
   animation: flash 1s 3;
   padding: 0px 0 30px 0;
 }
@@ -237,8 +294,8 @@ input::placeholder {
   padding: 10px 25px;
   border: none;
   border-radius: 50px;
-  background-color: #defef1; /* Blue color */
-  color: #17252a;
+  background-color: var(--active-color); /* Blue color */
+  color: var(--activefont-color);
   transition: all 0.5s ease 0s;
 }
 
