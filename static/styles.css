@@ -1,87 +1,105 @@
 @import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+
 
 
 
 .light{
-  --color1: black;
-  --color2: white;
-  --color3: gray;
-  --font-color: var(--color1);
-  --background-color: var(--color2);
-  --button-color: var(--font-color);
-  --buttonfont-color: var(--background-color);
-  --hover-color: var(--color3);
-  --hoverfont-color: var(--font-color);
-  --nav-color: var(--background-color);
-  --navfont-color: var(--font-color);
-  --linkhover-color: var(--hover-color); 
-  --logo-color: var(--nav-color);
-  --tab-color: var(--font-color);
-  --tabfont-color: var(--background-color);
-  --disabled-color: var(--color3);
-  --disabledfont-color: var(--font-color);
-  --placeholder-color: var(--color3);
-  --aler-color: var(--color1);
-  --active-color: var(--color1);
-  --activefont-color: var(--color2);
-}
-
-.dark{
-  --color1: white;
-  --color2: black;
-  --color3: gray;
-  --font-color: var(--color1);
-  --background-color: var(--color2);
-  --button-color: var(--font-color);
-  --buttonfont-color: var(--background-color);
-  --hover-color: var(--color3);
-  --hoverfont-color: var(--font-color);
-  --nav-color: var(--background-color);
-  --navfont-color: var(--font-color);
-  --linkhover-color: var(--hover-color); 
+  --color1: #fffcf2;
+  --color2: #ccc5b9;
+  --color3: #403d39;
+  --color4: #252422;
+  --color5: #eb5e28;
+  --font-color: var(--color4);
+  --background-color: var(--color1);
+  --button-color: var(--color5);
+  --buttonfont-color: var(--color4);
+  --hover-color: var(--color2);
+  --hoverfont-color: var(--color4);
+  --nav-color: var(--color4);
+  --navfont-color: var(--color1);
+  --linkhover-color: var(--color5); 
   --logo-color: var(--color1);
-  --tab-color: var(--font-color);
-  --tabfont-color: var(--background-color);
-  --disabled-color: var(--color3);
-  --disabledfont-color: var(--font-color);
+  --tab-color: var(--color4);
+  --tabhover-color: var(--color3);
+  --tabhoverfont-color: var(--color1);
+  --tabfont-color: var(--color1);
+  --disabled-color: var(--color2);
+  --disabledfont-color: var(--color4);
   --placeholder-color: var(--color3);
   --aler-color: var(--color1);
   --active-color: var(--color1);
-  --activefont-color: var(--color2);
+  --activefont-color: var(--color4);
+
+  --font: "M PLUS 1 Code", sans-serif;
+
 }
 
-.medium{
-  --color1: #E2E2B6;
-  --color2: #021526;
-  --color3: #03346E;
-  --color4: #6EACDA;
-  --font-color: var(--color1);
-  --background-color: var(--color2);
-  --button-color: var(--font-color);
-  --buttonfont-color: var(--background-color);
-  --hover-color: var(--color3);
-  --hoverfont-color: var(--font-color);
-  --nav-color: var(--background-color);
-  --navfont-color: var(--font-color);
-  --linkhover-color: var(--hover-color); 
+.corporate1{
+  --color1: #d8dbe2;
+  --color2: #a9bcd0;
+  --color3: #373f51;
+  --color4: #1b1b1e;
+  --color5: #58a4b0;
+  --font-color: var(--color4);
+  --background-color: var(--color1);
+  --button-color: var(--color5);
+  --buttonfont-color: var(--color4);
+  --hover-color: var(--color2);
+  --hoverfont-color: var(--color4);
+  --nav-color: var(--color4);
+  --navfont-color: var(--color1);
+  --linkhover-color: var(--color5); 
   --logo-color: var(--color1);
-  --tab-color: var(--font-color);
-  --tabfont-color: var(--background-color);
-  --disabled-color: var(--color3);
-  --disabledfont-color: var(--font-color);
+  --tab-color: var(--color4);
+  --tabhover-color: var(--color3);
+  --tabhoverfont-color: var(--color1);
+  --tabfont-color: var(--color1);
+  --disabled-color: var(--color2);
+  --disabledfont-color: var(--color4);
   --placeholder-color: var(--color3);
   --aler-color: var(--color1);
   --active-color: var(--color1);
-  --activefont-color: var(--color2);
+  --activefont-color: var(--color4);
+
+  --font: "Roboto", sans-serif;
 }
 
+.corporate2{
+  --color1: #ffffff;
+  --color2: #bfc0c0;
+  --color3: #4f5d75;
+  --color4: #2d3142;
+  --color5: #ef8354;
+  --font-color: var(--color4);
+  --background-color: var(--color1);
+  --button-color: var(--color5);
+  --buttonfont-color: var(--color4);
+  --hover-color: var(--color2);
+  --hoverfont-color: var(--color4);
+  --nav-color: var(--color4);
+  --navfont-color: var(--color1);
+  --linkhover-color: var(--color5); 
+  --logo-color: var(--color1);
+  --tab-color: var(--color4);
+  --tabhover-color: var(--color3);
+  --tabhoverfont-color: var(--color1);
+  --tabfont-color: var(--color1);
+  --disabled-color: var(--color2);
+  --disabledfont-color: var(--color4);
+  --placeholder-color: var(--color3);
+  --aler-color: var(--color1);
+  --active-color: var(--color1);
+  --activefont-color: var(--color4);
 
+  --font: "Roboto", sans-serif;
+}
 
 * {
+  font-family: var(--font);
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-family: "M PLUS 1 Code", sans-serif;
   font-weight: 500;
 }
 
@@ -183,10 +201,11 @@ button:hover {
 
 .logo {
   margin: 0px 100px;
-  width: 70px; /* you can use % */
+  width: 80px; /* you can use % */
   height: auto;
   background-color: var(--logo-color);
-  border-radius: 10px;
+  border-radius: 20px;
+  padding: 5px 5px;
   transition: all 1s ease 0s;
 }
 
@@ -227,10 +246,10 @@ th {
 
 tr:hover {
   transition: all 0.5s ease 0s;
-  background-color: var(--hover-color);
+  background-color: var(--tabhover-color);
   border: none;
   border-radius: 50px;
-  color: var(--hoverfont-color);
+  color: var(--tabhoverfont-color);
 }
 
 input, select, textarea{

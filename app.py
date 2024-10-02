@@ -2,6 +2,9 @@ from cs50 import SQL
 from flask import Flask, render_template, request, redirect, flash, request, session
 from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
+import push_alert
+import email_alert
+
 
 app = Flask(__name__)
 app.secret_key = "helothisisawensite99"
@@ -19,6 +22,12 @@ role = ["Admin", "Admin User", "Power User", "User", "New User"]
 status = ["Active", "Inactive"]
 priority = ["Low", "Medium", "High"]
 ticketStatus = ["No Status", "In Progress", "In Pause", "Terminated", "Archived"]
+
+
+
+
+
+
 
 # index route
 @app.route("/", methods=["GET", "POST"])
@@ -55,7 +64,13 @@ def checkuser():
 
         if userID:
             db.execute("UPDATE users SET permission = 3 WHERE id = ?", userID)
+            user = db.execute("SELECT * FROM users WHERE id = ?", userID)
 
+            name = user[0]["name"]
+            email = user[0]["email"]
+
+            text = "Hello " + name + "\nYour Registration has been aproved.\nLink: http://google.pt\nWelcome!"
+            email_alert.email_alert("Help Desk Project CS50 - Aproval", text, email)
             return redirect("/checkuser")
     # check for new registered USERS
     # get info from database and render in links
@@ -102,19 +117,33 @@ def register():
 
         # try to add to database if cant add becouse email already exists
         try:
-            print(email)
             db.execute(
                 "INSERT INTO users (email, hash, name) VALUES(?, ?, ?)", email, pHash, name
                 )
 
             # remember user login and redirect to links
-            return redirect("/")
 
         except:
 
             # return to register and show message
             flash("Email already taken")
             return render_template("register.html")
+        
+        
+        text = "Hello " + name + "\nYou have complete registration on Help Desk Project CS50.\nLink: http://www.google.pt\nWait for admin Aproval."
+        email_alert.email_alert("Help Desk Project CS50 - Registration", text, email)
+        
+        text = "Email: " + email + "\nName:  " + name
+        #push_alert.message("New USER", text)
+
+        admins = db.execute("SELECT email FROM users WHERE permission < 2")
+
+        for admin in admins:
+            print(admin["email"])
+            email_admin = admin["email"]
+            email_alert.email_alert("Help Desk Project CS50 - New User", text, email_admin)
+
+        return redirect("/")
 
     # if get method
     return render_template("register.html")
@@ -522,7 +551,7 @@ def tickets():
         tickets = db.execute("SELECT tickets.id, tickets.subject, tickets.status, tickets.priority, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.status = ? ORDER BY priority DESC, time ASC", status)
 
 
-
+        
         return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
 
 
@@ -562,6 +591,12 @@ def newticket():
             subject, problem, priority, userID
         )
 
+        name = db.execute("SELECT name FROM users WHERE id = ?", userID)
+
+        text = "Subject: " + subject + "\nFrom: " + name[0]["name"] + "\nPriority: " + priority + "\nDescription: " + problem
+
+        #push_alert.message("New Ticket", text)
+        email_alert.email_alert("New User", text, "vyrustr@gmail.com")
         return redirect("/tickets")
 
     return render_template("newticket.html")

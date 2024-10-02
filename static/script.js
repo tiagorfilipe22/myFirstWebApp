@@ -13,7 +13,7 @@ function changeActiveStatus() {
 
 
 // Array of available themes
-const themes = ['light', 'dark', 'medium'];
+const themes = ['light', 'corporate1','corporate2'];
 
 
 // Function to toggle between themes
