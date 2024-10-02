@@ -50,7 +50,7 @@
         <tbody>
             {% for solution in solutions %}
             {% if solution["category"] == categorie["category"] %}
-            <tr onclick="clickButtonID('{{ solution["id"] }}')">
+            <tr onclick="clickButtonID('{{ solution['id'] }}')">
                 <td>{{ solution["subject"] }}</td>
                 <td>{{ solution["creator_name"] }}</td>
                 <td>{{ solution["time"] }}</td>

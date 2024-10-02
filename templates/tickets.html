@@ -48,7 +48,7 @@
             {% for ticket in tickets %}
 
 
-            <tr onclick="clickButtonID('{{ ticket["id"] }}')">
+            <tr onclick="clickButtonID('{{ ticket['id'] }}')">
                 <td class="{{ priority[ticket['priority']] }}"> {{ priority[ticket["priority"]] }}</td>
                 <td> {{ ticket["subject"] }}</td>
                 {% if ticket["creator_name"] %}
