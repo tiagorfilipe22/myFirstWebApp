@@ -17,7 +17,13 @@
   
   </div>
 
-
+  {% if ticket[0]["creator"] == user %}
+  <form action="">
+    <button name="ticketID" value="session.get("show_ticket")">Delete Ticket</button>
+  </form>  
+  
+  {% else %}
+  {% endif %}
 <table style="width:50%; margin-left:auto;  margin-right:auto ;">
   <tr>
   <td>
@@ -124,14 +130,13 @@
   <table> 
     <thead>
       <tr>
-        <th colspan="5" style="font-size: 30px;">SOLUTIONS</th>
+        <th colspan="4" style="font-size: 30px;">SOLUTIONS</th>
       </tr>
         <tr>
             <th>Category</th>
             <th>Subject</th>
             <th>Created By</th>
             <th>Creation Date</th>
-            <th></th>
         </tr>
 
     </thead>
@@ -139,24 +144,19 @@
     <tbody>
 
       {% for solution in solutions %}
-        <tr>
+        <tr onclick="clickButtonID('{{ solution["id"] }}')">
             <td> {{ solution["category"] }}</td>
             <td> {{ solution["subject"] }}</td>
             <td>{{ solution["creator_name"] }}</td>
             <td>{{ solution["time"] }}</td>
-            <td>
+            <td hidden>
                 <form action="/showsolution" method="post">
                     <input name="id" type="hidden" value="{{ solution["id"] }}">
-                    <button type="submit">SHOW</button>
+                    <button type="submit" id="clickbuttonid-{{ solution["id"] }}">SHOW</button>
                 </form>
             </td>
         </tr>
         {% endfor %}
-        <tr>
-          <td colspan="5">
-            
-            </td>
-        </tr>
     </tbody>
 </table>
 

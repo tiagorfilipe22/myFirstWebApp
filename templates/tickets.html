@@ -5,7 +5,6 @@
 {% endblock %}
 
 {% block body %}
-<div><h1>Welcome to Site List!</h1></div>
 <div>
 {% for message in get_flashed_messages() %}
     <p class="flash-text"><b>{{message}}</b></p>
@@ -39,9 +38,7 @@
                 <th>Priority</th>
                 <th>Subject</th>
                 <th>Created By</th>
-                
                 <th>Status</th>
-                <th></th>
             </tr>
 
         </thead>
@@ -51,7 +48,7 @@
             {% for ticket in tickets %}
 
 
-            <tr>
+            <tr onclick="clickButtonID('{{ ticket["id"] }}')">
                 <td class="{{ priority[ticket['priority']] }}"> {{ priority[ticket["priority"]] }}</td>
                 <td> {{ ticket["subject"] }}</td>
                 {% if ticket["creator_name"] %}
@@ -61,10 +58,10 @@
                 {% endif %}
                 <td> {{ status[ticket["status"]] }}</td>
                 
-                <td>
+                <td hidden>
                     <form action="/showticket" method="post">
                         <input name="id" type="hidden" value="{{ ticket["id"] }}">
-                        <button type="submit">SHOW</button>
+                        <button type="submit" id="clickbuttonid-{{ ticket["id"] }}">SHOW</button>
                     </form>
                 </td>
             </tr>

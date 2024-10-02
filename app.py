@@ -604,7 +604,7 @@ def newticket():
 @app.route("/showticket", methods=["GET", "POST"])
 def showticket():
 
-    
+    userID = session.get("user_id")    
 
     if request.method == "POST":
         # get link id
@@ -612,7 +612,7 @@ def showticket():
 
         session["show_ticket"] = ticketID
 
-        ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
+        ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, tickets.creator, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
         #solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
         solutions = db.execute(
             """
@@ -634,13 +634,13 @@ def showticket():
         ticketID
     )
         print(answers)
-        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers)
+        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers, user = userID)
 
     # get link id
     ticketID = session["show_ticket"]
 
     session["show_ticket"] = ticketID
-    ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
+    ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, tickets.creator, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
     #solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
     solutions = db.execute("SELECT s.* FROM solutions s JOIN interchange i ON s.id = i.solution_id JOIN tickets t ON t.id = i.ticket_id WHERE t.id = ?", ticketID)
     answers = db.execute(
@@ -652,7 +652,7 @@ def showticket():
         ticketID
     )
     print(answers)
-    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers)
+    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers, user = userID)
 
 @app.route("/saveticket", methods=["GET", "POST"])
 def saveticket():

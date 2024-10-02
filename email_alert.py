@@ -25,7 +25,6 @@ def email_alert(subject, body, to):
     server.quit()
 
 push = "5vc4x9iduu@pomail.net"
-
 emails = ["vyrustr@gmail.com", "5vc4x9iduu@pomail.net", "tiagorfilipe22@hotmail.com"]
 
 if __name__ == '__main__':

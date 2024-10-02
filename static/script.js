@@ -1,3 +1,6 @@
+
+
+
 //----------------------------------------------------------------
 function changeActiveStatus() {
     var x = document.getElementById("category").value;
@@ -133,4 +136,9 @@ function logout() {
 
 function clickButton() {
   document.getElementById('clickbutton').click();
+}
+
+
+function clickButtonID(Id) {
+  document.getElementById('clickbuttonid-' + Id).click();
 }
