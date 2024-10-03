@@ -195,72 +195,9 @@ def login():
     # if get method
     return render_template("login.html")
 
-# add function
-@app.route("/add", methods=["GET", "POST"])
-def add():
-
-    # if post method
-    if request.method == "POST":
-
-        # get variables
-        if request.form.get("category") == "newcategory":
-            category = request.form.get("addcategory")
-        else:
-            category = request.form.get("category")
-        
-        name = request.form.get("name")
-        link = request.form.get("link")
-
-        # check variables
-        if not name or not category or not link:
-            flash("information required!")
-            return redirect("/add")
-
-        # get user id
-        userID = session["user_id"]
-
-        # add to links database
-        db.execute(
-            "INSERT INTO links (category, name, link) VALUES(?, ?, ?)",
-            category, name, link
-        )
-
-        # get last ID
-        linkID = db.execute("SELECT id FROM links ORDER BY id DESC LIMIT 1")
-
-        # add to links database
-        # db.execute(
-        #    "INSERT INTO logs (user_id, link_id, category) VALUES(?, ?, ?)",
-        #    userID, linkID[0]["id"], "add"
-        #)
 
 
-        # redirect to links
-        return redirect("/links")
 
-    # if get method
-    categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
-    return render_template("add.html", categories = categories)
-
-# links function
-@app.route("/links")
-def links():
-
-    # get serssion id
-    userID = session["user_id"]
-
-    # select user from db
-    rows = db.execute(
-    "SELECT * FROM users WHERE id = ?", userID
-    )
-
-    # get name
-    name = rows[0]["name"]
-
-    # get info from database and render in links
-    links = db.execute("SELECT category, name, link, id FROM links ORDER BY category, name")
-    categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
-    return render_template("links.html", links = links, name = name, categories = categories)
 
 # logout function
 @app.route("/logout")
@@ -322,107 +259,27 @@ def password():
 
 
     
-    return render_template("change.html", user = user)
+    return render_template("profile.html", user = user)
 
 
 
 
 
 
-@app.route("/edit", methods=["GET", "POST"])
-def edit():
 
-    if request.method == "POST":
-        # get link id
-        linkID = request.form.get("id")
-        # save in session
-        session["edit_link"] = linkID
 
-        # get info from database and render in links
-        links = db.execute("SELECT category, name, link, id FROM links WHERE id = ?", linkID)
-        categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
-        return render_template("edit.html", links = links, categories = categories)
-    else:
-        linkID = session["edit_link"]
-        links = db.execute("SELECT category, name, link, id FROM links WHERE id = ?", linkID)
-        categories = db.execute("SELECT DISTINCT category FROM links ORDER BY category")
-        return render_template("edit.html", links = links, categories = categories)
 
-@app.route("/delete", methods=["GET", "POST"])
-def delete():
 
-    if request.method == "POST":
-        # get serssion id
-        userID = session["user_id"]
-
-        # get link ID
-        linkID = request.form.get("id")
-
-        if linkID:
-            db.execute("DELETE FROM links WHERE id= ?", linkID)
-
-            # add to links database
-            # db.execute(
-            #    "INSERT INTO logs (user_id, link_id, category) VALUES(?, ?, ?)",
-            #    userID, linkID, "delete"
-            # )
-            return redirect("/links")
-        else:
-            return redirect("/links")
-
-@app.route("/change", methods=["GET", "POST"])
-def change():
-    
-    linkID = session["edit_link"]
-    print(linkID)
-
-    # if post method
-    if request.method == "POST":
-
-        # get variables
-        if request.form.get("category") == "newcategory":
-            category = request.form.get("addcategory")
-        else:
-            category = request.form.get("category")
-        
-        name = request.form.get("name")
-        link = request.form.get("link")
-
-        # check variables
-
-        if not name and not category and not link:
-            flash("atleat one fiel is required!")
-            return redirect("/edit")   
-
-        if not category:
-            pass
-        else:
-            db.execute("UPDATE links SET category = ? WHERE id = ?",category, linkID)
-
-        if not name:
-            pass
-        else:
-            db.execute("UPDATE links SET name = ? WHERE id = ?",name, linkID)
-
-        if not link:
-            pass
-        else:
-            db.execute("UPDATE links SET link = ? WHERE id = ?",link, linkID)
-
-        
-        # redirect to links
-        flash("Link changed!")
-        return redirect("/links")
 
 # users function
 @app.route("/users")
 def users():
 
     # get serssion id
-    userID = session["user_id"]
+    userID = session.get("user_id")
 
     # get info from database and render in links
-    users = db.execute("SELECT * FROM users WHERE id > 1")
+    users = db.execute("SELECT * FROM users WHERE id > 1 AND id != ?", userID)
 
     
     
@@ -500,22 +357,7 @@ def changeuser():
             flash("Error ocurred!")
             return redirect("/users")
 
-# RESET PASSWORD
-# @app.route("/resetstatus", methods=["GET", "POST"])
-# def resetpassword():
 
-    # if request.method == "POST":
-
-        # userID = session["edit_user"]
-
-
-        # if userID:
-            # db.execute("UPDATE users SET permission = 5 WHERE id = ?", userID)
-            # flash("Password now Reset")
-            # return redirect("/edituser")
-        # else:
-            # flash("Error ocurred!")
-            # return redirect("/users")
 
 # DELETE USER
 @app.route("/deleteuser", methods=["GET", "POST"])
@@ -548,15 +390,45 @@ def tickets():
         # tickets = db.execute("SELECT * FROM tickets WHERE status = ? ORDER BY priority DESC, time ASC", status)
 
 
-        tickets = db.execute("SELECT tickets.id, tickets.subject, tickets.status, tickets.priority, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.status = ? ORDER BY priority DESC, time ASC", status)
+        tickets = db.execute(
+            """
+            SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
+            users.name AS creator_name FROM tickets
+            LEFT JOIN users ON tickets.creator = users.id
+            WHERE tickets.status = ? ORDER BY priority DESC, time ASC
+            """
+            , status
+            )
 
 
         
         return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
 
 
-    tickets = db.execute("SELECT tickets.id, tickets.subject, tickets.status, tickets.priority, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.status < 4 ORDER BY priority DESC, time ASC")
-    return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
+    if session.get("permission") < 3:
+
+        tickets = db.execute(
+            """
+            SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
+            users.name AS creator_name FROM tickets
+            LEFT JOIN users ON tickets.creator = users.id
+            WHERE tickets.status < 4 ORDER BY priority DESC, time ASC
+            """
+            )
+        return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
+    else:
+        userID = session.get("user_id")
+        tickets = db.execute(
+            """
+            SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
+            users.name AS creator_name FROM tickets
+            LEFT JOIN users ON tickets.creator = users.id
+            WHERE tickets.status < 4 AND users.id = ? ORDER BY priority DESC, time ASC
+            """
+            , userID
+            )
+        
+        return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
 
 
 # add tickets
@@ -604,8 +476,6 @@ def newticket():
 @app.route("/showticket", methods=["GET", "POST"])
 def showticket():
 
-    userID = session.get("user_id")    
-
     if request.method == "POST":
         # get link id
         ticketID = request.form.get("id")
@@ -634,7 +504,7 @@ def showticket():
         ticketID
     )
         print(answers)
-        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers, user = userID)
+        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers)
 
     # get link id
     ticketID = session["show_ticket"]
@@ -652,7 +522,7 @@ def showticket():
         ticketID
     )
     print(answers)
-    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers, user = userID)
+    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers)
 
 @app.route("/saveticket", methods=["GET", "POST"])
 def saveticket():
@@ -742,7 +612,7 @@ def showsolution():
         session["show_solution"] = solutionID
 
         #ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
-        solution = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.description, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id WHERE solutions.id = ?", solutionID)
+        solution = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.description, solutions.time, solutions.creator, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id WHERE solutions.id = ?", solutionID)
         print(solution)
         return render_template("showsolution.html", solution = solution)
 
@@ -752,7 +622,7 @@ def showsolution():
     session["show_solution"] = solutionID
 
     #ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
-    solution = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.description, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id WHERE solutions.id = ?", solutionID)
+    solution = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.description, solutions.time, solutions.creator, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id WHERE solutions.id = ?", solutionID)
     print(solution)
 
     return render_template("showsolution.html", solution = solution)
@@ -841,3 +711,21 @@ def newanswer():
         )
 
         return redirect("/showticket")
+    
+@app.route("/deleteticket", methods=['GET', 'POST'])
+def deleteticket():
+    if request.method == 'POST':
+        ticketID = request.form.get('ticketID')
+        print(ticketID)
+
+        db.execute("DELETE FROM tickets WHERE id = ?", ticketID)
+        return redirect('/tickets')
+    
+@app.route("/deletesolution", methods=['GET', 'POST'])
+def deletesolution():
+    if request.method == 'POST':
+        solutionID = request.form.get('solutionID')
+        print(solutionID)
+
+        db.execute("DELETE FROM solutions WHERE id = ?", solutionID)
+        return redirect('/solutions')

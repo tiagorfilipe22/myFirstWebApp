@@ -32,7 +32,7 @@
             
             
 
-            {% if session.get("permission") < 3 %}
+            {% if session.get("permission") < 2 %}
             <li><a href="/users" onclick="changeActiveLink(event)" id="userID">Users</a></li>
             {% else %}
             
