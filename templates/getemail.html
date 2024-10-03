@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Forgot Password
+{% endblock %}
+
+{% block body %}
+<div><h1>Forgot Password</h1></div>
+<div>
+  {% for message in get_flashed_messages() %}
+  <p class="flash-text"><b>{{message}}</b></p>
+  {% endfor %}
+  </div>
+    <form action="/resetpassword" method="post">
+      <div>
+        <input autocomple="off" autofocus name="email" placeholder="Email" type="text">
+      </div>
+      <div>
+        <button type="submit" class="enter">Send Password</button>
+      </div>
+    </form>
+    
+
+</form>
+{% endblock %}

@@ -5,6 +5,7 @@ from werkzeug.security import check_password_hash, generate_password_hash
 import push_alert
 import email_alert
 import passgenerator
+import re
 
 
 app = Flask(__name__)
@@ -23,7 +24,7 @@ role = ["Admin", "Admin User", "Power User", "User", "New User", "Password Reset
 status = ["Active", "Inactive"]
 priority = ["Low", "Medium", "High"]
 ticketStatus = ["No Status", "In Progress", "In Pause", "Terminated", "Archived"]
-
+email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
 
 
 
@@ -46,7 +47,6 @@ def index():
         flash("Waiting for admin aproval")
         return render_template("index.html")
     elif permission == 5:
-        flash("Your Password is Reseted")
         return redirect("/profile")
     elif permission <  2:
         return redirect("/checkuser")
@@ -96,6 +96,15 @@ def register():
         password = request.form.get("password")
         pConfirmation = request.form.get("pConfirmation")
 
+        
+        
+        if not re.match(email_pattern, email):
+            flash("Have to register with a valid email!")
+            return render_template("register.html")
+
+
+
+
         # variable validation
         if not email:
             flash("No email!")
@@ -105,6 +114,9 @@ def register():
             return render_template("register.html")
         elif not password:
             flash("No Password!")
+            return render_template("register.html")
+        elif len(password) != 8:
+            flash("Password must have 8 Chars or more")
             return render_template("register.html")
         elif not pConfirmation:
             flash("You have to confirm the password!")
@@ -117,6 +129,9 @@ def register():
         pHash = generate_password_hash(password)
 
         # try to add to database if cant add becouse email already exists
+
+        
+        
         try:
             db.execute(
                 "INSERT INTO users (email, hash, name) VALUES(?, ?, ?)", email, pHash, name
@@ -130,10 +145,11 @@ def register():
             flash("Email already taken")
             return render_template("register.html")
         
-        
+        # send email to new user
         text = "Hello " + name + "\nYou have complete registration on Help Desk Project CS50.\nLink: http://www.google.pt\nWait for admin Aproval."
         email_alert.email_alert("Help Desk Project CS50 - Registration", text, email)
         
+        # send email to admins
         text = "Email: " + email + "\nName:  " + name
         #push_alert.message("New USER", text)
 
@@ -231,8 +247,14 @@ def password():
             flash("Name Changed!")
             db.execute("UPDATE users SET name = ? WHERE id = ?", name, userID)
 
+        
+        
         if pOld and password and pConfirmation:
              # get user ID and data from db
+
+            if len(password) != 8:
+                flash("Password must have 8 Chars or more")
+                return redirect("/profile")
         
             dbPass = db.execute("SELECT hash FROM users WHERE id = ?", userID)[0]["hash"]
 
@@ -242,7 +264,9 @@ def password():
                     new = generate_password_hash(password)
                     db.execute("UPDATE users SET hash = ? WHERE id = ?", new, userID)
                     if session.get('permission') == 5:
-                        db.execute("UPDATE users SET permission = 4 WHERE id = ?", userID)
+                        db.execute("UPDATE users SET permission = 3 WHERE id = ?", userID)
+                        flash("You have changed Password!")
+                        return redirect("/logout")
                     flash("You have changed Password!")
                     return redirect("/profile")
                 else:
@@ -385,13 +409,44 @@ def resetpassword():
 
     if request.method == "POST":
 
-        # get link ID
-        userID = session["edit_user"]
+        # try to get link ID
+        try:
+            userID = session["edit_user"]
+        # if can get its a Forgot password situation
+        except:
+            email = request.form.get("email")
+
+            if not re.match(email_pattern, email):
+                flash("Input a valid email!")
+                return redirect("/resetpassword")
+
+            password = passgenerator.get_random_string()
+            hash = generate_password_hash(password)
+            
+            # alterar estado permission to 5
+            # alterar password
+            try:
+                db.execute("UPDATE users SET hash = ?, permission = 5 WHERE email = ?", hash, email)
+                
+            except:
+                return redirect("/")
+
+
+            # enviar email com nova password
+            user = db.execute('SELECT * FROM users WHERE email = ?', email)
+            name = user[0]['name']
+            text = "Hello " + name + "\nYour password has been reseted.\nNew Password: " + password
+            email_alert.email_alert("Help Desk Project CS50 - Password Reset", text, email)
+            # return users
+            return redirect("/")
+
+
+        # admin reset password 
         password = passgenerator.get_random_string()
         print(password)
         hash = generate_password_hash(password)
         print(hash)
-        
+            
         # alterar estado permission to 5
         # alterar password
         db.execute("UPDATE users SET hash = ?, permission = 5 WHERE id = ?", hash, userID)
@@ -404,8 +459,10 @@ def resetpassword():
         text = "Hello " + name + "\nYour password has been reseted.\nNew Password: " + password
         email_alert.email_alert("Help Desk Project CS50 - Password Reset", text, email)
         # return users
-
         return redirect("/users")
+            
+    
+    return render_template("getemail.html")
         
 
 # tickets
