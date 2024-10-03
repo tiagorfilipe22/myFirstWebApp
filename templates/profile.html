@@ -15,7 +15,7 @@
     <form action="/profile" method="post">
       <div><h5>CHANGE NAME</h5></div>
       <div>
-        {% if session.get("permission") == 0 %}
+        {% if session.get("permission") == 0 or session.get("permission") == 5 %}
         <input autocomple="off" name="name" placeholder="{{ user[0]["name"] }}" type="text" disabled>
         {% else %}
         <input autocomple="off" name="name" placeholder="{{ user[0]["name"] }}" type="text">
@@ -27,7 +27,7 @@
         <input autocomple="off" autofocus name="pOld" placeholder="Old Password" type="password">
       </div>
       <div>
-        <p>Password must have 10 chars or more</p>
+        <p>Password must have 8 chars or more</p>
         <input autocomple="off" name="password" placeholder="New Password" type="password">
       </div>
       <div>

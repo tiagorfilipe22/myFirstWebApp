@@ -21,7 +21,7 @@
         <div>
         <a href="/"><img class="logo" src=".\static\images\d3.png" alt="logo"></a>
         </div>
-        {% if session.get("user_id") %}
+        {% if session.get("user_id") and session.get('permission') != 5 %}
         
         <div>
         <nav>
@@ -50,6 +50,14 @@
           
           <a href="/logout"><button onclick="logout()">Logout</button></a>
         </div>
+        {% elif session.get('permission') == 5 %}
+        <div>
+          
+          <button onclick="toggleMode()">Theme</button>
+          <a href="/profile"><button>Profile</button></a>
+          
+          <a href="/logout"><button onclick="logout()">Logout</button></a>
+        </div>
         {% else %}
         <div>
           
@@ -57,10 +65,10 @@
           <a href="/register"><button>Register</button></a>
           
           <a href="/"><button>Login</button></a>
-          {% endif %}
+          
           
         </div>
-          
+        {% endif %}
       </header>
       <div class="body">
       {% block body %}{% endblock %}

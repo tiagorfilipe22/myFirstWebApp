@@ -4,6 +4,7 @@ from flask_session import Session
 from werkzeug.security import check_password_hash, generate_password_hash
 import push_alert
 import email_alert
+import passgenerator
 
 
 app = Flask(__name__)
@@ -18,7 +19,7 @@ Session(app)
 db = SQL("sqlite:///data.db")
 
 # set variable to csv to log add links and delete links
-role = ["Admin", "Admin User", "Power User", "User", "New User"]
+role = ["Admin", "Admin User", "Power User", "User", "New User", "Password Reset"]
 status = ["Active", "Inactive"]
 priority = ["Low", "Medium", "High"]
 ticketStatus = ["No Status", "In Progress", "In Pause", "Terminated", "Archived"]
@@ -46,7 +47,7 @@ def index():
         return render_template("index.html")
     elif permission == 5:
         flash("Your Password is Reseted")
-        return render_template("resetpassword.html")
+        return redirect("/profile")
     elif permission <  2:
         return redirect("/checkuser")
 
@@ -240,6 +241,8 @@ def password():
                 if  check_password_hash(dbPass, pOld):
                     new = generate_password_hash(password)
                     db.execute("UPDATE users SET hash = ? WHERE id = ?", new, userID)
+                    if session.get('permission') == 5:
+                        db.execute("UPDATE users SET permission = 4 WHERE id = ?", userID)
                     flash("You have changed Password!")
                     return redirect("/profile")
                 else:
@@ -374,6 +377,35 @@ def deleteuser():
         else:
             flash("Error ocurred!")
             return redirect("/edituser")
+        
+
+# RESET PASSWORD USER
+@app.route("/resetpassword", methods=["GET", "POST"])
+def resetpassword():
+
+    if request.method == "POST":
+
+        # get link ID
+        userID = session["edit_user"]
+        password = passgenerator.get_random_string()
+        print(password)
+        hash = generate_password_hash(password)
+        print(hash)
+        
+        # alterar estado permission to 5
+        # alterar password
+        db.execute("UPDATE users SET hash = ?, permission = 5 WHERE id = ?", hash, userID)
+
+
+        # enviar email com nova password
+        user = db.execute('SELECT * FROM users WHERE id = ?', userID)
+        email = user[0]['email']
+        name = user[0]['name']
+        text = "Hello " + name + "\nYour password has been reseted.\nNew Password: " + password
+        email_alert.email_alert("Help Desk Project CS50 - Password Reset", text, email)
+        # return users
+
+        return redirect("/users")
         
 
 # tickets

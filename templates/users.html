@@ -24,6 +24,14 @@
         <tbody>
 
             {% for user in users %}
+            {% if user['permission'] == 5 %}
+            <tr>
+                <td> {{ user["name"] }}</td>
+                <td> {{ user["email"] }}</td>
+                <td> {{ role[user["permission"]] }}</td>
+                <td> {{ status[user["active"]] }}</td>
+            </tr>
+            {% else %}
             <tr onclick="clickButtonID('{{ user['id'] }}')">
                 <td> {{ user["name"] }}</td>
                 <td> {{ user["email"] }}</td>
@@ -38,6 +46,7 @@
 
                 </td>
             </tr>
+            {% endif %}
             {% endfor %}
 
         </tbody>
