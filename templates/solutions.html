@@ -3,13 +3,8 @@
 {% block title %}
     SOLUTIONS
 {% endblock %}
-
+{% block h1 %}<h1>SOLUTIONS</h1>{% endblock %}
 {% block body %}
-<div>
-{% for message in get_flashed_messages() %}
-    <p class="flash-text"><b>{{message}}</b></p>
-{% endfor %}
-</div>
     {% if session.get("permission") < 3 %}
     <form action="/newsolution">
     <button type="submit" class="enter">NEW SOLUTION</button>
@@ -33,17 +28,21 @@
 
 
     {% for categorie in categories %}
-    <table >
+    <table {% if categories|length == 1 %} %}
+    class="select"
+    {% else %}
+    class="select column"
+    {% endif %}>
         <thead>
             <tr>
-                <th colspan="3">{{ categorie["category"] }}</th>
+                <h1>{{ categorie["category"] }}</h1>
             </tr>
 
         
             <tr>
-                <th>Subject</th>
-                <th>Creator</th>
-                <th>Creation Time</th>
+                <th >Subject</th>
+                <th>Created By</th>
+                <th class="none">Creation Time</th>
             </tr>
         </thead>
         <tbody>
@@ -52,7 +51,7 @@
             <tr onclick="clickButtonID('{{ solution['id'] }}')">
                 <td>{{ solution["subject"] }}</td>
                 <td>{{ solution["creator_name"] }}</td>
-                <td>{{ solution["time"] }}</td>
+                <td class="none">{{ solution["time"] }}</td>
                 <td hidden>
                     <form action="/showsolution" method="post">
                         <input name="id" type="hidden" value="{{ solution["id"] }}">

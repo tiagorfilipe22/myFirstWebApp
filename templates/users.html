@@ -3,20 +3,15 @@
 {% block title %}
     USERS
 {% endblock %}
-
+{% block h1 %}<h1>USERS</h1>{% endblock %}
 {% block body %}
-<div>
-{% for message in get_flashed_messages() %}
-<p class="flash-text"><b>{{message}}</b></p>
-{% endfor %}
-</div>
-    <table class="table">
+    <table class="select">
         <thead>
             <tr>
-                <th>NAME</th>
-                <th>EMAIL</th>
-                <th>PERMISSION</th>
-                <th>ACTIVE</th>
+                <th>Name</th>
+                <th>Email</th>
+                <th class="none">Permisson</th>
+                <th class="none">Active</th>
             </tr>
 
         </thead>
@@ -28,15 +23,24 @@
             <tr>
                 <td> {{ user["name"] }}</td>
                 <td> {{ user["email"] }}</td>
-                <td> {{ role[user["permission"]] }}</td>
-                <td> {{ status[user["active"]] }}</td>
+                <td class="none"> {{ role[user["permission"]] }}</td>
+                {% if user["active"] == 0 %}
+                <td class="none">Yes</td>
+                {% else %}
+                <td class="none">No</td>
+                {% endif %}
             </tr>
             {% else %}
             <tr onclick="clickButtonID('{{ user['id'] }}')">
                 <td> {{ user["name"] }}</td>
                 <td> {{ user["email"] }}</td>
-                <td> {{ role[user["permission"]] }}</td>
-                <td> {{ status[user["active"]] }}</td>
+                <td class="none"> {{ role[user["permission"]] }}</td>
+                {% if user["active"] == 0 %}
+                <td class="none">Yes</td>
+                {% else %}
+                <td class="none">No</td>
+                {% endif %}
+                
                 <td hidden>
                   <form action="/edituser" method="post">
                     <input name="id" type="hidden" value="{{ user["id"] }}">

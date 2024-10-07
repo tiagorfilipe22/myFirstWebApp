@@ -1,60 +1,59 @@
-@import url('https://fonts.googleapis.com/css2?family=M+PLUS+1+Code:wght@100..700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
-
-
-
-.light{
-  --color1: #fffcf2;
-  --color2: #ccc5b9;
-  --color3: #403d39;
-  --color4: #252422;
-  --color5: #eb5e28;
-  --font: "M PLUS 1 Code", sans-serif;
-
-}
-
-.corporate1{
-  --color1: #d8dbe2;
-  --color2: #a9bcd0;
-  --color3: #373f51;
-  --color4: #1b1b1e;
-  --color5: #58a4b0;
+.Light{
+  --color1: #242e37;
+  --color2: #ffffff;
+  --color3: #e1e3e4;
+  --color4: #242e37;
+  --color5: #008dba;
+  --colorextra: #ffffff;
   --font: "Roboto", sans-serif;
+
 }
 
-.corporate2{
+.Dark{
   --color1: #ffffff;
-  --color2: #bfc0c0;
-  --color3: #4f5d75;
-  --color4: #2d3142;
-  --color5: #ef8354;
+  --color2: #242e37;
+  --color3: #e1e3e4;
+  --color4: #1a1c20;
+  --color5: #008dba;
+  --colorextra: #ffffff;
   --font: "Roboto", sans-serif;
 }
+
 
 * {
   font-family: var(--font);
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  font-weight: 500;
-  --font-color: var(--color4);
-  --background-color: var(--color1);
+  font-weight: 600;
+  --font-color: var(--color1);
+  --background-color: var(--color2);
+
+  --nav-color: var(--color4);
+  --navfont-color: var(--colorextra);
+
   --button-color: var(--color5);
   --buttonfont-color: var(--color4);
-  --hover-color: var(--color2);
+
+  --hover-color: var(--color3);
   --hoverfont-color: var(--color4);
-  --nav-color: var(--color4);
-  --navfont-color: var(--color1);
+
+  --logo-color: var(--color5);
+
+
+ 
   --linkhover-color: var(--color5); 
-  --logo-color: var(--color1);
+
   --tab-color: var(--color4);
-  --tabhover-color: var(--color3);
-  --tabhoverfont-color: var(--color1);
-  --tabfont-color: var(--color1);
-  --disabled-color: var(--color2);
-  --disabledfont-color: var(--color4);
-  --placeholder-color: var(--color3);
+  --tabfont-color: var(--colorextra);
+  --tabhover-color: var(--color5);
+  --tabhoverfont-color: var(--color4);
+
+  --disabled-color: var(--color4);
+  --disabledfont-color: var(--color3);
+  --placeholder-color: var(--color4);
   --aler-color: var(--color5);
   --active-color: var(--color1);
   --activefont-color: var(--color5);
@@ -72,7 +71,17 @@ html {
   color: var(--font-color);
 }
 
-header {
+.mobile {
+  display: none;
+  background-color: var(--nav-color);
+  color: var(--navfont-color);
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10%;
+}
+
+
+.desktop {
   background-color: var(--nav-color);
   color: var(--navfont-color);
   display: flex;
@@ -134,6 +143,7 @@ button {
     width: 100px;
     height: 40px;
     font-size: 16px;
+    margin: 5px;
 }
 
 .active {
@@ -161,6 +171,15 @@ button:hover {
   background-color: var(--hover-color);
 }
 
+.rowbuttons {
+  display: flex;
+  justify-content: center;
+}
+
+.rowbuttons button {
+  margin: 5px;
+}
+
 .logo {
   margin: 0px 110px;
   width: 80px; /* you can use % */
@@ -177,20 +196,25 @@ table {
   width: 100%;
   border-collapse: collapse;
   text-align: center;
+  table-layout: fixed;
 }
 
 
 
 .column {
   float: left;
-  width: 33%;
+  width: 49.8%;
+  margin: 1px;
+  margin-right: auto;
 }
+
+
+
 
 td {
   padding: 15px 0px;
   border-bottom: 2px dashed var(--tab-color); /* Adds a 2px black line at the bottom of each <td> */
 }
-
 
 
 th {
@@ -200,21 +224,31 @@ th {
   color: var(--tabfont-color);
 }
 
-
+.w50 {
+  width: 50%;
+}
+.w70 {
+  width: 50%;
+}
+.w20 {
+  width: 50%;
+}
 
 .show {
   width:50%;
   margin-left:auto;
   margin-right:auto;
+  
 }
 
 
-tbody tr:hover {
+.select tbody tr:not(.nohover):hover {
   transition: all 0.5s ease 0s;
   background-color: var(--tabhover-color);
   color: var(--tabhoverfont-color);
   cursor: pointer;
 }
+
 
 input, select, textarea{
   width: 25%;
@@ -282,4 +316,89 @@ input:disabled::placeholder {
 
 .Low {
   background-color: rgba(0, 128, 0, 0.75); /* Blue color */
+}
+
+.status4 {
+  color: red;
+}
+
+.status3 {
+  color: green;
+}
+
+.status2{
+  color: orange;
+}
+
+.status1 {
+  color: blue;
+}
+
+
+
+
+@media (max-width: 1300px){
+  .column {
+    width: 100%; /* The width is 100%, when the viewport is 1300px or smaller */
+  }
+  .nav_links, .nav_button{
+    display: block;
+    margin: 10px auto;
+    text-align: center;
+  }
+  .desktop {
+    display: block;
+    align-items: center;
+  }
+
+  
+  .logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+
+  .show {
+    width: 100%;
+  }
+
+  td {
+    width: 50%;
+  }
+}
+
+
+@media (max-width: 800px){
+.nav_button{
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0px;
+
+}
+
+  .nav_links li {
+    padding: 0px 5px;
+  }
+  
+  .mobile {
+    display: block;
+  }
+  .desktop {
+    display: none;
+  }
+
+  .enter {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    font-size: 16px;
+    width: 200px;
+    height: 60px;
+  }
+
+  .none {
+    display: none;
+  }
 }

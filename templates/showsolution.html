@@ -4,11 +4,9 @@
     SHOW SOLUTION
 {% endblock %}
 
+{% block h1 %}<h1>{{ solution[0]["subject"] }}</h1>{% endblock %}
 {% block body %}
 
-
-
-<div><h2>Subject: </h2><h1>{{ solution[0]["subject"] }}</h1></div>
 
 <div>
   {% for message in get_flashed_messages() %}
@@ -17,17 +15,11 @@
   
   </div>
 
-  {% if solution[0]["creator"] == session.get("user_id") or session.get("permission") < 2 %}
-  <form action="/deletesolution" method="post">
-    <button name="solutionID" value="{{ solution[0]["id"] }}">Delete Solution</button>
-  </form>  
-  
-  {% else %}
-  {% endif %}
+ 
 
 <table class="show">
 <tr>
-    <td colspan="4">
+    <td colspan="2">
         <h3>Category:</h3>
         <h4>{{ solution[0]["category"] }}</h4>
     </td>
@@ -47,7 +39,14 @@
 <h2>Description:</h2>
 <h3>{{ solution[0]["description"] }}</h3>
 
+<div>
+{% if solution[0]["creator"] == session.get("user_id") or session.get("permission") < 2 %}
+<form action="/deletesolution" method="post">
+  <button name="solutionID" value="{{ solution[0]["id"] }}">Delete Solution</button>
+</form>  
 
-
+{% else %}
+{% endif %}
+</div>
 
 {% endblock %}

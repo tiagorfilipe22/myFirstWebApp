@@ -4,14 +4,9 @@
     INDEX
 {% endblock %}
 
+{% block h1 %}<h1>LOGIN</h1>{% endblock %}
 {% block body %}
-<div><h1>INDEX/LOGIN</h1></div>
-<div>
-  {% for message in get_flashed_messages() %}
-  <p class="flash-text"><b>{{message}}</b></p>
-  {% endfor %}
-  </div>
-    <form action="/login" method="post">
+    <form action="/login" method="post" onclick="setDefault()">
       <div>
         <input autocomple="off" autofocus name="email" placeholder="Email" type="text">
       </div>
@@ -19,7 +14,7 @@
         <input autocomple="off" name="password" placeholder="Password" type="password">
       </div>
       <div>
-        <button type="submit" class="enter">Login</button>
+        <button type="submit" class="enter" >Login</button>
       </div>
     </form>
     <form action="/resetpassword">

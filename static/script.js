@@ -1,7 +1,5 @@
 
-
-
-//----------------------------------------------------------------
+// change active select new Categori
 function changeActiveStatus() {
     var x = document.getElementById("category").value;
     if (x == "newcategory") {
@@ -15,8 +13,27 @@ function changeActiveStatus() {
 
 
 
+// change Theme name
+function changeName(theme) {
+  const button = document.getElementById('theme');
+  if (button.textContent !== theme) {
+    button.textContent = theme; // Set button text to the current theme
+  }
+}
+
+window.onload = function() {
+  const currentTheme = getCurrentTheme(); // Get current theme
+  const currentIndex = themes.indexOf(currentTheme); // Get index of current theme
+  const newIndex = (currentIndex + 1) % themes.length; // Calculate next theme index
+  const newTheme = themes[newIndex]; // Get the new theme
+
+
+  changeName(newTheme)
+}
+
+
 // Array of available themes
-const themes = ['light', 'corporate1','corporate2'];
+const themes = ['Light', 'Dark'];
 
 
 // Function to toggle between themes
@@ -25,6 +42,10 @@ function toggleMode() {
   const currentIndex = themes.indexOf(currentTheme); // Get index of current theme
   const newIndex = (currentIndex + 1) % themes.length; // Calculate next theme index
   const newTheme = themes[newIndex]; // Get the new theme
+
+  
+  changeName(currentTheme)
+
 
   // Swap the class on the html element
   document.documentElement.classList.remove(currentTheme);
@@ -50,84 +71,45 @@ function getCurrentTheme() {
   document.documentElement.classList.add(savedTheme); // Apply the theme early
 })();
 
+/*---------------------- */
 
+// active link menu
+document.addEventListener('DOMContentLoaded', () => {
+  const links = document.querySelectorAll('a');
+  const defaultLinkId = localStorage.getItem('setDefault');
+  const activeLinkId = localStorage.getItem('activeLink') || defaultLinkId;
 
-/*------------------------------------------*/
+  setActiveLink(activeLinkId);
 
-document.addEventListener('DOMContentLoaded', function() {
-  // Get the active link ID from localStorage
-  var activeLinkId = localStorage.getItem('activeLink');
+  document.querySelector('.logo')?.addEventListener('click', () => setActiveLink(defaultLinkId));
+  links.forEach(link => link.addEventListener('click', () => setActiveLink(link.id)));
 
-  // Set default link if no active link is stored
-  if (!activeLinkId) {
-      activeLinkId = 'ticketID'; // Set default link ID here
+  function setActiveLink(linkId) {
+      localStorage.setItem('activeLink', linkId);
+      links.forEach(link => link.classList.toggle('active', link.id === linkId));
   }
-
-  // Add 'active' class to the stored link ID
-  document.querySelectorAll('a').forEach(function(link) {
-      if (link.id === activeLinkId) {
-          link.classList.add('active');
-      }
-  });
-
-  // Add event listener to the button with class 'logo'
-  var logoButton = document.querySelector('.logo');
-  if (logoButton) {
-      logoButton.addEventListener('click', function() {
-          resetActiveLink('ticketID'); // Reset to 'ticketID'
-      });
-  }
-
-  // Add click event listeners to all links
-  document.querySelectorAll('a').forEach(function(link) {
-      link.addEventListener('click', changeActiveLink);
-  });
 });
-
-// Function to reset the active link
-function resetActiveLink(linkId) {
-  // Store the linkId in localStorage before navigating away
-  localStorage.setItem('activeLink', linkId);
-  
-  // Use a timeout to allow the page to load before changing the active class
-  setTimeout(function() {
-      // Remove 'active' class from all links
-      document.querySelectorAll('a').forEach(function(link) {
-          link.classList.remove('active');
-      });
-
-      // Add 'active' class to the specified link ID
-      document.getElementById(linkId).classList.add('active');
-  }, 100); // Adjust the delay as necessary
-}
-
-function changeActiveLink(event) {
-  var linkId = event.target.id;
-
-  // Store the linkId in localStorage before navigating away
-  localStorage.setItem('activeLink', linkId);
-  
-  // Use a timeout to allow the page to load before changing the active class
-  setTimeout(function() {
-      // Remove 'active' class from all links
-      document.querySelectorAll('a').forEach(function(link) {
-          link.classList.remove('active');
-      });
-
-      // Add 'active' class to the clicked link
-      document.getElementById(linkId).classList.add('active');
-  }, 100); // Adjust the delay as necessary
-}
-
-
 
 
 /*----------------------------------*/
-
+// when logout remove activeLink
 function logout() {
   // Clear localStorage
   localStorage.removeItem('activeLink');
 }
+
+
+
+function setDefault(){
+  localStorage.setItem('setDefault', 'ticketID');
+  return
+}
+
+function removesDefault(){
+  localStorage.setItem('setDefault', '');
+  return
+}
+
 
 
 
@@ -142,3 +124,7 @@ function clickButton() {
 function clickButtonID(Id) {
   document.getElementById('clickbuttonid-' + Id).click();
 }
+
+
+
+/*-------------------------------------------------------------------------------- */

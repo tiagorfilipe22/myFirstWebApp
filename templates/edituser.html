@@ -4,14 +4,8 @@
     EDIT USER
 {% endblock %}
 
+{% block h1 %}<h1>{{ user[0]["name"] }}</h1>{% endblock %}
 {% block body %}
-<div ><h1>EDIT USER</h1></div>
-<div ><h2>{{ user[0]["name"] }}</h2></div>
-<div >
-{% for message in get_flashed_messages() %}
-<p class="flash-text"><b>{{message}}</b></p>
-{% endfor %}
-</div>
 
       <form action="/changeuser" method="post">
 
@@ -40,10 +34,8 @@
       </form>
       -->
       <!-- RESET BUTTON -->
-      <table class="show">
-        <tr>
-          <td>
-            {% if user[0]["active"] == 0 %}
+       <div class="rowbuttons">
+        {% if user[0]["active"] == 0 %}
         <form action="/deactivateuser" method="post">
           <button type="submit" class="">Deactivate</button>
         </form>
@@ -52,18 +44,12 @@
           <button type="submit" class="">Activate</button>
         </form>
         {% endif %}
-          </td>
-          <td>
-            <form action="/resetpassword" method="post">
-              <button type="submit" class="">Reset Password</button>
-            </form>
-          </td>
-          <td>
-            <form action="/deleteuser" method="post">
-              <button type="submit" class="">Delete</button>
-            </form>
-          </td>
-        </tr>
-      </table>
+        <form action="/resetpassword" method="post">
+          <button type="submit" class="">Reset Password</button>
+        </form>
+        <form action="/deleteuser" method="post">
+          <button type="submit" class="">Delete</button>
+        </form>
+       </div>
 
 {% endblock %}

@@ -4,13 +4,8 @@
     NEW SOLUTION
 {% endblock %}
 
+{% block h1 %}<h1>NEW SOLUTION</h1>{% endblock %}
 {% block body %}
-<div><h1>NEW SOLUTION</h1></div>
-<div>
-{% for message in get_flashed_messages() %}
-  <p class="flash-text"><b>{{message}}</b></p>
-{% endfor %}
-</div>
     <form action="/newsolution" method="post">
   {{ticketID}}
         <div>

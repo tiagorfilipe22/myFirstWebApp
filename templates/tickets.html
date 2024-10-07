@@ -3,13 +3,8 @@
 {% block title %}
     TICKETS
 {% endblock %}
-
+{% block h1 %}<h1>TICKETS</h1>{% endblock %}
 {% block body %}
-<div>
-{% for message in get_flashed_messages() %}
-    <p class="flash-text"><b>{{message}}</b></p>
-{% endfor %}
-</div>
     {% if session.get("permission") < 4 %}
     <form action="/newticket">
     <button type="submit" class="enter">NEW TICKET</button>
@@ -32,12 +27,12 @@
 
 
     {% else %}{% endif %}
-    <table>
+    <table class="select">
         <thead>
             <tr>
                 <th>Priority</th>
                 <th>Subject</th>
-                <th>Created By</th>
+                <th class="none">Created By</th>
                 <th>Status</th>
             </tr>
 
@@ -52,11 +47,11 @@
                 <td class="{{ priority[ticket['priority']] }}"> {{ priority[ticket["priority"]] }}</td>
                 <td> {{ ticket["subject"] }}</td>
                 {% if ticket["creator_name"] %}
-                <td> {{ ticket["creator_name"] }}</td>
+                <td class="none"> {{ ticket["creator_name"] }}</td>
                 {% else %}
                 <td></td>
                 {% endif %}
-                <td> {{ status[ticket["status"]] }}</td>
+                <td class="status{{ ticket['status'] }}"> {{ status[ticket["status"]] }}</td>
                 
                 <td hidden>
                     <form action="/showticket" method="post">

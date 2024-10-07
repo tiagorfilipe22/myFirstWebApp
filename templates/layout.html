@@ -17,18 +17,15 @@
         <title>TR22: {% block title %}{% endblock %}</title>
     </head>
     <body>
-      <header>
-        <div>
-        <a href="/"><img class="logo" src=".\static\images\d3.png" alt="logo"></a>
-        </div>
+      <header class="desktop">
+        <a href="/" onclick="setDefault()"><img class="logo" src=".\static\images\d3.png" alt="logo"></a>
         {% if session.get("user_id") and session.get('permission') != 5 %}
         
-        <div>
         <nav>
           <ul class="nav_links">
             <li><a href="/tickets" onclick="changeActiveLink(event)" id="ticketID">Tickets</a></li>
             
-            <li><a href="/solutions" onclick="changeActiveLink(event)" id="docID">Solutions</a></li>
+            <li><a href="/solutions" onclick="changeActiveLink(event)" id="solutionID">Solutions</a></li>
             
             
 
@@ -39,39 +36,71 @@
             {% endif %}
           </ul>
         </nav>
-        </div>
         <!--<form action="/profile">
         <button type="submit">Profile</button>
         </form>-->
-        <div>
+        <div class="nav_button">
           
-          <button onclick="toggleMode()">Theme</button>
-          <a href="/profile"><button>Profile</button></a>
+          <button onclick="toggleMode()" id="theme"></button>
+          <a href="/profile"><button onclick="removesDefault()">Profile</button></a>
           
           <a href="/logout"><button onclick="logout()">Logout</button></a>
-        </div>
+      </div>
         {% elif session.get('permission') == 5 %}
-        <div>
+        <div class="nav_button">
           
-          <button onclick="toggleMode()">Theme</button>
-          <a href="/profile"><button>Profile</button></a>
+          <button onclick="toggleMode()" id="theme"></button>
+          <a href="/profile"><button onclick="removesDefault()">Profile</button></a>
           
           <a href="/logout"><button onclick="logout()">Logout</button></a>
-        </div>
+      </div>
         {% else %}
-        <div>
+        <div class="nav_button">
           
-          <button onclick="toggleMode()">Theme</button>
+          <button onclick="toggleMode()" id="theme"></button>
           <a href="/register"><button>Register</button></a>
           
           <a href="/"><button>Login</button></a>
           
           
-        </div>
+      </div>
         {% endif %}
+      </div>
+      </header>
+      <header class="mobile">
+          <a href="/" onclick="setDefault()"><img class="logo" src=".\static\images\d3.png" alt="logo"></a>
+          {% if session.get("user_id") %}
+          
+          <nav>
+            <ul class="nav_links">
+              <li><a href="/tickets" onclick="changeActiveLink(event)" id="ticketID">Tickets</a></li>
+            
+            <li><a href="/solutions" onclick="changeActiveLink(event)" id="docID">Solutions</a></li>
+              
+              
+            </ul>
+          </nav>
+          <!--<form action="/profile">
+          <button type="submit">Profile</button>
+          </form>-->
+          <div class="nav_button">
+            <a href="/logout"><button onclick="logout()">Logout</button></a>
+        </div>
+          {% else %}
+          <div class="nav_button">
+          
+            <a href="/register"><button>Register</button></a>
+            
+            
+          </div>
+          {% endif %}
       </header>
       <div class="body">
-      {% block body %}{% endblock %}
+        {% block h1 %}{% endblock %}
+          {% for message in get_flashed_messages() %}
+          <p class="flash-text"><b>{{message}}</b></p>
+          {% endfor %}
+        {% block body %}{% endblock %}
       </div>
     </body>
 </html>

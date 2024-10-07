@@ -3,14 +3,8 @@
 {% block title %}
     Forgot Password
 {% endblock %}
-
+{% block h1 %}<h1>FORGOT PASSWORD</h1>{% endblock %}
 {% block body %}
-<div><h1>Forgot Password</h1></div>
-<div>
-  {% for message in get_flashed_messages() %}
-  <p class="flash-text"><b>{{message}}</b></p>
-  {% endfor %}
-  </div>
     <form action="/resetpassword" method="post">
       <div>
         <input autocomple="off" autofocus name="email" placeholder="Email" type="text">

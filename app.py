@@ -21,11 +21,9 @@ db = SQL("sqlite:///data.db")
 
 # set variable to csv to log add links and delete links
 role = ["Admin", "Admin User", "Power User", "User", "New User", "Password Reset"]
-status = ["Active", "Inactive"]
 priority = ["Low", "Medium", "High"]
-ticketStatus = ["No Status", "In Progress", "In Pause", "Terminated", "Archived"]
+ticketStatus = ["No Status", "In Progress", "In Pause", "Terminated", "Unresolved", "Archived"]
 email_pattern = r'^[\w\.-]+@[\w\.-]+\.\w+$'
-
 
 
 
@@ -176,17 +174,23 @@ def login():
         email = request.form.get("email")
         password = request.form.get("password")
 
+        
+
+
         # variables validation
         if not email:
             flash("No Email!")
             return render_template("index.html")
-        elif not password:
+        
+
+        if not password:
             flash("No Password!")
             return render_template("index.html")
 
         # get database line where email
         rows = db.execute(
         "SELECT * FROM users WHERE email = ?", email)
+
 
         if not rows:
             flash("Invalid Email and/or Password")
@@ -309,9 +313,8 @@ def users():
     users = db.execute("SELECT * FROM users WHERE id > 1 AND id != ?", userID)
 
     
-    
 
-    return render_template("users.html", users = users, role = role, status = status)
+    return render_template("users.html", users = users, role = role)
 
 # EDIT USER
 @app.route("/edituser", methods=["GET", "POST"])
@@ -341,7 +344,7 @@ def deactivateuser():
 
         if userID:
             db.execute("UPDATE users SET active = 1 WHERE id = ?", userID)
-
+            flash("User Deactivated!")
             return redirect("/edituser")
         else:
             flash("Error ocurred!")
@@ -358,7 +361,7 @@ def activateuser():
 
         if userID:
             db.execute("UPDATE users SET active = 0 WHERE id = ?", userID)
-
+            flash("User Activated!")
             return redirect("/edituser")
         else:
             flash("Error ocurred!")
@@ -378,7 +381,7 @@ def changeuser():
 
         if userID:
             db.execute("UPDATE users SET permission = ? WHERE id = ?", permission, userID)
-
+            flash("Permission changed")
             return redirect("/edituser")
         else:
             flash("Error ocurred!")
@@ -400,7 +403,7 @@ def deleteuser():
             return redirect("/users")
         else:
             flash("Error ocurred!")
-            return redirect("/edituser")
+            return redirect("/users")
         
 
 # RESET PASSWORD USER
@@ -429,6 +432,7 @@ def resetpassword():
                 db.execute("UPDATE users SET hash = ?, permission = 5 WHERE email = ?", hash, email)
                 
             except:
+                flash("Error ocurred!")
                 return redirect("/")
 
 
@@ -438,6 +442,7 @@ def resetpassword():
             text = "Hello " + name + "\nYour password has been reseted.\nNew Password: " + password
             email_alert.email_alert("Help Desk Project CS50 - Password Reset", text, email)
             # return users
+            flash("Check your email with password!")
             return redirect("/")
 
 
@@ -459,6 +464,7 @@ def resetpassword():
         text = "Hello " + name + "\nYour password has been reseted.\nNew Password: " + password
         email_alert.email_alert("Help Desk Project CS50 - Password Reset", text, email)
         # return users
+        flash("Password reseted to " + name + "!")
         return redirect("/users")
             
     
@@ -478,20 +484,33 @@ def tickets():
 
         # tickets = db.execute("SELECT * FROM tickets WHERE status = ? ORDER BY priority DESC, time ASC", status)
 
+        if session.get("permission") < 3:
+            tickets = db.execute(
+                """
+                SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
+                users.name AS creator_name FROM tickets
+                LEFT JOIN users ON tickets.creator = users.id
+                WHERE tickets.status = ? ORDER BY priority DESC, time ASC
+                """
+                , status
+                )
 
-        tickets = db.execute(
-            """
-            SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
-            users.name AS creator_name FROM tickets
-            LEFT JOIN users ON tickets.creator = users.id
-            WHERE tickets.status = ? ORDER BY priority DESC, time ASC
-            """
-            , status
-            )
 
-
-        
-        return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
+            
+            return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
+        else:
+            userID = session.get("user_id")
+            tickets = db.execute(
+                """
+                SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
+                users.name AS creator_name FROM tickets
+                LEFT JOIN users ON tickets.creator = users.id
+                WHERE tickets.status = ? AND users.id = ? ORDER BY priority DESC, time ASC
+                """
+                , status, userID
+                )
+            
+            return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
 
 
     if session.get("permission") < 3:
@@ -501,7 +520,7 @@ def tickets():
             SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
             users.name AS creator_name FROM tickets
             LEFT JOIN users ON tickets.creator = users.id
-            WHERE tickets.status < 4 ORDER BY priority DESC, time ASC
+            WHERE tickets.status < 5 ORDER BY priority DESC, time ASC
             """
             )
         return render_template("tickets.html", tickets = tickets, status = ticketStatus, priority = priority)
@@ -512,7 +531,7 @@ def tickets():
             SELECT tickets.id, tickets.subject, tickets.status, tickets.priority,
             users.name AS creator_name FROM tickets
             LEFT JOIN users ON tickets.creator = users.id
-            WHERE tickets.status < 4 AND users.id = ? ORDER BY priority DESC, time ASC
+            WHERE tickets.status < 5 AND users.id = ? ORDER BY priority DESC, time ASC
             """
             , userID
             )
@@ -584,16 +603,17 @@ def showticket():
             """,
             ticketID)
         
-        answers = db.execute(
+        messages = db.execute(
         """
-        SELECT answers.ticket_id, answers.answer, answers.time, users.name AS creator_name
-        FROM answers LEFT JOIN users ON answers.creator = users.id
+        SELECT messages.ticket_id, messages.message, messages.time, users.name AS creator_name
+        FROM messages LEFT JOIN users ON messages.creator = users.id
         WHERE ticket_id = ?
-        """,
-        ticketID
+        ORDER BY messages.time DESC
+        """
+        , ticketID
     )
-        print(answers)
-        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers)
+        print(messages)
+        return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, messages = messages)
 
     # get link id
     ticketID = session["show_ticket"]
@@ -601,17 +621,25 @@ def showticket():
     session["show_ticket"] = ticketID
     ticket = db.execute("SELECT tickets.id, tickets.subject, tickets.description, tickets.status, tickets.priority, tickets.time, tickets.creator, users.name AS creator_name FROM tickets LEFT JOIN users ON tickets.creator = users.id WHERE tickets.id = ?", ticketID)
     #solutions = db.execute("SELECT solutions.id, solutions.subject, solutions.category, solutions.time, users.name AS creator_name FROM solutions LEFT JOIN users ON solutions.creator = users.id ORDER BY category, subject")
-    solutions = db.execute("SELECT s.* FROM solutions s JOIN interchange i ON s.id = i.solution_id JOIN tickets t ON t.id = i.ticket_id WHERE t.id = ?", ticketID)
-    answers = db.execute(
+    solutions = db.execute(
         """
-        SELECT answers.ticket_id, answers.answer, answers.time, users.name AS creator_name
-        FROM answers LEFT JOIN users ON answers.creator = users.id
+        SELECT s.*
+        FROM solutions s JOIN interchange i ON s.id = i.solution_id JOIN tickets t ON t.id = i.ticket_id
+        WHERE t.id = ?
+        """
+        , ticketID
+        )
+    messages = db.execute(
+        """
+        SELECT messages.ticket_id, messages.message, messages.time, users.name AS creator_name
+        FROM messages LEFT JOIN users ON messages.creator = users.id
         WHERE ticket_id = ?
+        ORDER BY messages.time DESC
         """,
         ticketID
     )
-    print(answers)
-    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, answers = answers)
+    print(messages)
+    return render_template("showticket.html", ticket = ticket, priority = priority, status = ticketStatus, solutions = solutions, messages = messages)
 
 @app.route("/saveticket", methods=["GET", "POST"])
 def saveticket():
@@ -621,10 +649,10 @@ def saveticket():
         ticketID = session["show_ticket"]
 
         db.execute("UPDATE tickets SET status = ? WHERE id = ?", status, ticketID)
-        return redirect("/showticket")
+        return redirect("messagecket")
     
-@app.route("/archiveticket", methods=["GET", "POST"])
-def archiveticket():
+@app.route("/changestatus", methods=["GET", "POST"])
+def changestatus():
 
     if request.method == "POST":
         status = request.form.get("status")
@@ -776,8 +804,8 @@ def newsolutiontoticket():
 
 
 # add tickets
-@app.route("/newanswer", methods=["GET", "POST"])
-def newanswer():
+@app.route("/newmessage", methods=["GET", "POST"])
+def newmessage():
 
     
 
@@ -786,17 +814,17 @@ def newanswer():
         ticketID = session.get("show_ticket")
 
         # get variables
-        answer = request.form.get("answer")
+        message = request.form.get("message")
 
         # variable validation
-        if not answer:
+        if not message:
             return redirect("/showticket")
         
 
         # add to links database
         db.execute(
-            "INSERT INTO answers (ticket_id, creator, answer) VALUES(?, ?, ?)",
-            ticketID, userID, answer
+            "INSERT INTO messages (ticket_id, creator, message) VALUES(?, ?, ?)",
+            ticketID, userID, message
         )
 
         return redirect("/showticket")
