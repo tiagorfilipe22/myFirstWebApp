@@ -3,20 +3,20 @@
 {% block title %}
     SOLUTIONS
 {% endblock %}
-{% block h1 %}<h1>SOLUTIONS</h1>{% endblock %}
+{% block h1 %}<h1>Solutions</h1>{% endblock %}
 {% block body %}
     {% if session.get("permission") < 3 %}
-    <form action="/newsolution">
+    <form class="margin" action="/newsolution">
     <button type="submit" class="enter">NEW SOLUTION</button>
     </form>
     {% endif %}
-    <form action="/solutions" method="post">
+    <form class="margin" action="/solutions" method="post">
     <select id="status" name="category" onchange="clickButton()">
         <option hidden disabled value="" selected>Filter</option>
         
         <option value="reset">All</option>
         {% for item in list %}
-        <option value="{{ item["category"] }}">{{ item["category"] }}</option>
+        <option value="{{ item['category'] }}">{{ item["category"] }}</option>
         
         
         {% endfor %}
@@ -26,17 +26,16 @@
     </form>
 
 
-
+    <div class="main">
     {% for categorie in categories %}
-    <table {% if categories|length == 1 %} %}
+    
+    <table {% if categories|length == 1 %}
     class="select"
     {% else %}
     class="select column"
     {% endif %}>
         <thead>
-            <tr>
-                <h1>{{ categorie["category"] }}</h1>
-            </tr>
+            <caption>{{ categorie["category"] }}</caption>
 
         
             <tr>
@@ -53,9 +52,9 @@
                 <td>{{ solution["creator_name"] }}</td>
                 <td class="none">{{ solution["time"] }}</td>
                 <td hidden>
-                    <form action="/showsolution" method="post">
-                        <input name="id" type="hidden" value="{{ solution["id"] }}">
-                        <button type="submit" id="clickbuttonid-{{ solution["id"] }}">SHOW</button>
+                    <form action="/showsolution">
+                        <input name="id" type="hidden" value="{{ solution['id'] }}">
+                        <button type="submit" id="clickbuttonid-{{ solution['id'] }}">SHOW</button>
                     </form>
                 </td>
                 
@@ -66,5 +65,6 @@
         </tbody>
     </table>
     {% endfor %}
+</div>
 
 {% endblock %}

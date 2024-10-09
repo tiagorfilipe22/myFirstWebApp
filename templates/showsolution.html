@@ -8,15 +8,10 @@
 {% block body %}
 
 
-<div>
-  {% for message in get_flashed_messages() %}
-    <p class="flash-text"><b>{{message}}</b></p>
-  {% endfor %}
-  
-  </div>
+
 
  
-
+<div class="main">
 <table class="show">
 <tr>
     <td colspan="2">
@@ -39,14 +34,14 @@
 <h2>Description:</h2>
 <h3>{{ solution[0]["description"] }}</h3>
 
-<div>
+<div class="margin">
 {% if solution[0]["creator"] == session.get("user_id") or session.get("permission") < 2 %}
-<form action="/deletesolution" method="post">
+<form action="/deletesolution">
   <button name="solutionID" value="{{ solution[0]["id"] }}">Delete Solution</button>
 </form>  
 
 {% else %}
 {% endif %}
 </div>
-
+</div>
 {% endblock %}

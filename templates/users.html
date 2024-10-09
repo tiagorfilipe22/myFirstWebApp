@@ -3,8 +3,9 @@
 {% block title %}
     USERS
 {% endblock %}
-{% block h1 %}<h1>USERS</h1>{% endblock %}
+{% block h1 %}<h1>Users</h1>{% endblock %}
 {% block body %}
+<div class="main">
     <table class="select">
         <thead>
             <tr>
@@ -42,7 +43,7 @@
                 {% endif %}
                 
                 <td hidden>
-                  <form action="/edituser" method="post">
+                  <form action="/edituser">
                     <input name="id" type="hidden" value="{{ user["id"] }}">
                     <button type="submit" id="clickbuttonid-{{ user["id"] }}" >EDIT</button>
                   </form>
@@ -55,5 +56,6 @@
 
         </tbody>
     </table>
+</div>
 
 {% endblock %}

@@ -7,7 +7,7 @@
 {% block h1 %}<h1>{{ user[0]["name"] }}</h1>{% endblock %}
 {% block body %}
 
-      <form action="/changeuser" method="post">
+      <form class="margin" action="/changeuser">
 
         <div ><p>Change Permission</p></div>
         <div >
@@ -28,26 +28,20 @@
         <button hidden type="submit" class="enter" id="clickbutton">Save</button>
       </div>
       </form>
-      <!-- RESET BUTTON
-      <form action="/resetstatus" method="post">
-        <button type="submit" class="btn btn-sm btn-outline-secondary" >RESET PASSWORD</button>
-      </form>
-      -->
-      <!-- RESET BUTTON -->
        <div class="rowbuttons">
         {% if user[0]["active"] == 0 %}
-        <form action="/deactivateuser" method="post">
+        <form action="/deactivateuser">
           <button type="submit" class="">Deactivate</button>
         </form>
         {% else %}
-        <form action="/activateuser" method="post">
+        <form action="/activateuser">
           <button type="submit" class="">Activate</button>
         </form>
         {% endif %}
         <form action="/resetpassword" method="post">
           <button type="submit" class="">Reset Password</button>
         </form>
-        <form action="/deleteuser" method="post">
+        <form action="/deleteuser">
           <button type="submit" class="">Delete</button>
         </form>
        </div>

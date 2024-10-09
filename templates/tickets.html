@@ -3,14 +3,14 @@
 {% block title %}
     TICKETS
 {% endblock %}
-{% block h1 %}<h1>TICKETS</h1>{% endblock %}
+{% block h1 %}<h1>Tickets</h1>{% endblock %}
 {% block body %}
     {% if session.get("permission") < 4 %}
-    <form action="/newticket">
+    <form class="margin" action="/newticket">
     <button type="submit" class="enter">NEW TICKET</button>
     </form>
 
-    <form action="/tickets" method="post">
+    <form class="margin" action="/tickets" method="post">
     <select id="status" name="status" onchange="clickButton()">
         <option hidden disabled value="" selected>Filter</option>
         
@@ -25,8 +25,9 @@
     <button hidden type="submit" id="clickbutton">click</button>
     </form>
 
-
+    
     {% else %}{% endif %}
+    <div class="main">
     <table class="select">
         <thead>
             <tr>
@@ -54,7 +55,7 @@
                 <td class="status{{ ticket['status'] }}"> {{ status[ticket["status"]] }}</td>
                 
                 <td hidden>
-                    <form action="/showticket" method="post">
+                    <form action="/showticket">
                         <input name="id" type="hidden" value="{{ ticket["id"] }}">
                         <button type="submit" id="clickbuttonid-{{ ticket["id"] }}">SHOW</button>
                     </form>
@@ -65,5 +66,5 @@
         </tbody>
     </table>
     
-
+</div>
 {% endblock %}

@@ -1,5 +1,8 @@
+/*font*/
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 
+
+/*themes with variable colors*/
 .Light{
   --color1: #242e37;
   --color2: #ffffff;
@@ -21,7 +24,7 @@
   --font: "Roboto", sans-serif;
 }
 
-
+/*everything*/
 * {
   font-family: var(--font);
   box-sizing: border-box;
@@ -30,27 +33,18 @@
   font-weight: 600;
   --font-color: var(--color1);
   --background-color: var(--color2);
-
   --nav-color: var(--color4);
   --navfont-color: var(--colorextra);
-
   --button-color: var(--color5);
   --buttonfont-color: var(--color4);
-
   --hover-color: var(--color3);
   --hoverfont-color: var(--color4);
-
   --logo-color: var(--color5);
-
-
- 
   --linkhover-color: var(--color5); 
-
   --tab-color: var(--color4);
   --tabfont-color: var(--colorextra);
   --tabhover-color: var(--color5);
   --tabhoverfont-color: var(--color4);
-
   --disabled-color: var(--color4);
   --disabledfont-color: var(--color3);
   --placeholder-color: var(--color4);
@@ -71,16 +65,6 @@ html {
   color: var(--font-color);
 }
 
-.mobile {
-  display: none;
-  background-color: var(--nav-color);
-  color: var(--navfont-color);
-  justify-content: space-between;
-  align-items: center;
-  padding: 5px 10%;
-}
-
-
 .desktop {
   background-color: var(--nav-color);
   color: var(--navfont-color);
@@ -89,11 +73,19 @@ html {
   align-items: center;
   padding: 10px 10%;
 }
-
+.mobile {
+  display: none;
+  background-color: var(--nav-color);
+  color: var(--navfont-color);
+  justify-content: space-between;
+  align-items: center;
+  padding: 5px 10%;
+}
 .body {
   padding: 10px 10%;
   text-align: center;  /* Optional: centers inline text */
 }
+
 
 header a {
   color: var(--navfont-color);
@@ -102,22 +94,15 @@ header a {
 
 body {
   transition: background-color 0.5s, color 0.3s;
-  
 }
-
-
 
 .logo:hover {
   background-color: var(--hover-color);
 }
 
-
-
 a:hover {
   font-weight: bold;
 }
-
-
 
 .nav_links li {
     display: inline-block;
@@ -132,7 +117,6 @@ a:hover {
     color: var(--linkhover-color);
 }
 
-
 button {
     background-color: var(--button-color);
     color: var(--buttonfont-color);
@@ -144,6 +128,9 @@ button {
     height: 40px;
     font-size: 16px;
     margin: 5px;
+}
+button:hover {
+  background-color: var(--hover-color);
 }
 
 .active {
@@ -162,14 +149,11 @@ button {
 }
 
 
-
 .noEdit td {
   padding: 20px 25px;
 }
 
-button:hover {
-  background-color: var(--hover-color);
-}
+
 
 .rowbuttons {
   display: flex;
@@ -190,32 +174,32 @@ button:hover {
   transition: all 1s ease 0s;
 }
 
+.main {
+  margin: 40px 0 40px 0;
+}
+
+.margin {
+  margin: 20px 0 20px;
+}
 
 table {
-  margin:50px 0px;
   width: 100%;
   border-collapse: collapse;
   text-align: center;
   table-layout: fixed;
+  margin: 20px 0 20px 0;
 }
-
-
 
 .column {
   float: left;
   width: 49.8%;
-  margin: 1px;
-  margin-right: auto;
+  margin: 0px 1px 0px 1px;
 }
-
-
-
 
 td {
   padding: 15px 0px;
   border-bottom: 2px dashed var(--tab-color); /* Adds a 2px black line at the bottom of each <td> */
 }
-
 
 th {
   background-color: var(--tab-color);
@@ -224,15 +208,13 @@ th {
   color: var(--tabfont-color);
 }
 
-.w50 {
-  width: 50%;
+caption {
+  font-size: 20px;
+  padding: 10px 10px;
+  color: var(--tabfont-color);
+  background-color: var(--tab-color);
 }
-.w70 {
-  width: 50%;
-}
-.w20 {
-  width: 50%;
-}
+
 
 .show {
   width:50%;
@@ -241,6 +223,13 @@ th {
   
 }
 
+h1 {
+  margin: 20px 0 20px;
+}
+
+h2{
+  margin: 10px 0 10px;
+}
 
 .select tbody tr:not(.nohover):hover {
   transition: all 0.5s ease 0s;
@@ -248,7 +237,6 @@ th {
   color: var(--tabhoverfont-color);
   cursor: pointer;
 }
-
 
 input, select, textarea{
   width: 25%;
@@ -262,36 +250,35 @@ input, select, textarea{
 
 /* Focus state */
 input:focus, textarea:focus, select:focus {
-  outline: none; /* Remove default outline */
+  outline: none;
   border: 4px solid var(--border-color);
-  box-shadow: 0 0 10px var(--border-color); /* Add shadow on focus */
+  box-shadow: 0 0 10px var(--border-color);
 }
 
 
 /* Hover state */
 input:hover, textarea:hover, select:hover {
-  border-color: var(--border-color); /* Change border color on hover */
+  border-color: var(--border-color);
 }
 
 /* Disabled input styling */
 input:disabled {
-  background-color: var(--disabled-color); /* Light gray background */
+  background-color: var(--disabled-color);
   color: var(--disabledfont-color);
-  cursor: not-allowed; /* Show not-allowed cursor */
+  cursor: not-allowed;
 }
-
-/* Placeholder text styling */
-input::placeholder, textarea::placeholder {
-  color: var(--placeholder-color);/* Gray color for placeholder */
-  font-style: italic; /* Italic text */
-}
-
 
 input:disabled::placeholder {
   color: var(--disabledfont-color);
 }
 
+/* Placeholder text styling */
+input::placeholder, textarea::placeholder {
+  color: var(--placeholder-color);
+  font-style: italic;
+}
 
+/*error messages*/
 .flash-text {
   font-size: 30px;
   font-weight: bold;
@@ -306,6 +293,7 @@ input:disabled::placeholder {
 }
 
 
+/* priorities colors */
 .Medium {
   background-color: rgba(255, 166, 0, 0.75); /* Blue color */
 }
@@ -318,6 +306,7 @@ input:disabled::placeholder {
   background-color: rgba(0, 128, 0, 0.75); /* Blue color */
 }
 
+/* status colors */
 .status4 {
   color: red;
 }
@@ -336,7 +325,7 @@ input:disabled::placeholder {
 
 
 
-
+/*media scale*/
 @media (max-width: 1300px){
   .column {
     width: 100%; /* The width is 100%, when the viewport is 1300px or smaller */
@@ -378,6 +367,7 @@ input:disabled::placeholder {
     margin: 0px;
 
 }
+
 
   .nav_links li {
     padding: 0px 5px;
