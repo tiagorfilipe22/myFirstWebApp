@@ -4,30 +4,26 @@
     NEW TICKET
 {% endblock %}
 
-{% block h1 %}<h1>NEW TICKET</h1>{% endblock %}
+{% block h1 %}<h1>New Ticket</h1>{% endblock %}
 {% block body %}
-    <form action="/newticket" method="post">
-      
-      <div>
-        <input autocomple="off" name="subject" placeholder="Subject" type="text">
-      </div>
-      <div>
-        <textarea autocomple="off" name="problem" rows="4" cols="50" placeholder="Describe the Problem"></textarea>
-      </div>
-      <div>
-        
-        
-        <select id="priority" name="priority">
-          <option disabled value="" selected>Choose Priority</option>
-          <option value="0" >Low</option>
-          <option value="1" >Medium</option>
-          <option value="2" >High</option>
-        </select>
-        
-      </div>
-      <div>
-        <button type="submit" class="enter large">NEW</button>
-      </div>
-    </form>
+  <form action="/newticket" method="post">
+    <div>
+      <input autocomple="off" name="subject" placeholder="Subject" type="text">
+    </div>
+    <div>
+      <textarea autocomple="off" name="problem" rows="4" cols="50" placeholder="Describe the Problem"></textarea>
+    </div>
+    <div>
+      <select id="priority" name="priority">
+        <option disabled value="" selected>Choose Priority</option>
+        <option value="0" >Low</option>
+        <option value="1" >Medium</option>
+        <option value="2" >High</option>
+      </select>
+    </div>
+    <div>
+      <button type="submit" class="enter large">NEW</button>
+    </div>
+  </form>
 
 {% endblock %}

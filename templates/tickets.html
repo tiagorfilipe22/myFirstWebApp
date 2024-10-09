@@ -16,16 +16,11 @@
         
         <option value="reset">All Open</option>
         {% for item in status %}
-        <option value="{{ status.index(item) }}">{{ item }}</option>
-        
-        
+        <option value="{{ status.index(item) }}">{{ item }}</option> 
         {% endfor %}
     </select>
-
     <button hidden type="submit" id="clickbutton">click</button>
     </form>
-
-    
     {% else %}{% endif %}
     <div class="main">
     <table class="select">
@@ -38,12 +33,9 @@
             </tr>
 
         </thead>
-
         <tbody>
-
             {% for ticket in tickets %}
-
-
+            <!--get function on clickbuttonID(ID)-->
             <tr onclick="clickButtonID('{{ ticket['id'] }}')">
                 <td class="{{ priority[ticket['priority']] }}"> {{ priority[ticket["priority"]] }}</td>
                 <td> {{ ticket["subject"] }}</td>
@@ -62,7 +54,6 @@
                 </td>
             </tr>
             {% endfor %}
-
         </tbody>
     </table>
     

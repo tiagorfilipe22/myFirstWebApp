@@ -7,164 +7,150 @@
 {% block body %}
 
 
-<div class="main">
-  
-<table class="show">
-  <tr>
-  <td>
-  <h3>Priority:</h3>
-  <h3 class="{{ priority[ticket[0]['priority']] }}">{{ priority[ticket[0]["priority"]] }}</h3>
-  </td>
-  <td>
-    <h3>Status:</h3>
-    <form action="/saveticket" method="post">
-      {% if session.get("permission") > 2 %}
-      <select disabled id="status" name="status">
-          <option value=""selected>
-              {{ status[ticket[0]["status"]] }}
-          </option>
-      </select>
-      {% else %}
-      <select class="status{{ ticket[0]['status'] }}" id="status" name="status" onchange="clickButton()">
-          {% for item in status %}
-          {% if item == status[5] or item == status[4]%}
-          <option  hidden disabled {% if item == status[ticket[0]["status"]] %}selected{% endif %}>
-            {{ item }}
-          </option>
-          {% else %}
-          <option value="{{ status.index(item) }}"
-              {% if item == status[ticket[0]["status"]] %}selected{% endif %}>
-              {{ item }}
-          </option>
-          {% endif %}
-          
-          {% endfor %}
-      </select>
-      {% endif %}
-      <button hidden type="submit" id="clickbutton">click</button>
-  </form>
-      
-  
-      
-  </form>
-  <div class="rowbuttons">
-      {% if status[ticket[0]["status"]] == status[3] %}
-        <form action="/saveticket" method="post"><button name="status" value="5">Archive</button></form>
-        <form action="/saveticket" method="post"><button name="status" value="4">Unresolved</button></form>
-      {% elif status[ticket[0]["status"]] == status[4] %}
-        <form action="/saveticket" method="post"><button name="status" value="5">Archive</button></form>
-      {% endif %}
-    </div>
+  <div class="main">
 
+    <table class="show">
+      <tr>
+        <td>
+          <h3>Priority:</h3>
+          <h3 class="{{ priority[ticket[0]['priority']] }}">{{ priority[ticket[0]["priority"]] }}</h3>
+        </td>
+        <td>
+          <h3>Status:</h3>
+          <form action="/saveticket" method="post">
+            {% if session.get("permission") > 2 %}
+            <select disabled id="status" name="status">
+              <option value=""selected>
+                {{ status[ticket[0]["status"]] }}
+              </option>
+            </select>
+            {% else %}
+            <select class="status{{ ticket[0]['status'] }}" id="status" name="status" onchange="clickButton()">
+              {% for item in status %}
+              {% if item == status[5] or item == status[4]%}
+              <option  hidden disabled {% if item == status[ticket[0]["status"]] %}selected{% endif %}>
+                {{ item }}
+              </option>
+              {% else %}
+              <option value="{{ status.index(item) }}"
+                  {% if item == status[ticket[0]["status"]] %}selected{% endif %}>
+                  {{ item }}
+              </option>
+              {% endif %}
 
-    
-</tr>
-<tr>
-  <td>
-    <h3>Creator:</h3>
-    <h4>{{ ticket[0]["creator_name"] }}</h4>
-  </td>
-  <td>
-    <h3>Time:</h3>
-    <h4>{{ ticket[0]["time"] }}</h4>
-  </td>
-</tr>
-</table>
+              {% endfor %}
+            </select>
+            {% endif %}
+            <button hidden type="submit" id="clickbutton">click</button>
+          </form>
+          <div class="rowbuttons">
+            {% if status[ticket[0]["status"]] == status[3] %}
+              <form action="/saveticket" method="post"><button name="status" value="5">Archive</button></form>
+              <form action="/saveticket" method="post"><button name="status" value="4">Unresolved</button></form>
+            {% elif status[ticket[0]["status"]] == status[4] %}
+              <form action="/saveticket" method="post"><button name="status" value="5">Archive</button></form>
+            {% endif %}
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <h3>Creator:</h3>
+          <h4>{{ ticket[0]["creator_name"] }}</h4>
+        </td>
+        <td>
+          <h3>Time:</h3>
+          <h4>{{ ticket[0]["time"] }}</h4>
+        </td>
+      </tr>
+    </table>
 
-<h2>Problem:</h2>
-<h3>{{ ticket[0]["description"] }}</h3>
+    <h2>Problem:</h2>
+    <h3>{{ ticket[0]["description"] }}</h3>
 
-  <div class="margin">
-    {% if ticket[0]["creator"] == session.get("user_id") or session.get("permission") < 2 %}
-      <form action="/deleteticket">
-        <button name="ticketID" value="{{ ticket[0]["id"] }}">Delete Ticket</button>
-      </form>  
-      
+    <div class="margin">
+      {% if ticket[0]["creator"] == session.get("user_id") or session.get("permission") < 2 %}
+        <form action="/deleteticket">
+          <button name="ticketID" value="{{ ticket[0]["id"] }}">Delete Ticket</button>
+        </form>  
+
       {% else %}
       {% endif %}
     </div>
 
-  </div>
- <!--messages-->
- {% if ticket[0]["status"] >= 5 %}
+    </div>
+    <!--messages-->
+    {% if ticket[0]["status"] >= 5 %}
 
-{% else %}
-<form action="/newmessage" method="post">
-  <textarea autocomple="off" name="message" rows="4" cols="100" placeholder="Write Message"></textarea>
-  <input name="ticketID" type="hidden" value="{{ ticket[0]['id'] }}">
-    
-  <div>  
-  <button type="submit">ADD message</button>
-</div>
-</form>
-{% endif %}
+    {% else %}
+    <form action="/newmessage" method="post">
+      <textarea autocomple="off" name="message" rows="4" cols="100" placeholder="Write Message"></textarea>
+      <input name="ticketID" type="hidden" value="{{ ticket[0]['id'] }}">
+      <div>  
+      <button type="submit">ADD message</button>
+    </div>
+    </form>
+    {% endif %}
 
-<table class="column">
-  <caption>Messages</caption>
-  <thead>
-    <tr>
-      <th>Text</th>
-      <th>Created By <br> Time</th>
-      
-  </tr>
-  </thead>
-  <tbody>
-    {% for message in messages %}
-    <tr>
-      <td >{{ message["message"] }}</td>
-      <td> {{ message["creator_name"] }} <br> {{ message["time"] }}</td>
-      
-    </tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-
-
-
-  <!--SOLUTIONS-->
-  
-  <table class="select column"> 
-    <caption>Solutions</caption>
-    <thead>
+    <table class="column">
+      <caption>Messages</caption>
+      <thead>
         <tr>
-            <th>Category</th>
-            <th>Subject</th>
-            <th>Created By<br>Time</th>
-        </tr>
-
-    </thead>
-
-    <tbody>
-
-
-      
-      {% for solution in solutions %}
-        <tr onclick="clickButtonID('{{ solution['id'] }}')">
-            <td> {{ solution["category"] }}</td>
-            <td> {{ solution["subject"] }}</td>
-            <td>{{ solution["creator_name"] }}<br>{{ solution["time"] }}</td>
-            <td hidden>
-                <form action="/showsolution">
-                    <input name="id" type="hidden" value="{{ solution["id"] }}">
-                    <button type="submit" id="clickbuttonid-{{ solution["id"] }}">SHOW</button>
-                </form>
-            </td>
+          <th>Text</th>
+          <th>Created By <br> Time</th>
+      </tr>
+      </thead>
+      <tbody>
+        {% for message in messages %}
+        <tr>
+          <td >{{ message["message"] }}</td>
+          <td> {{ message["creator_name"] }} <br> {{ message["time"] }}</td>
         </tr>
         {% endfor %}
-        <tr class="nohover">
-          <td colspan="3">
-            {% if session.get("permission") < 3 %}
-        <form action="/newsolutiontoticket"> 
-          <input name="ticketID" type="hidden" value="{{ ticket[0]["id"] }}">
-        <button type="submit">ADD SOLUTION</button>
-        </form>
-        {% endif %}
-      </td>
-        </tr>
-    </tbody>
+      </tbody>
+    </table>
 
-</table>
+      <!--SOLUTIONS-->
 
+      <table class="select column"> 
+        <caption>Solutions</caption>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Subject</th>
+                <th>Created By<br>Time</th>
+            </tr>
+
+        </thead>
+
+        <tbody>
+
+          {% for solution in solutions %}
+          <!--get function on clickbuttonID(ID)-->
+            <tr onclick="clickButtonID('{{ solution['id'] }}')">
+                <td> {{ solution["category"] }}</td>
+                <td> {{ solution["subject"] }}</td>
+                <td>{{ solution["creator_name"] }}<br>{{ solution["time"] }}</td>
+                <td hidden>
+                    <form action="/showsolution">
+                        <input name="id" type="hidden" value="{{ solution["id"] }}">
+                        <button type="submit" id="clickbuttonid-{{ solution["id"] }}">SHOW</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+            <tr class="nohover">
+              <td colspan="3">
+                {% if session.get("permission") < 3 %}
+            <form action="/newsolutiontoticket"> 
+              <input name="ticketID" type="hidden" value="{{ ticket[0]["id"] }}">
+            <button type="submit">ADD SOLUTION</button>
+            </form>
+            {% endif %}
+              </td>
+            </tr>
+        </tbody>
+
+    </table>
 
 {% endblock %}

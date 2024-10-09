@@ -7,64 +7,58 @@
 {% block body %}
     {% if session.get("permission") < 3 %}
     <form class="margin" action="/newsolution">
-    <button type="submit" class="enter">NEW SOLUTION</button>
-    </form>
-    {% endif %}
+        <button type="submit" class="enter">NEW SOLUTION</button>
+        </form>
+        {% endif %}
     <form class="margin" action="/solutions" method="post">
-    <select id="status" name="category" onchange="clickButton()">
-        <option hidden disabled value="" selected>Filter</option>
-        
-        <option value="reset">All</option>
-        {% for item in list %}
-        <option value="{{ item['category'] }}">{{ item["category"] }}</option>
-        
-        
-        {% endfor %}
-    </select>
+        <select id="status" name="category" onchange="clickButton()">
+            <option hidden disabled value="" selected>Filter</option>
+            <option value="reset">All</option>
+            {% for item in list %}
+            <option value="{{ item['category'] }}">{{ item["category"] }}</option>
+            {% endfor %}
+        </select>
 
     <button hidden type="submit" id="clickbutton">click</button>
     </form>
-
-
     <div class="main">
-    {% for categorie in categories %}
-    
-    <table {% if categories|length == 1 %}
-    class="select"
-    {% else %}
-    class="select column"
-    {% endif %}>
-        <thead>
-            <caption>{{ categorie["category"] }}</caption>
-
+        {% for categorie in categories %}
         
-            <tr>
-                <th >Subject</th>
-                <th>Created By</th>
-                <th class="none">Creation Time</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for solution in solutions %}
-            {% if solution["category"] == categorie["category"] %}
-            <tr onclick="clickButtonID('{{ solution['id'] }}')">
-                <td>{{ solution["subject"] }}</td>
-                <td>{{ solution["creator_name"] }}</td>
-                <td class="none">{{ solution["time"] }}</td>
-                <td hidden>
-                    <form action="/showsolution">
-                        <input name="id" type="hidden" value="{{ solution['id'] }}">
-                        <button type="submit" id="clickbuttonid-{{ solution['id'] }}">SHOW</button>
-                    </form>
-                </td>
+        <table {% if categories|length == 1 %}
+        class="select"
+        {% else %}
+        class="select column"
+        {% endif %}>
+            <thead>
+                <caption>{{ categorie["category"] }}</caption>
+                <tr>
+                    <th >Subject</th>
+                    <th>Created By</th>
+                    <th class="none">Creation Time</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for solution in solutions %}
+                {% if solution["category"] == categorie["category"] %}
+                <!--get function on clickbuttonID(ID)-->
+                <tr onclick="clickButtonID('{{ solution['id'] }}')">
+                    <td>{{ solution["subject"] }}</td>
+                    <td>{{ solution["creator_name"] }}</td>
+                    <td class="none">{{ solution["time"] }}</td>
+                    <td hidden>
+                        <form action="/showsolution">
+                            <input name="id" type="hidden" value="{{ solution['id'] }}">
+                            <button type="submit" id="clickbuttonid-{{ solution['id'] }}">SHOW</button>
+                        </form>
+                    </td>
+                    
+                </tr>
                 
-            </tr>
-            
-            {% endif %}
-            {% endfor %}
-        </tbody>
-    </table>
-    {% endfor %}
-</div>
+                {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+        {% endfor %}
+    </div>
 
 {% endblock %}

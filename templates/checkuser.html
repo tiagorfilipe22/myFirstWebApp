@@ -4,7 +4,7 @@
     CHECK USERS
 {% endblock %}
 
-{% block h1 %}<h1>CHECK USERS</h1>{% endblock %}
+{% block h1 %}<h1>Check Users</h1>{% endblock %}
 {% block body %}
     <table class="table">
         <thead>
@@ -17,7 +17,6 @@
         </thead>
 
         <tbody>
-
             {% for user in users %}
             <tr>
                 <td> {{ user["name"] }}</td>

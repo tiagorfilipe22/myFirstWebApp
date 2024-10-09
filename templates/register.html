@@ -3,26 +3,25 @@
 {% block title %}
     REGISTER
 {% endblock %}
-{% block h1 %}<h1>REGISTER</h1>{% endblock %}
+{% block h1 %}<h1>Register</h1>{% endblock %}
 {% block body %}
-    <form action="/register" method="post">
-      <div >
-        <input autocomple="off" autofocus name="email" placeholder="Email" type="text">
-      </div>
-      <div >
-        <input autocomple="off" autofocus name="name" placeholder="Name" type="text">
-      </div>
-      <div >
-        <p>Password must have 8 chars or more</p>
-        <input autocomple="off" name="password" placeholder="Password" type="password">
-
-      </div>
-      <div >
-        <input autocomple="off" name="pConfirmation" placeholder="Confirmation" type="password">
-      </div>
-      <div >
-        <button type="submit" class="enter">Register</button>
-      </div>
-    </form>
+  <form action="/register" method="post">
+    <div >
+      <input autocomple="off" autofocus name="email" placeholder="Email" type="text">
+    </div>
+    <div >
+      <input autocomple="off" autofocus name="name" placeholder="Name" type="text">
+    </div>
+    <div >
+      <p>Password must have 8 chars or more</p>
+      <input autocomple="off" name="password" placeholder="Password" type="password">
+    </div>
+    <div >
+      <input autocomple="off" name="pConfirmation" placeholder="Confirmation" type="password">
+    </div>
+    <div >
+      <button type="submit" class="enter">Register</button>
+    </div>
+  </form>
 
 {% endblock %}

@@ -199,7 +199,6 @@ def register():
         text = "Email: " + email + "\nName:  " + name
 
         for admin in admins:
-            print(admin["email"])
             email_admin = admin["email"]
             resources.email_alert("Help Desk Project CS50 - New User", text, email_admin)
 
@@ -292,10 +291,6 @@ def password():
 @login_required
 def users():
 
-    login_redirect = check_login()
-    if login_redirect:
-        return login_redirect
-
     # get serssion id
     userID = session.get("user_id")
 
@@ -308,12 +303,7 @@ def users():
 @app.route("/edituser")
 @login_required
 def edituser():
-
-    login_redirect = check_login()
-    if login_redirect:
-        return login_redirect
-    
-
+  
     # get ticket id
     userID = request.args.get("id")
 
@@ -757,10 +747,6 @@ def showsolution():
 @app.route("/newsolutiontoticket", methods=["GET", "POST"])
 @login_required
 def newsolutiontoticket():
-
-    login_redirect = check_login()
-    if login_redirect:
-        return login_redirect
 
     # if post method
     if request.method == "POST":

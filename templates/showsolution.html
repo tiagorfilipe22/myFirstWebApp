@@ -7,41 +7,37 @@
 {% block h1 %}<h1>{{ solution[0]["subject"] }}</h1>{% endblock %}
 {% block body %}
 
+  <div class="main">
+    <table class="show">
+    <tr>
+        <td colspan="2">
+            <h3>Category:</h3>
+            <h4>{{ solution[0]["category"] }}</h4>
+        </td>
+    </tr>
+    <tr>
+      <td>
+        <h3>Creator:</h3>
+        <h4>{{ solution[0]["creator_name"] }}</h4>
+      </td>
+      <td>
+        <h3>Time:</h3>
+        <h4>{{ solution[0]["time"] }}</h4>
+      </td>
+    </tr>
+    </table>
 
+    <h2>Description:</h2>
+    <h3>{{ solution[0]["description"] }}</h3>
 
-
- 
-<div class="main">
-<table class="show">
-<tr>
-    <td colspan="2">
-        <h3>Category:</h3>
-        <h4>{{ solution[0]["category"] }}</h4>
-    </td>
-</tr>
-<tr>
-  <td>
-    <h3>Creator:</h3>
-    <h4>{{ solution[0]["creator_name"] }}</h4>
-  </td>
-  <td>
-    <h3>Time:</h3>
-    <h4>{{ solution[0]["time"] }}</h4>
-  </td>
-</tr>
-</table>
-
-<h2>Description:</h2>
-<h3>{{ solution[0]["description"] }}</h3>
-
-<div class="margin">
-{% if solution[0]["creator"] == session.get("user_id") or session.get("permission") < 2 %}
-<form action="/deletesolution">
-  <button name="solutionID" value="{{ solution[0]["id"] }}">Delete Solution</button>
-</form>  
-
-{% else %}
-{% endif %}
-</div>
-</div>
+    <div class="margin">
+      {% if solution[0]["creator"] == session.get("user_id") or session.get("permission") < 2 %}
+      <form action="/deletesolution">
+        <button name="solutionID" value="{{ solution[0]["id"] }}">Delete Solution</button>
+      </form>  
+    
+      {% else %}
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}
