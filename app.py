@@ -126,9 +126,9 @@ def checkuser():
             email = user[0]["email"]
 
             # compose email text
-            text = "Hello " + name + "\nYour Registration has been aproved.\nLink: http://google.pt\nWelcome!"
+            text = "Hello " + name + "\nYour Registration has been aproved.\nLink: https://animated-journey-p94gx55q6gvhrrv5-5000.app.github.dev/\nWelcome!"
             # send email
-            ("Help Desk Project CS50 - Aproval", text, email)
+            resources.email_alert("Help Desk Project CS50 - Aproval", text, email)
             return redirect("/checkuser")
         
     # check for new registered USERS
@@ -190,8 +190,8 @@ def register():
             return render_template("register.html")
         
         # send email to new user
-        text = "Hello " + name + "\nYou have complete registration on Help Desk Project CS50.\nLink: http://www.google.pt\nWait for admin Aproval."
-        ("Help Desk Project CS50 - Registration", text, email)
+        text = "Hello " + name + "\nYou have complete registration on Help Desk Project CS50.\nLink: https://animated-journey-p94gx55q6gvhrrv5-5000.app.github.dev/\nWait for admin Aproval."
+        resources.email_alert("Help Desk Project CS50 - Registration", text, email)
         
         # send email to each admin
         # get admins
@@ -202,6 +202,7 @@ def register():
             email_admin = admin["email"]
             resources.email_alert("Help Desk Project CS50 - New User", text, email_admin)
 
+        flash("Wait for Admil aproval! Check Email!")
         return redirect("/")
 
     return render_template("register.html")
@@ -630,8 +631,21 @@ def saveticket():
     if request.method == "POST":
         status = request.form.get("status")
         ticketID = session["show_ticket"]
+        
 
         db.execute("UPDATE tickets SET status = ? WHERE id = ?", status, ticketID)
+        
+        # if ticket terminated
+        if status == '3':
+            # get info to send email, admin that terminated ticket, ticket information, and email of the creator
+            admin = db.execute("SELECT name FROM users WHERE id = ?", session['user_id'])
+            ticket = db.execute("SELECT * FROM tickets WHERE id = ?", ticketID)
+            creator = ticket[0]["creator"]
+            email = db.execute("SELECT email FROM users WHERE id = ?", creator)
+            text = "Subject: " + ticket[0]['subject'] + "\nTerminated by: " + admin[0]["name"] + "\n\nGo Review the Ticket" + "\n\nLink: https://animated-journey-p94gx55q6gvhrrv5-5000.app.github.dev/showticket?id=" + str(ticketID)
+
+            resources.email_alert("Help Desk Project CS50 - Ticket Terminated", text, email[0]["email"])
+
         return redirect("/showticket")
     
 
