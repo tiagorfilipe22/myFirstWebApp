@@ -42,7 +42,7 @@
                 {% if ticket["creator_name"] %}
                 <td class="none"> {{ ticket["creator_name"] }}</td>
                 {% else %}
-                <td></td>
+                <td class="none"></td>
                 {% endif %}
                 <td class="status{{ ticket['status'] }}"> {{ status[ticket["status"]] }}</td>
                 
