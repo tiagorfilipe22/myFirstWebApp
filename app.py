@@ -202,7 +202,7 @@ def register():
             email_admin = admin["email"]
             resources.email_alert("Help Desk Project CS50 - New User", text, email_admin)
 
-        flash("Wait for Admil aproval! Check Email!")
+        flash("Wait for Admin aproval! Check Email!")
         return redirect("/")
 
     return render_template("register.html")

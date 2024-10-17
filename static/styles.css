@@ -360,6 +360,17 @@ input::placeholder, textarea::placeholder {
 
 
 @media (max-width: 800px){
+
+.Dark {
+  --color1: #242e37;
+  --color2: #ffffff;
+  --color3: #e1e3e4;
+  --color4: #242e37;
+  --color5: #008dba;
+  --colorextra: #ffffff;
+  --font: "Roboto", sans-serif;
+}
+
 .nav_button{
     position: absolute;
     top: 0;
@@ -367,7 +378,6 @@ input::placeholder, textarea::placeholder {
     margin: 0px;
 
 }
-
 
   .nav_links li {
     padding: 0px 5px;
